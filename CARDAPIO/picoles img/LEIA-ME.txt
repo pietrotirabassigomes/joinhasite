@@ -1,0 +1,28 @@
+JOINHA — IMAGENS DOS PICOLÉS
+
+20 imagens individuais para usar no site. Cada arquivo já tem o visual da marca e o nome do sabor.
+
+Sugestão: coloque os arquivos na pasta img/picoles do projeto e use, por exemplo:
+<img src="img/picoles/picole-abacate.png" alt="Picolé de Abacate">
+
+Arquivos incluídos:
+abacate: picole-abacate.png
+amendoim: picole-amendoim.png
+chocolate: picole-chocolate.png
+chocolate-branco: picole-chocolate-branco.png
+coco-branco: picole-coco-branco.png
+coco-queimado: picole-coco-queimado.png
+groselha: picole-groselha.png
+laranja: picole-laranja.png
+leite-condensado: picole-leite-condensado.png
+leitinho: picole-leitinho.png
+limao: picole-limao.png
+limao-suico: picole-limao-suico.png
+maracuja: picole-maracuja.png
+melancia: picole-melancia.png
+milho: picole-milho.png
+nata: picole-nata.png
+pitaia: picole-pitaia.png
+morango: picole-morango.png
+tangerina: picole-tangerina.png
+uva: picole-uva.png

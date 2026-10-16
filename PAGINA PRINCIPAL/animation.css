@@ -1,0 +1,4 @@
+@keyframes minhaAnimacao {
+  from {right: -200px;}
+  to {right: 0px;}
+}
