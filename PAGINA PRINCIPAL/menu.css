@@ -1,0 +1,204 @@
+/* =========================================================
+   JOINHA SORVETES - JANELA DE CATEGORIAS DO CARDÁPIO
+   ========================================================= */
+
+.menu-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    background: rgba(0, 50, 58, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-janela {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1201;
+    width: min(680px, calc(100% - 24px));
+    max-height: calc(100% - 24px);
+    overflow-y: auto;
+    border-radius: 28px;
+    background: var(--fundo, #f5fbfb);
+    box-shadow: 0 20px 50px rgba(0, 60, 70, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -46%) scale(0.97);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+body.menu-aberto {
+    overflow: hidden;
+}
+
+body.menu-aberto .menu-fundo {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.menu-aberto .menu-janela {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.menu-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 24px 28px;
+    background: linear-gradient(125deg, #00bac3, #008e9a);
+    color: var(--branco, #fff);
+}
+
+.menu-topo h2 {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.menu-topo p {
+    margin-top: 2px;
+    color: #eaffff;
+    font-size: 14px;
+}
+
+.menu-fechar {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--branco, #fff);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.menu-fechar:hover {
+    background: rgba(255, 255, 255, 0.32);
+}
+
+.menu-grade {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 16px;
+    padding: 24px 28px 8px;
+}
+
+.menu-opcao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 14px 18px;
+    border: 1px solid #e1f1f2;
+    border-radius: 20px;
+    background: var(--branco, #fff);
+    box-shadow: var(--sombra, 0 10px 30px rgba(0, 100, 110, 0.10));
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.menu-opcao:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 35px rgba(0, 110, 120, 0.16);
+}
+
+.menu-opcao img {
+    width: 100%;
+    height: 110px;
+    padding: 8px;
+    border-radius: 14px;
+    background: var(--principal-claro, #e8fbfc);
+    object-fit: contain;
+}
+
+.menu-opcao strong {
+    margin-top: 12px;
+    color: var(--principal-escuro, #007b83);
+    font-size: 17px;
+}
+
+.menu-opcao span {
+    margin-top: 3px;
+    color: #64777a;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.menu-ver-tudo {
+    display: block;
+    margin: 12px 28px 24px;
+    padding: 13px 16px;
+    border-radius: 12px;
+    background: var(--principal, #00aeb8);
+    color: var(--branco, #fff);
+    font-size: 15px;
+    font-weight: 800;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.menu-ver-tudo:hover {
+    background: var(--principal-escuro, #007b83);
+}
+
+.menu-fechar:focus-visible,
+.menu-opcao:focus-visible,
+.menu-ver-tudo:focus-visible {
+    outline: 3px solid #8cfaff;
+    outline-offset: 2px;
+}
+
+/* Seções ainda sem produtos na página do cardápio */
+.em-breve {
+    padding-bottom: 55px;
+}
+
+@media (max-width: 600px) {
+    .menu-topo {
+        padding: 18px 18px;
+    }
+
+    .menu-topo h2 {
+        font-size: 21px;
+    }
+
+    .menu-grade {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding: 16px 14px 4px;
+    }
+
+    .menu-opcao {
+        padding: 10px 8px 14px;
+        border-radius: 16px;
+    }
+
+    .menu-opcao img {
+        height: 80px;
+    }
+
+    .menu-opcao strong {
+        font-size: 15px;
+    }
+
+    .menu-opcao span {
+        font-size: 12px;
+    }
+
+    .menu-ver-tudo {
+        margin: 10px 14px 18px;
+    }
+}
+
+@media (hover: none) {
+    .menu-opcao:hover {
+        transform: none;
+    }
+}

@@ -1,4 +1,3 @@
-
 @import url("color.css");
 @import url("animation.css");
 
@@ -46,7 +45,7 @@ header {
     justify-content: space-between;
     gap: 25px;
     min-height: 100px;
-    padding: 12px 7%;
+    padding: 12px 7% 12px 2%;
     background: #00B1BE;
     box-shadow: 0 3px 18px rgba(0, 80, 90, 0.08);
     position: relative;
@@ -158,7 +157,12 @@ nav a:hover::after {
     max-width: 540px;
     max-height: 340px;
     object-fit: contain;
-    border-radius: 18px;
+    border-radius: 0;
+    /* esmaece as bordas da imagem para fundir com o banner */
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 55%, transparent 98%);
+    mask-image: radial-gradient(ellipse at center, #000 55%, transparent 98%);
+    /* Se a imagem tiver fundo BRANCO, descomente a linha abaixo: */
+    /* mix-blend-mode: multiply; */
     animation: entrarDireita 1s ease-out;
 }
 
@@ -255,9 +259,7 @@ nav a:hover::after {
 .card > img {
     display: block;
     width: 100%;
-    height: 205px;
-    object-fit: cover;
-    background: var(--principal-claro);
+    height: auto; /* mostra a imagem inteira, sem cortar e sem fundo azul */
     transition: transform 0.4s ease;
 }
 
@@ -510,7 +512,7 @@ footer .negrito {
 @media (max-width: 1000px) {
     header {
         padding-right: 4%;
-        padding-left: 4%;
+        padding-left: 2%;
     }
 
     nav {
@@ -608,7 +610,7 @@ footer .negrito {
     }
 
     .card > img {
-        height: 230px;
+        height: auto;
     }
 
     .historia {

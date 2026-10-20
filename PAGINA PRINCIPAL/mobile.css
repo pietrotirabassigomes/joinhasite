@@ -118,8 +118,6 @@ body {
     /* Imagem proporcional ao tamanho do card */
     .cards .card > img {
         height: auto;
-        aspect-ratio: 1.2 / 1;
-        margin-bottom: -15%;
     }
 
     .cards:has(.preco) .card h3 {
