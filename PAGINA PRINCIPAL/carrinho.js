@@ -7,7 +7,7 @@
     'use strict';
 
     /* >>> TROQUE pelo WhatsApp da loja: DDI + DDD + número, só dígitos <<< */
-    var WHATSAPP = '5515991511592';
+    var WHATSAPP = '';
 
     var CHAVE = 'joinha_carrinho';
     var itens = carregar();
