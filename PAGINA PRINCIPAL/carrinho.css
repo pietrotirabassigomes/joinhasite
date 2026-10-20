@@ -1,0 +1,393 @@
+/* =========================================================
+   JOINHA SORVETES - CARRINHO
+   Carregue DEPOIS de style.css e mobile.css
+   ========================================================= */
+
+/* ---------- Botão do carrinho (entra no menu) ---------- */
+.carrinho-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 2px solid var(--branco, #fff);
+    border-radius: 50px;
+    background: transparent;
+    color: var(--branco, #fff);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.carrinho-btn:hover {
+    background: var(--branco, #fff);
+    color: var(--principal-escuro, #007b83);
+}
+
+.carrinho-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.carrinho-contador {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 50px;
+    background: var(--branco, #fff);
+    color: var(--principal-escuro, #007b83);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.carrinho-btn:hover .carrinho-contador {
+    background: var(--principal-escuro, #007b83);
+    color: var(--branco, #fff);
+}
+
+.carrinho-btn.pulo {
+    animation: carrinhoPulo 0.4s ease;
+}
+
+@keyframes carrinhoPulo {
+    50% { transform: scale(1.12); }
+}
+
+/* ---------- Fundo escuro + painel lateral ---------- */
+.carrinho-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 50, 58, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.carrinho-painel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    width: min(420px, 100%);
+    background: var(--fundo, #f5fbfb);
+    box-shadow: -10px 0 35px rgba(0, 80, 90, 0.2);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.35s ease, visibility 0.35s ease;
+}
+
+body.carrinho-aberto .carrinho-fundo {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.carrinho-aberto .carrinho-painel {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+body.carrinho-aberto {
+    overflow: hidden;
+}
+
+.carrinho-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 22px;
+    background: linear-gradient(125deg, #00bac3, #008e9a);
+    color: var(--branco, #fff);
+}
+
+.carrinho-topo h2 {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.carrinho-fechar {
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--branco, #fff);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.carrinho-fechar:hover {
+    background: rgba(255, 255, 255, 0.32);
+}
+
+/* ---------- Lista de itens ---------- */
+.carrinho-lista {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px 18px 8px;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.carrinho-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 1px solid #e1f1f2;
+    border-radius: 16px;
+    background: var(--branco, #fff);
+    box-shadow: var(--sombra, 0 10px 30px rgba(0, 100, 110, 0.10));
+}
+
+.carrinho-item img,
+.carrinho-sem-foto {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: var(--principal-claro, #e8fbfc);
+}
+
+.carrinho-info {
+    min-width: 0;
+}
+
+.carrinho-info strong {
+    display: block;
+    color: var(--principal-escuro, #007b83);
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.carrinho-info small {
+    display: block;
+    margin-top: 2px;
+    color: #64777a;
+    font-size: 12px;
+}
+
+.carrinho-qtd {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    padding: 3px;
+    border-radius: 50px;
+    background: var(--principal-claro, #e8fbfc);
+}
+
+.carrinho-qtd button {
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--principal, #00aeb8);
+    color: var(--branco, #fff);
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.carrinho-qtd button:hover {
+    background: var(--principal-escuro, #007b83);
+}
+
+.carrinho-qtd span {
+    min-width: 22px;
+    color: var(--principal-escuro, #007b83);
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.carrinho-direita {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.carrinho-subtotal {
+    color: var(--texto, #253b40);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.carrinho-remover {
+    border: 0;
+    background: none;
+    color: #b94a4a;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.carrinho-vazio {
+    padding: 50px 20px;
+    color: #64777a;
+    text-align: center;
+}
+
+.carrinho-vazio strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--principal-escuro, #007b83);
+    font-size: 18px;
+}
+
+/* ---------- Rodapé do painel ---------- */
+.carrinho-rodape {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 18px 20px;
+    border-top: 1px solid #e1f1f2;
+    background: var(--branco, #fff);
+}
+
+.carrinho-rodape label {
+    color: var(--principal-escuro, #007b83);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.carrinho-rodape textarea {
+    width: 100%;
+    height: 60px;
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid #cfe7e9;
+    border-radius: 12px;
+    background: var(--fundo, #f5fbfb);
+    color: var(--texto, #253b40);
+    font: inherit;
+    font-size: 14px;
+    resize: none;
+}
+
+.carrinho-rodape textarea:focus {
+    outline: 2px solid var(--principal, #00aeb8);
+    outline-offset: 1px;
+}
+
+.carrinho-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    color: var(--texto, #253b40);
+    font-size: 15px;
+}
+
+.carrinho-total strong {
+    color: var(--principal-escuro, #007b83);
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.carrinho-finalizar {
+    padding: 14px 16px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--principal, #00aeb8);
+    color: var(--branco, #fff);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.carrinho-finalizar:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: var(--principal-escuro, #007b83);
+}
+
+.carrinho-finalizar:disabled {
+    background: #b7d9dc;
+    cursor: not-allowed;
+}
+
+.carrinho-limpar {
+    border: 0;
+    background: none;
+    color: #64777a;
+    font: inherit;
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* ---------- Aviso "adicionado" ---------- */
+.carrinho-aviso {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 1100;
+    max-width: calc(100% - 30px);
+    padding: 12px 20px;
+    border-radius: 50px;
+    background: var(--principal-escuro, #007b83);
+    color: var(--branco, #fff);
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(0, 50, 60, 0.25);
+    opacity: 0;
+    transform: translate(-50%, 20px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.carrinho-aviso.visivel {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* ---------- Foco visível no teclado ---------- */
+.carrinho-btn:focus-visible,
+.carrinho-painel button:focus-visible {
+    outline: 3px solid #8cfaff;
+    outline-offset: 2px;
+}
+
+/* ---------- Celular ---------- */
+@media (max-width: 600px) {
+    .carrinho-btn {
+        padding: 8px 14px;
+        border-width: 0;
+        background: rgba(255, 255, 255, 0.15);
+        font-size: 14px;
+    }
+
+    .carrinho-item {
+        grid-template-columns: 54px 1fr auto;
+        gap: 10px;
+    }
+
+    .carrinho-item img,
+    .carrinho-sem-foto {
+        width: 54px;
+        height: 54px;
+    }
+}
