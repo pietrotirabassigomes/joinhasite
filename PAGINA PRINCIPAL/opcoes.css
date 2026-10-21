@@ -1,0 +1,419 @@
+/* =========================================================
+   JOINHA SORVETES - JANELA DE OPÇÕES DO PRODUTO
+   (escolha de tamanho, upgrades e observações)
+   Carregue DEPOIS de style.css e menu.css
+   ========================================================= */
+
+/* Cards clicáveis */
+.cards-picoles .card,
+.cards-milkshakes .card {
+    cursor: pointer;
+}
+
+/* ---------- Fundo e janela ---------- */
+.op-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    background: rgba(0, 50, 58, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.op-janela {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1301;
+    display: flex;
+    flex-direction: column;
+    width: min(580px, calc(100% - 24px));
+    max-height: calc(100dvh - 24px);
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--branco, #fff);
+    box-shadow: 0 20px 50px rgba(0, 60, 70, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -46%) scale(0.97);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+body.op-aberto {
+    overflow: hidden;
+}
+
+body.op-aberto .op-fundo {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.op-aberto .op-janela {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* ---------- Topo ---------- */
+.op-topo {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: linear-gradient(125deg, #00bac3, #008e9a);
+    color: var(--branco, #fff);
+}
+
+.op-topo span {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.op-voltar {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    color: inherit;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.op-voltar:hover {
+    background: rgba(255, 255, 255, 0.32);
+}
+
+/* ---------- Corpo ---------- */
+.op-corpo {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.op-produto {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px;
+}
+
+.op-foto {
+    position: relative;
+    flex: none;
+    width: 110px;
+    height: 110px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: var(--principal, #00aeb8);
+}
+
+.op-foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Fotos dos picolés têm o título embutido: corta a parte de baixo, como no card */
+.op-foto.op-foto--picole img {
+    height: 122%;
+    object-fit: fill;
+    object-position: top;
+}
+
+.op-produto h2 {
+    color: #12292c;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+/* ---------- Grupos de opções ---------- */
+.op-grupo-topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 18px;
+    border: 0;
+    background: var(--principal-claro, #e8fbfc);
+    color: #12292c;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.op-grupo-topo > div {
+    flex: 1;
+}
+
+.op-grupo-topo strong {
+    display: block;
+    font-size: 16px;
+}
+
+.op-grupo-topo small {
+    color: #5b6f72;
+    font-size: 13px;
+}
+
+.op-obrig {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--principal-escuro, #007b83);
+    color: var(--branco, #fff);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.op-obrig.ok {
+    background: #1b9a54;
+}
+
+.op-seta {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+    border-right: 2px solid var(--principal-escuro, #007b83);
+    border-bottom: 2px solid var(--principal-escuro, #007b83);
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+}
+
+.op-grupo.fechado .op-seta {
+    transform: rotate(-45deg);
+}
+
+.op-grupo.fechado .op-lista {
+    display: none;
+}
+
+.op-grupo.erro .op-grupo-topo {
+    animation: op-tremer 0.4s ease;
+    background: #ffe9e9;
+}
+
+@keyframes op-tremer {
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* ---------- Opções ---------- */
+.op-opcao {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e1f1f2;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.op-opcao:hover {
+    background: #f5fbfb;
+}
+
+.op-opcao input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.op-info {
+    flex: 1;
+}
+
+.op-info strong {
+    display: block;
+    color: #12292c;
+    font-size: 16px;
+}
+
+.op-info em {
+    color: #5b6f72;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.op-info small {
+    display: block;
+    color: #8a9a9c;
+    font-size: 12px;
+}
+
+.op-marca {
+    flex: none;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #b5c9cb;
+    border-radius: 50%;
+    background: var(--branco, #fff);
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.op-opcao--check .op-marca {
+    border-radius: 7px;
+}
+
+.op-opcao input:checked + .op-marca {
+    border-color: var(--principal, #00aeb8);
+    background: var(--principal, #00aeb8);
+}
+
+/* bolinha (tamanho) */
+.op-opcao input[type="radio"]:checked + .op-marca::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--branco, #fff);
+}
+
+/* ✓ (upgrades) */
+.op-opcao input[type="checkbox"]:checked + .op-marca::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 7px;
+    width: 6px;
+    height: 11px;
+    border-right: 3px solid var(--branco, #fff);
+    border-bottom: 3px solid var(--branco, #fff);
+    transform: rotate(45deg);
+}
+
+.op-opcao:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.op-opcao:has(input:focus-visible) {
+    outline: 3px solid #8cfaff;
+    outline-offset: -3px;
+}
+
+/* ---------- Observações ---------- */
+.op-obs {
+    padding: 14px 18px 20px;
+}
+
+.op-obs textarea {
+    display: block;
+    width: 100%;
+    min-height: 90px;
+    padding: 12px;
+    border: 1px solid #cfe0e2;
+    border-radius: 12px;
+    color: #12292c;
+    font-family: inherit;
+    font-size: 15px;
+    resize: vertical;
+}
+
+.op-obs textarea:focus {
+    border-color: var(--principal, #00aeb8);
+    outline: 3px solid #bdf6fa;
+}
+
+/* ---------- Rodapé ---------- */
+.op-rodape {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-top: 1px solid #e1f1f2;
+    background: var(--branco, #fff);
+}
+
+.op-total small {
+    display: block;
+    color: #5b6f72;
+    font-size: 12px;
+}
+
+.op-total strong {
+    color: var(--principal-escuro, #007b83);
+    font-size: 22px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.op-adicionar {
+    flex: 1;
+    padding: 14px 16px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--principal, #00aeb8);
+    color: var(--branco, #fff);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.op-adicionar:hover {
+    background: var(--principal-escuro, #007b83);
+}
+
+.op-adicionar.pendente {
+    background: #b5c9cb;
+}
+
+.op-voltar:focus-visible,
+.op-grupo-topo:focus-visible,
+.op-adicionar:focus-visible {
+    outline: 3px solid #8cfaff;
+    outline-offset: 2px;
+}
+
+/* ---------- Celular: tela cheia, como um app ---------- */
+@media (max-width: 600px) {
+    .op-janela {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100dvh;
+        max-height: none;
+        border-radius: 0;
+        transform: translateY(30px);
+    }
+
+    body.op-aberto .op-janela {
+        transform: none;
+    }
+
+    .op-foto {
+        width: 92px;
+        height: 92px;
+        border-radius: 16px;
+    }
+
+    .op-produto h2 {
+        font-size: 19px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .op-fundo,
+    .op-janela,
+    .op-seta {
+        transition: none;
+    }
+
+    .op-grupo.erro .op-grupo-topo {
+        animation: none;
+    }
+}

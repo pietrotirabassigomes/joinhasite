@@ -7,7 +7,7 @@
     'use strict';
 
     /* >>> TROQUE pelo WhatsApp da loja: DDI + DDD + número, só dígitos <<< */
-    var WHATSAPP = '';
+    var WHATSAPP = 'NUMERO_WHATSAPP';
 
     var CHAVE = 'joinha_carrinho';
     var itens = carregar();
@@ -50,7 +50,7 @@
     function adicionar(produto) {
         var item = itens.find(function (i) { return i.id === produto.id; });
         if (item) item.qtd += 1;
-        else itens.push({ id: produto.id, nome: produto.nome, preco: produto.preco, img: produto.img, qtd: 1 });
+        else itens.push({ id: produto.id, nome: produto.nome, preco: produto.preco, img: produto.img, consultar: !!produto.consultar, qtd: 1 });
         atualizar();
         avisar(produto.nome + ' foi para o carrinho');
         var btn = document.querySelector('.carrinho-btn');
@@ -81,14 +81,25 @@
         return itens.reduce(function (s, i) { return s + i.preco * i.qtd; }, 0);
     }
 
+    function temConsultar() {
+        return itens.some(function (i) { return i.consultar; });
+    }
+
+    /* Texto do total: soma dos itens com preço + aviso se houver item "a consultar" */
+    function textoTotal() {
+        var t = total();
+        if (!temConsultar()) return moeda(t);
+        return t > 0 ? moeda(t) + ' + a consultar' : 'A consultar';
+    }
+
     function finalizar() {
         if (!itens.length) return;
         var obs = document.getElementById('carrinho-obs').value.trim();
         var linhas = ['*Pedido - Joinha Sorvetes*', ''];
         itens.forEach(function (i) {
-            linhas.push(i.qtd + 'x ' + i.nome + ' - ' + moeda(i.preco * i.qtd));
+            linhas.push(i.qtd + 'x ' + i.nome + ' - ' + (i.consultar ? 'preço a consultar' : moeda(i.preco * i.qtd)));
         });
-        linhas.push('', '*Total: ' + moeda(total()) + '*');
+        linhas.push('', '*Total: ' + textoTotal() + '*');
         if (obs) linhas.push('', 'Observações: ' + obs);
         window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(linhas.join('\n')), '_blank');
     }
@@ -175,7 +186,7 @@
         salvar();
         var qtdTotal = itens.reduce(function (s, i) { return s + i.qtd; }, 0);
         document.getElementById('carrinho-contador').textContent = qtdTotal;
-        document.getElementById('carrinho-total').textContent = moeda(total());
+        document.getElementById('carrinho-total').textContent = textoTotal();
         document.getElementById('carrinho-finalizar').disabled = !itens.length;
         document.getElementById('carrinho-limpar').hidden = !itens.length;
 
@@ -192,13 +203,13 @@
                 : '<span class="carrinho-sem-foto"></span>';
             return '<li class="carrinho-item">' + foto +
                 '<div class="carrinho-info"><strong>' + escapar(i.nome) + '</strong>' +
-                '<small>' + moeda(i.preco) + ' cada</small>' +
+                '<small>' + (i.consultar ? 'Preço a consultar' : moeda(i.preco) + ' cada') + '</small>' +
                 '<div class="carrinho-qtd">' +
                 '<button type="button" data-acao="menos" data-id="' + escapar(i.id) + '" aria-label="Diminuir quantidade">&minus;</button>' +
                 '<span>' + i.qtd + '</span>' +
                 '<button type="button" data-acao="mais" data-id="' + escapar(i.id) + '" aria-label="Aumentar quantidade">+</button>' +
                 '</div></div>' +
-                '<div class="carrinho-direita"><span class="carrinho-subtotal">' + moeda(i.preco * i.qtd) + '</span>' +
+                '<div class="carrinho-direita"><span class="carrinho-subtotal">' + (i.consultar ? 'A consultar' : moeda(i.preco * i.qtd)) + '</span>' +
                 '<button type="button" class="carrinho-remover" data-acao="remover" data-id="' + escapar(i.id) + '">Remover</button></div>' +
                 '</li>';
         }).join('');
@@ -226,8 +237,14 @@
             btn.setAttribute('role', 'button');
             btn.setAttribute('tabindex', '0');
             btn.style.cursor = 'pointer';
-            btn.dataset.nome = titulo.textContent.trim();
+            var secao = card.closest('[data-prefixo]');
+            var prefixo = secao ? secao.getAttribute('data-prefixo') : '';
+            btn.disabled = false;
+            btn.dataset.nome = prefixo + titulo.textContent.trim();
             btn.dataset.preco = lerPreco(valor.textContent);
+            /* sem número no preço (ex.: "A consultar") -> item entra no carrinho sem valor */
+            if (!/\d/.test(valor.textContent)) btn.dataset.consultar = '1';
+            else delete btn.dataset.consultar;
             var img = card.querySelector('img');
             if (img) btn.dataset.img = img.src; /* caminho completo, funciona de qualquer pasta */
         });
@@ -240,7 +257,8 @@
                 id: b.dataset.id || slug(b.dataset.nome),
                 nome: b.dataset.nome,
                 preco: parseFloat(b.dataset.preco) || 0,
-                img: b.dataset.img || ''
+                img: b.dataset.img || '',
+                consultar: b.dataset.consultar === '1'
             });
         });
 

@@ -1,0 +1,39 @@
+Ícones individuais de milkshakes Joinha Sorvetes.
+Total: 36 arquivos PNG.
+
+01. Abacaxi Suíço — abacaxi-suico.png
+02. Ameixa — ameixa.png
+03. Bombom — bombom.png
+04. Chocolate Branco — chocolate-branco.png
+05. Coco Branco — coco-branco.png
+06. Creme — creme.png
+07. Flocos — flocos.png
+08. Frutado Bosque — frutado-bosque.png
+09. Leite Condensado — leite-condensado.png
+10. Maracujá Trufado — maracuja-trufado.png
+11. Morango — morango.png
+12. Nublado — nublado.png
+13. Olho de Sogra — olho-de-sogra.png
+14. Pistache — pistache.png
+15. Rafaello — rafaello.png
+16. Uva — uva.png
+17. Super Chocolato — super-chocolato.png
+18. Sensação — sensacao.png
+19. Abóbora com Coco — abobora-com-coco.png
+20. Banoffe — banoffe.png
+21. Cereja — cereja.png
+22. Chocomenta — chocomenta.png
+23. Coco Queimado — coco-queimado.png
+24. Ferrero Rocher — ferrero-rocher.png
+25. Floresta Suprema — floresta-suprema.png
+26. Kinder — kinder.png
+27. Limão Suíço — limao-suico.png
+28. Milho — milho.png
+29. Ninho Trufado — ninho-trufado.png
+30. Nutella — nutella.png
+31. Provocante — provocante.png
+32. Açaí — acai.png
+33. Unicórnio — unicornio.png
+34. Suflair — suflair.png
+35. Choquito — choquito.png
+36. Ovomaltine — ovomaltine.png

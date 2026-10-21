@@ -4,191 +4,659 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio - Joinha</title>
+    <title>Cardápio de picolés e sorvetes | Joinha Sorvetes</title>
+    <meta name="description" content="Confira o cardápio da Joinha Sorvetes, com sabores de picolé e 36 opções de milkshake.">
+    <link rel="canonical" href="https://SEUDOMINIO.com.br/CARDAPIO/cardapio.html">
+    <meta name="theme-color" content="#00B1BE">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Joinha Sorvetes">
+    <meta property="og:title" content="Cardápio | Joinha Sorvetes">
+    <meta property="og:description" content="Confira o cardápio da Joinha Sorvetes, com sabores de picolé e 36 opções de milkshake.">
+    <meta property="og:url" content="https://SEUDOMINIO.com.br/CARDAPIO/cardapio.html">
+    <meta property="og:image" content="https://SEUDOMINIO.com.br/img/banner.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="apple-touch-icon" href="../img/joinha.png">
     <link rel="stylesheet" href="stylecardapio.css">
     <link rel="stylesheet" href="../PAGINA%20PRINCIPAL/style.css">
     <link rel="icon" type="image/png" href="../img/joinha.png">
     <link rel="stylesheet" href="../PAGINA%20PRINCIPAL/mobile.css">
     <link rel="stylesheet" href="../PAGINA%20PRINCIPAL/carrinho.css">
     <link rel="stylesheet" href="../PAGINA%20PRINCIPAL/menu.css">
+    <link rel="stylesheet" href="../PAGINA%20PRINCIPAL/opcoes.css">
+    <link rel="stylesheet" href="../PAGINA%20PRINCIPAL/cookies.css">
+
+    <style>
+        /* Estilo compartilhado: picolés e milkshakes usam o mesmo card */
+        :is(.cards-picoles, .cards-milkshakes) .card {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        /* Imagem dos milkshakes */
+        .cards-milkshakes .card > img.milkshake-img {
+            display: block;
+            width: 100%;
+            height: 220px;
+            margin: 0;
+            padding: 0;
+            object-fit: contain;
+            object-position: center;
+            background: #00aeb8;
+            clip-path: none;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .cards-milkshakes .card:hover > img.milkshake-img {
+            transform: scale(1.03);
+        }
+
+        :is(.cards-picoles, .cards-milkshakes) .card-conteudo {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            padding: 18px;
+            text-align: center;
+        }
+
+        :is(.cards-picoles, .cards-milkshakes) .card h3 {
+            width: 100%;
+            text-align: center;
+        }
+
+        :is(.cards-picoles, .cards-milkshakes) .milkshake-preco {
+            width: 100%;
+            margin: 5px 0 18px;
+            text-align: center;
+        }
+
+        :is(.cards-picoles, .cards-milkshakes) .milkshake-preco strong {
+            font-size: 17px;
+            white-space: normal;
+        }
+
+        :is(.cards-picoles, .cards-milkshakes) .card .botao-card {
+            margin-top: auto;
+        }
+
+        @media (max-width: 600px) {
+            .cards-milkshakes .card > img.milkshake-img {
+                height: 210px;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
 
     <header>
-        <img src="../img/joinha.png" alt="Logo Joinha">
+        <a href="../index.html" aria-label="Página inicial"><img src="../img/joinha.png" alt="Logo da Joinha Sorvetes"></a>
 
         <nav>
             <a href="../index.html">Início</a>
             <a href="cardapio.html">Cardápio</a>
             <a href="#Sobre">Contato</a>
-            <a href="#Sobre">Sobre nós</a>
+            <a href="../index.html#historia">Sobre nós</a>
         </nav>
     </header>
 
     <main>
         <div class="titulo">
-            <h2>Cardápio</h2>
+            <h1>Cardápio</h1>
         </div>
 
         <div class="titulo" id="picoles"><h2>Picolés</h2></div>
 
-        <section class="cards">
+        <section class="cards cards-picoles" aria-label="Sabores de picolé">
 
-            <div class="card">
-                <img src="picoles%20img/picole-abacate.png" alt="Picolé de Abacate">
-                <h3>Picolé de Abacate</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
-
-            <div class="card">
-                <img src="picoles%20img/picole-amendoim.png" alt="Picolé de Amendoim">
-                <h3>Picolé de Amendoim</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
-
-            <div class="card">
+            <article class="card">
                 <img src="picoles%20img/picole-chocolate.png" alt="Picolé de Chocolate">
-                <h3>Picolé de Chocolate</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+                <div class="card-conteudo">
+                    <h3>Picolé de Chocolate</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-chocolate-branco.png" alt="Picolé de Chocolate Branco">
-                <h3>Picolé de Chocolate Branco</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-morango.png" alt="Picolé de Morango">
+                <div class="card-conteudo">
+                    <h3>Picolé de Morango</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-coco-branco.png" alt="Picolé de Coco Branco">
-                <h3>Picolé de Coco Branco</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-leite-condensado.png" alt="Picolé de Leite Condensado">
+                <div class="card-conteudo">
+                    <h3>Picolé de Leite Condensado</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-coco-queimado.png" alt="Picolé de Coco Queimado">
-                <h3>Picolé de Coco Queimado</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-coco-branco.png" alt="Picolé de Coco Branco">
+                <div class="card-conteudo">
+                    <h3>Picolé de Coco Branco</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-groselha.png" alt="Picolé de Groselha">
-                <h3>Picolé de Groselha</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-uva.png" alt="Picolé de Uva">
+                <div class="card-conteudo">
+                    <h3>Picolé de Uva</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-laranja.png" alt="Picolé de Laranja">
-                <h3>Picolé de Laranja</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-leitinho.png" alt="Picolé de Leitinho">
+                <div class="card-conteudo">
+                    <h3>Picolé de Leitinho</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-leite-condensado.png" alt="Picolé de Leite Condensado">
-                <h3>Picolé de Leite Condensado</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-chocolate-branco.png" alt="Picolé de Chocolate Branco">
+                <div class="card-conteudo">
+                    <h3>Picolé de Chocolate Branco</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-leitinho.png" alt="Picolé de Leitinho">
-                <h3>Picolé de Leitinho</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-limao.png" alt="Picolé de Limão">
+                <div class="card-conteudo">
+                    <h3>Picolé de Limão</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-limao.png" alt="Picolé de Limão">
-                <h3>Picolé de Limão</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-maracuja.png" alt="Picolé de Maracujá">
+                <div class="card-conteudo">
+                    <h3>Picolé de Maracujá</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-limao-suico.png" alt="Picolé de Limão Suíço">
-                <h3>Picolé de Limão Suíço</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-amendoim.png" alt="Picolé de Amendoim">
+                <div class="card-conteudo">
+                    <h3>Picolé de Amendoim</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-maracuja.png" alt="Picolé de Maracujá">
-                <h3>Picolé de Maracujá</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-coco-queimado.png" alt="Picolé de Coco Queimado">
+                <div class="card-conteudo">
+                    <h3>Picolé de Coco Queimado</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-melancia.png" alt="Picolé de Melancia">
-                <h3>Picolé de Melancia</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-nata.png" alt="Picolé de Nata">
+                <div class="card-conteudo">
+                    <h3>Picolé de Nata</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-milho.png" alt="Picolé de Milho">
-                <h3>Picolé de Milho</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-limao-suico.png" alt="Picolé de Limão Suíço">
+                <div class="card-conteudo">
+                    <h3>Picolé de Limão Suíço</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-nata.png" alt="Picolé de Nata">
-                <h3>Picolé de Nata</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-milho.png" alt="Picolé de Milho">
+                <div class="card-conteudo">
+                    <h3>Picolé de Milho</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-pitaia.png" alt="Picolé de Pitaia">
-                <h3>Picolé de Pitaia</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-laranja.png" alt="Picolé de Laranja">
+                <div class="card-conteudo">
+                    <h3>Picolé de Laranja</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-morango.png" alt="Picolé de Morango">
-                <h3>Picolé de Morango</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-tangerina.png" alt="Picolé de Tangerina">
+                <div class="card-conteudo">
+                    <h3>Picolé de Tangerina</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-tangerina.png" alt="Picolé de Tangerina">
-                <h3>Picolé de Tangerina</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-melancia.png" alt="Picolé de Melancia">
+                <div class="card-conteudo">
+                    <h3>Picolé de Melancia</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
-            <div class="card">
-                <img src="picoles%20img/picole-uva.png" alt="Picolé de Uva">
-                <h3>Picolé de Uva</h3>
-                <p class="preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
-                <button class="botao-card" type="button">Adicionar ao carrinho</button>
-            </div>
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-groselha.png" alt="Picolé de Groselha">
+                <div class="card-conteudo">
+                    <h3>Picolé de Groselha</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-abacate.png" alt="Picolé de Abacate">
+                <div class="card-conteudo">
+                    <h3>Picolé de Abacate</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img loading="lazy" decoding="async" src="picoles%20img/picole-pitaia.png" alt="Picolé de Pitaia">
+                <div class="card-conteudo">
+                    <h3>Picolé de Pitaia</h3>
+                    <p class="preco milkshake-preco"><span>Por apenas</span><strong>R$ 2,50</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
 
         </section>
 
-        <div class="titulo em-breve" id="milkshakes"><h2>Milk Shakes</h2><p>Em breve no cardápio!</p></div>
+        <div class="titulo" id="milkshakes">
+            <h2>Milk Shakes</h2>
+            <p>Escolha seu sabor favorito!</p>
+        </div>
+
+        <section class="cards cards-milkshakes" data-prefixo="Milkshake de " aria-label="Sabores de milkshake">
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/abacaxi-suico.png" alt="Milkshake de Abacaxi Suíço">
+                <div class="card-conteudo">
+                    <h3>Abacaxi Suíço</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/ameixa.png" alt="Milkshake de Ameixa">
+                <div class="card-conteudo">
+                    <h3>Ameixa</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/bombom.png" alt="Milkshake de Bombom">
+                <div class="card-conteudo">
+                    <h3>Bombom</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/chocolate-branco.png" alt="Milkshake de Chocolate Branco">
+                <div class="card-conteudo">
+                    <h3>Chocolate Branco</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/coco-branco.png" alt="Milkshake de Coco Branco">
+                <div class="card-conteudo">
+                    <h3>Coco Branco</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/creme.png" alt="Milkshake de Creme">
+                <div class="card-conteudo">
+                    <h3>Creme</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/flocos.png" alt="Milkshake de Flocos">
+                <div class="card-conteudo">
+                    <h3>Flocos</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/frutado-bosque.png" alt="Milkshake de Frutado Bosque">
+                <div class="card-conteudo">
+                    <h3>Frutado Bosque</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/leite-condensado.png" alt="Milkshake de Leite Condensado">
+                <div class="card-conteudo">
+                    <h3>Leite Condensado</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/maracuja-trufado.png" alt="Milkshake de Maracujá Trufado">
+                <div class="card-conteudo">
+                    <h3>Maracujá Trufado</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/morango.png" alt="Milkshake de Morango">
+                <div class="card-conteudo">
+                    <h3>Morango</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/nublado.png" alt="Milkshake de Nublado">
+                <div class="card-conteudo">
+                    <h3>Nublado</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/olho-de-sogra.png" alt="Milkshake de Olho de Sogra">
+                <div class="card-conteudo">
+                    <h3>Olho de Sogra</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/pistache.png" alt="Milkshake de Pistache">
+                <div class="card-conteudo">
+                    <h3>Pistache</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/rafaello.png" alt="Milkshake de Rafaello">
+                <div class="card-conteudo">
+                    <h3>Rafaello</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/uva.png" alt="Milkshake de Uva">
+                <div class="card-conteudo">
+                    <h3>Uva</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/super-chocolato.png" alt="Milkshake de Super Chocolato">
+                <div class="card-conteudo">
+                    <h3>Super Chocolato</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/sensacao.png" alt="Milkshake de Sensação">
+                <div class="card-conteudo">
+                    <h3>Sensação</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/abobora-com-coco.png" alt="Milkshake de Abóbora com Coco">
+                <div class="card-conteudo">
+                    <h3>Abóbora com Coco</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/banoffe.png" alt="Milkshake de Banoffe">
+                <div class="card-conteudo">
+                    <h3>Banoffe</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/cereja.png" alt="Milkshake de Cereja">
+                <div class="card-conteudo">
+                    <h3>Cereja</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/chocomenta.png" alt="Milkshake de Chocomenta">
+                <div class="card-conteudo">
+                    <h3>Chocomenta</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/coco-queimado.png" alt="Milkshake de Coco Queimado">
+                <div class="card-conteudo">
+                    <h3>Coco Queimado</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/ferrero-rocher.png" alt="Milkshake de Ferrero Rocher">
+                <div class="card-conteudo">
+                    <h3>Ferrero Rocher</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/floresta-suprema.png" alt="Milkshake de Floresta Suprema">
+                <div class="card-conteudo">
+                    <h3>Floresta Suprema</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/kinder.png" alt="Milkshake de Kinder">
+                <div class="card-conteudo">
+                    <h3>Kinder</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/limao-suico.png" alt="Milkshake de Limão Suíço">
+                <div class="card-conteudo">
+                    <h3>Limão Suíço</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/milho.png" alt="Milkshake de Milho">
+                <div class="card-conteudo">
+                    <h3>Milho</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/ninho-trufado.png" alt="Milkshake de Ninho Trufado">
+                <div class="card-conteudo">
+                    <h3>Ninho Trufado</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/nutella.png" alt="Milkshake de Nutella">
+                <div class="card-conteudo">
+                    <h3>Nutella</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/provocante.png" alt="Milkshake de Provocante">
+                <div class="card-conteudo">
+                    <h3>Provocante</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/acai.png" alt="Milkshake de Açaí">
+                <div class="card-conteudo">
+                    <h3>Açaí</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/unicornio.png" alt="Milkshake de Unicórnio">
+                <div class="card-conteudo">
+                    <h3>Unicórnio</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/suflair.png" alt="Milkshake de Suflair">
+                <div class="card-conteudo">
+                    <h3>Suflair</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/choquito.png" alt="Milkshake de Choquito">
+                <div class="card-conteudo">
+                    <h3>Choquito</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="milkshakes_icones/ovomaltine.png" alt="Milkshake de Ovomaltine">
+                <div class="card-conteudo">
+                    <h3>Ovomaltine</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+        </section>
         <div class="titulo em-breve" id="potes"><h2>Potes</h2><p>Em breve no cardápio!</p></div>
         <div class="titulo em-breve" id="bolos"><h2>Bolos</h2><p>Em breve no cardápio!</p></div>
         <div class="titulo em-breve" id="caixas"><h2>Caixas de Picolé</h2><p>Em breve no cardápio!</p></div>
     </main>
 
     <footer id="Sobre">
-        <p class="negrito">Joinha</p>
-        <p>Instagram | Facebook | WhatsApp</p>
-        <p>© 2026 - Todos os direitos reservados.</p>
+        <img src="../img/joinha.png" alt="" class="logo-footer">
+
+        <p class="negrito">Joinha Sorvetes</p>
+
+        <p class="redes-sociais">
+            <a href="https://www.instagram.com/SEU_INSTAGRAM" target="_blank" rel="noopener">Instagram</a>
+            <span>|</span>
+            <a href="https://www.facebook.com/SEU_FACEBOOK" target="_blank" rel="noopener">Facebook</a>
+            <span>|</span>
+            <a href="https://wa.me/NUMERO_WHATSAPP" target="_blank" rel="noopener">WhatsApp</a>
+        </p>
+
+        <p>[PREENCHER: rua, número - bairro, Cerquilho/SP - CEP]</p>
+        <p>CNPJ [PREENCHER] · Tel. [PREENCHER] · [PREENCHER: e-mail]</p>
+        <p>Atendimento: [PREENCHER: dias e horários]</p>
+
+        <p class="redes-sociais">
+            <a href="../politica-de-privacidade.html">Política de privacidade</a>
+            <span>|</span>
+            <a href="#" data-cookies>Preferências de cookies</a>
+        </p>
+
+        <p class="direitos">© 2026 Joinha Sorvetes - Todos os direitos reservados.</p>
     </footer>
     <script src="../PAGINA%20PRINCIPAL/carrinho.js"></script>
     <script src="../PAGINA%20PRINCIPAL/menu.js"></script>
+    <script src="../PAGINA%20PRINCIPAL/opcoes.js"></script>
+    <script src="../PAGINA%20PRINCIPAL/cookies.js"></script>
 </body>
 </html>

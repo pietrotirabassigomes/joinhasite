@@ -1,1 +1,22 @@
-melhorar os cards do cardapio
+
+20 COISAS ANTES DE SUBIR SEU SITE
+1. abrir no  celular ✔️
+2. testar formulário
+3. clicar no whatsapp  ✔️
+4. página 404
+5. domínio próprio
+6. https
+7. pagespeed
+8. comprimir imagens
+9. favicon
+10. og image
+11. sitemap.xml
+12. google analytics
+13. cookies
+14. dados no rodapé
+15. robots.txt
+16. títulos e descrições
+17. meta descriptions
+18. hospedagem boa
+19. clicar nos links 
+20. configurações de segurança
