@@ -121,7 +121,7 @@
     margin-bottom: -41px;
     object-fit: fill;
     object-position: top;
-    background: var(--principal);
+    background-color: #009CAA;
     clip-path: inset(0 0 18% 0);
     transition: transform 0.4s ease;
 }
@@ -201,4 +201,10 @@
 .card .botao-card {
     text-align: center;
     margin-top: auto;
+}
+
+/* FUNDO DOS CARDS DE MILKSHAKE */
+.cards-milkshakes .card,
+.cards-milkshakes .card .card-conteudo {
+    background-color: #009ba9;
 }
