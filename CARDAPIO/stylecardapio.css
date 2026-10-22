@@ -1,4 +1,4 @@
-    .botao-card {
+.botao-card {
     display: block;
     width: 100%;
     padding: 12px 16px;
@@ -203,8 +203,12 @@
     margin-top: auto;
 }
 
-/* FUNDO DOS CARDS DE MILKSHAKE */
+/* CARDS DE MILKSHAKE: imagem em azul, parte de baixo (conteúdo) em branco */
 .cards-milkshakes .card,
 .cards-milkshakes .card .card-conteudo {
-    background-color: #009ba9;
+    background-color: #ffffff;
+}
+
+.cards-milkshakes .card h3 {
+    color: var(--principal-escuro);
 }

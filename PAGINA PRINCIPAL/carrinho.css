@@ -90,6 +90,11 @@
     transition: transform 0.35s ease, visibility 0.35s ease;
 }
 
+/* o atributo hidden sempre vence os display: flex/grid abaixo */
+.carrinho-painel [hidden] {
+    display: none !important;
+}
+
 body.carrinho-aberto .carrinho-fundo {
     opacity: 1;
     visibility: visible;
@@ -106,6 +111,7 @@ body.carrinho-aberto {
 
 .carrinho-topo {
     display: flex;
+    flex: none;
     align-items: center;
     justify-content: space-between;
     padding: 20px 22px;
@@ -135,14 +141,21 @@ body.carrinho-aberto {
     background: rgba(255, 255, 255, 0.32);
 }
 
+/* ---------- Área que rola (itens + formulário) ----------
+   O total e o botão de enviar ficam fixos embaixo, sempre visíveis. */
+.carrinho-rolagem {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
 /* ---------- Lista de itens ---------- */
 .carrinho-lista {
-    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 18px 18px 8px;
-    overflow-y: auto;
+    padding: 18px 18px 14px;
     list-style: none;
 }
 
@@ -257,45 +270,256 @@ body.carrinho-aberto {
     font-size: 18px;
 }
 
-/* ---------- Rodapé do painel ---------- */
-.carrinho-rodape {
+/* ---------- Formulário: retirada ou delivery ---------- */
+.carrinho-form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: 16px 18px 20px;
+    gap: 18px;
+    padding: 18px 18px 22px;
     border-top: 1px solid #e1f1f2;
     background: var(--branco, #fff);
 }
 
-.carrinho-rodape label {
+.entrega-tipo {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 16px;
+}
+
+.entrega-tipo legend {
+    margin-bottom: 10px;
+    padding: 0;
+    color: #12292c;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.entrega-opcoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.entrega-opcao {
+    display: block;
+    cursor: pointer;
+}
+
+/* o rádio fica escondido, mas continua funcionando pelo teclado */
+.entrega-opcao input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.entrega-cartao {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    padding: 16px 10px 14px;
+    border: 2px solid #cfe7e9;
+    border-radius: 16px;
+    background: var(--branco, #fff);
+    color: #5b6f72;
+    text-align: center;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.entrega-cartao svg {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 2px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.entrega-cartao strong {
+    color: #12292c;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.entrega-cartao small {
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.entrega-opcao:hover .entrega-cartao {
+    border-color: var(--principal, #00aeb8);
+}
+
+.entrega-opcao input:checked + .entrega-cartao {
+    border-color: var(--principal, #00aeb8);
+    background: var(--principal-claro, #e8fbfc);
+    color: var(--principal-escuro, #007b83);
+}
+
+.entrega-opcao input:checked + .entrega-cartao strong {
+    color: var(--principal-escuro, #007b83);
+}
+
+/* selo de "escolhido" no canto do cartão */
+.entrega-cartao::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--principal, #00aeb8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center / 12px no-repeat;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.entrega-opcao input:checked + .entrega-cartao::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.entrega-opcao input:focus-visible + .entrega-cartao {
+    outline: 3px solid #8cfaff;
+    outline-offset: 2px;
+}
+
+.entrega-tipo.erro .entrega-cartao {
+    border-color: #d64545;
+}
+
+.entrega-tipo.erro .entrega-opcoes {
+    animation: carrinhoTremer 0.4s ease;
+}
+
+@keyframes carrinhoTremer {
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* ---------- Campos (nome, endereço, observações) ---------- */
+.carrinho-dados,
+.bloco-entrega {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.campo-linha {
+    display: grid;
+    grid-template-columns: 1fr 112px;
+    gap: 10px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.carrinho-form label {
     color: var(--principal-escuro, #007b83);
     font-size: 13px;
     font-weight: 800;
 }
 
-.carrinho-rodape textarea {
+.campo-opc {
+    color: #8a9a9c;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.carrinho-form input[type="text"],
+.carrinho-form textarea {
+    display: block;
     width: 100%;
-    height: 60px;
-    margin-top: 6px;
-    padding: 10px 12px;
+    padding: 12px;
     border: 1px solid #cfe7e9;
     border-radius: 12px;
     background: var(--fundo, #f5fbfb);
     color: var(--texto, #253b40);
     font: inherit;
-    font-size: 14px;
+    font-size: 16px; /* 16px evita o zoom automático no iPhone */
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.carrinho-form textarea {
+    height: 70px;
     resize: none;
 }
 
-.carrinho-rodape textarea:focus {
+.carrinho-form input[type="text"]:focus,
+.carrinho-form textarea:focus {
+    border-color: var(--principal, #00aeb8);
     outline: 2px solid var(--principal, #00aeb8);
     outline-offset: 1px;
+}
+
+.carrinho-form input[aria-invalid="true"] {
+    border-color: #d64545;
+    background: #fff6f6;
+}
+
+.campo-erro {
+    color: #c0392b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.retirada-info {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--principal-claro, #e8fbfc);
+    color: #36565a;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.retirada-info strong {
+    color: var(--principal-escuro, #007b83);
+}
+
+/* ---------- Rodapé fixo: total + enviar ---------- */
+.carrinho-acoes {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 18px 20px;
+    border-top: 1px solid #e1f1f2;
+    background: var(--branco, #fff);
+    box-shadow: 0 -8px 20px rgba(0, 80, 90, 0.08);
+}
+
+.carrinho-resumo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #5b6f72;
+    font-size: 14px;
+}
+
+.carrinho-resumo > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 .carrinho-total {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+    gap: 12px;
     color: var(--texto, #253b40);
     font-size: 15px;
 }
@@ -304,6 +528,13 @@ body.carrinho-aberto {
     color: var(--principal-escuro, #007b83);
     font-size: 26px;
     font-weight: 800;
+    text-align: right;
+}
+
+/* texto comprido (ex.: "R$ 30,00 + a consultar + entrega") */
+.carrinho-total strong.longo {
+    font-size: 17px;
+    line-height: 1.25;
 }
 
 .carrinho-finalizar {
@@ -389,5 +620,24 @@ body.carrinho-aberto {
     .carrinho-sem-foto {
         width: 54px;
         height: 54px;
+    }
+
+    .campo-linha {
+        grid-template-columns: 1fr 100px;
+    }
+
+    .carrinho-acoes {
+        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .entrega-cartao,
+    .entrega-cartao::after {
+        transition: none;
+    }
+
+    .entrega-tipo.erro .entrega-opcoes {
+        animation: none;
     }
 }

@@ -2,6 +2,9 @@
    JOINHA SORVETES - CARRINHO
    Funciona em qualquer página: basta carregar este arquivo.
    O carrinho fica salvo no navegador (vale para todas as páginas).
+
+   Agora com: RETIRADA ou DELIVERY, nome do cliente, endereço
+   de entrega, taxa de entrega e validação antes do envio.
    ========================================================= */
 (function () {
     'use strict';
@@ -9,8 +12,36 @@
     /* >>> TROQUE pelo WhatsApp da loja: DDI + DDD + número, só dígitos <<< */
     var WHATSAPP = 'NUMERO_WHATSAPP';
 
+    /* >>> Endereço da loja, mostrado para quem escolhe RETIRADA.
+           Ex.: 'Rua das Flores, 123 - Centro'. Deixe '' para não mostrar. <<< */
+    var ENDERECO_LOJA = '';
+
+    /* >>> Taxa de entrega em reais. Ex.: 5 (soma no total), 0 (grátis)
+           ou null (aparece "A combinar" e a loja informa pelo WhatsApp). <<< */
+    var TAXA_ENTREGA = null;
+
     var CHAVE = 'joinha_carrinho';
+    var CHAVE_PEDIDO = 'joinha_pedido';
     var itens = carregar();
+    var pedido = carregarPedido();
+
+    var TIPOS = {
+        retirada: 'Retirada na loja',
+        entrega: 'Entrega (delivery)'
+    };
+
+    /* campos obrigatórios em cada tipo, na ordem em que aparecem */
+    var OBRIGATORIOS = {
+        retirada: ['nome'],
+        entrega: ['nome', 'rua', 'numero', 'bairro']
+    };
+
+    var MENSAGENS = {
+        nome: 'Informe seu nome.',
+        rua: 'Informe a rua.',
+        numero: 'Informe o número (ou S/N).',
+        bairro: 'Informe o bairro.'
+    };
 
     /* ---------- utilidades ---------- */
     function carregar() {
@@ -20,6 +51,24 @@
 
     function salvar() {
         try { localStorage.setItem(CHAVE, JSON.stringify(itens)); } catch (e) {}
+    }
+
+    /* dados do pedido (tipo + nome + endereço): ficam salvos para o cliente
+       não precisar digitar tudo de novo na próxima compra */
+    function carregarPedido() {
+        var padrao = { modo: '', nome: '', rua: '', numero: '', bairro: '', comp: '' };
+        try {
+            var salvo = JSON.parse(localStorage.getItem(CHAVE_PEDIDO)) || {};
+            Object.keys(padrao).forEach(function (k) {
+                if (typeof salvo[k] === 'string') padrao[k] = salvo[k];
+            });
+            if (!TIPOS[padrao.modo]) padrao.modo = '';
+        } catch (e) {}
+        return padrao;
+    }
+
+    function salvarPedido() {
+        try { localStorage.setItem(CHAVE_PEDIDO, JSON.stringify(pedido)); } catch (e) {}
     }
 
     function moeda(v) {
@@ -45,6 +94,8 @@
         if (n.indexOf(',') > -1) n = n.replace(/\./g, '').replace(',', '.');
         return parseFloat(n) || 0;
     }
+
+    function $(id) { return document.getElementById(id); }
 
     /* ---------- ações ---------- */
     function adicionar(produto) {
@@ -77,6 +128,7 @@
         atualizar();
     }
 
+    /* soma só dos produtos */
     function total() {
         return itens.reduce(function (s, i) { return s + i.preco * i.qtd; }, 0);
     }
@@ -85,26 +137,141 @@
         return itens.some(function (i) { return i.consultar; });
     }
 
-    /* Texto do total: soma dos itens com preço + aviso se houver item "a consultar" */
+    function ehEntrega() {
+        return pedido.modo === 'entrega';
+    }
+
+    /* valor da taxa que entra na conta (0 se for retirada ou "a combinar") */
+    function taxaValor() {
+        return ehEntrega() && typeof TAXA_ENTREGA === 'number' ? TAXA_ENTREGA : 0;
+    }
+
+    function textoTaxa() {
+        if (typeof TAXA_ENTREGA !== 'number') return 'A combinar';
+        return TAXA_ENTREGA > 0 ? moeda(TAXA_ENTREGA) : 'Grátis';
+    }
+
+    /* Texto do total: produtos + taxa, com aviso do que ainda será combinado */
     function textoTotal() {
-        var t = total();
-        if (!temConsultar()) return moeda(t);
-        return t > 0 ? moeda(t) + ' + a consultar' : 'A consultar';
+        var t = total() + taxaValor();
+        var extras = [];
+        if (temConsultar()) extras.push('a consultar');
+        if (ehEntrega() && typeof TAXA_ENTREGA !== 'number') extras.push('entrega');
+        if (!extras.length) return moeda(t);
+        return t > 0 ? moeda(t) + ' + ' + extras.join(' + ') : 'A consultar';
+    }
+
+    function enderecoTexto() {
+        var e = pedido.rua.trim() + ', nº ' + pedido.numero.trim() + ' - ' + pedido.bairro.trim();
+        if (pedido.comp.trim()) e += ' (' + pedido.comp.trim() + ')';
+        return e;
+    }
+
+    /* ---------- validação ---------- */
+    function mostrarErro(chave, msg) {
+        var erro = $('ped-' + chave + '-erro');
+        if (erro) { erro.textContent = msg; erro.hidden = false; }
+        var campo = $('ped-' + chave);
+        if (campo) {
+            if (chave === 'tipo') {
+                campo.classList.remove('erro');
+                void campo.offsetWidth; /* reinicia a animação */
+                campo.classList.add('erro');
+            } else {
+                campo.setAttribute('aria-invalid', 'true');
+            }
+        }
+    }
+
+    function limparErro(chave) {
+        var erro = $('ped-' + chave + '-erro');
+        if (erro) erro.hidden = true;
+        var campo = $('ped-' + chave);
+        if (campo) {
+            campo.removeAttribute('aria-invalid');
+            campo.classList.remove('erro');
+        }
+    }
+
+    /* Retorna o primeiro campo com problema (ou null se estiver tudo certo) */
+    function validar() {
+        ['tipo', 'nome', 'rua', 'numero', 'bairro'].forEach(limparErro);
+
+        if (!pedido.modo) {
+            mostrarErro('tipo', 'Escolha entre retirada e delivery.');
+            return document.querySelector('input[name="ped-tipo"]');
+        }
+
+        var primeiro = null;
+        OBRIGATORIOS[pedido.modo].forEach(function (chave) {
+            if (!pedido[chave].trim()) {
+                mostrarErro(chave, MENSAGENS[chave]);
+                if (!primeiro) primeiro = $('ped-' + chave);
+            }
+        });
+        return primeiro;
     }
 
     function finalizar() {
         if (!itens.length) return;
-        var obs = document.getElementById('carrinho-obs').value.trim();
+
+        var invalido = validar();
+        if (invalido) {
+            var alvo = invalido.closest('.campo') || invalido.closest('fieldset') || invalido;
+            alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            invalido.focus({ preventScroll: true });
+            avisar(pedido.modo ? 'Preencha os campos destacados' : 'Escolha retirada ou delivery');
+            return;
+        }
+
+        var obs = $('carrinho-obs').value.trim();
         var linhas = ['*Pedido - Joinha Sorvetes*', ''];
+
+        linhas.push('*Cliente:* ' + pedido.nome.trim());
+        linhas.push('*Recebimento:* ' + TIPOS[pedido.modo]);
+        if (ehEntrega()) linhas.push('*Endereço:* ' + enderecoTexto());
+        linhas.push('');
+
         itens.forEach(function (i) {
             linhas.push(i.qtd + 'x ' + i.nome + ' - ' + (i.consultar ? 'preço a consultar' : moeda(i.preco * i.qtd)));
         });
-        linhas.push('', '*Total: ' + textoTotal() + '*');
+
+        linhas.push('');
+        if (ehEntrega()) {
+            linhas.push('Subtotal: ' + (temConsultar() && !total() ? 'a consultar' : moeda(total())));
+            linhas.push('Taxa de entrega: ' + textoTaxa().toLowerCase().replace(/^./, function (c) { return c.toUpperCase(); }));
+        }
+        linhas.push('*Total: ' + textoTotal() + '*');
         if (obs) linhas.push('', 'Observações: ' + obs);
+
         window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(linhas.join('\n')), '_blank');
     }
 
     /* ---------- interface ---------- */
+    var ICONE_LOJA =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 4.6 4h14.8L21 9.5"/>' +
+        '<path d="M3 9.5a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/><path d="M5 12.5V20h14v-7.5"/><path d="M10 20v-4.5h4V20"/></svg>';
+
+    var ICONE_PIN =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/>' +
+        '<circle cx="12" cy="10" r="2.3"/></svg>';
+
+    function opcaoTipo(valor, icone, titulo, sub) {
+        return '<label class="entrega-opcao">' +
+            '<input type="radio" name="ped-tipo" id="ped-tipo-' + valor + '" value="' + valor + '">' +
+            '<span class="entrega-cartao">' + icone + '<strong>' + titulo + '</strong><small>' + sub + '</small></span>' +
+            '</label>';
+    }
+
+    function campo(chave, rotulo, atributos, opcional) {
+        return '<div class="campo">' +
+            '<label for="ped-' + chave + '">' + rotulo +
+            (opcional ? ' <small class="campo-opc">(opcional)</small>' : '') + '</label>' +
+            '<input type="text" id="ped-' + chave + '" ' + atributos +
+            ' aria-describedby="ped-' + chave + '-erro">' +
+            '<span class="campo-erro" id="ped-' + chave + '-erro" hidden></span></div>';
+    }
+
     function montarInterface() {
         var nav = document.querySelector('nav') || document.body;
 
@@ -121,6 +288,14 @@
         var fundo = document.createElement('div');
         fundo.className = 'carrinho-fundo';
 
+        var subEntrega = typeof TAXA_ENTREGA === 'number'
+            ? (TAXA_ENTREGA > 0 ? 'Taxa de ' + moeda(TAXA_ENTREGA) : 'Entrega grátis')
+            : 'Levamos até você';
+
+        var infoRetirada = ENDERECO_LOJA
+            ? 'Retire em: <strong>' + escapar(ENDERECO_LOJA) + '</strong>'
+            : 'Avisamos pelo WhatsApp quando o pedido estiver pronto para retirar.';
+
         var painel = document.createElement('aside');
         painel.className = 'carrinho-painel';
         painel.setAttribute('role', 'dialog');
@@ -128,10 +303,45 @@
         painel.innerHTML =
             '<div class="carrinho-topo"><h2>Seu carrinho</h2>' +
             '<button type="button" class="carrinho-fechar" aria-label="Fechar carrinho">&times;</button></div>' +
+
+            '<div class="carrinho-rolagem">' +
             '<ul class="carrinho-lista" id="carrinho-lista"></ul>' +
-            '<div class="carrinho-rodape">' +
-            '<div><label for="carrinho-obs">Observações do pedido</label>' +
+
+            '<div class="carrinho-form" id="carrinho-form" hidden>' +
+
+            '<fieldset class="entrega-tipo" id="ped-tipo">' +
+            '<legend>Como você quer receber?</legend>' +
+            '<div class="entrega-opcoes">' +
+            opcaoTipo('retirada', ICONE_LOJA, 'Retirada', 'Busque na loja') +
+            opcaoTipo('entrega', ICONE_PIN, 'Delivery', subEntrega) +
+            '</div>' +
+            '<span class="campo-erro" id="ped-tipo-erro" role="alert" hidden></span>' +
+            '</fieldset>' +
+
+            '<div class="carrinho-dados" id="carrinho-dados" hidden>' +
+            campo('nome', 'Seu nome', 'maxlength="60" autocomplete="name" placeholder="Como podemos te chamar?"') +
+            '<p class="retirada-info" id="bloco-retirada" hidden>' + infoRetirada + '</p>' +
+            '<div class="bloco-entrega" id="bloco-entrega" hidden>' +
+            '<div class="campo-linha">' +
+            campo('rua', 'Rua / Avenida', 'maxlength="80" autocomplete="address-line1" placeholder="Nome da rua"') +
+            campo('numero', 'Número', 'maxlength="10" autocomplete="off" placeholder="120 ou S/N"') +
+            '</div>' +
+            campo('bairro', 'Bairro', 'maxlength="50" autocomplete="off" placeholder="Seu bairro"') +
+            campo('comp', 'Complemento ou ponto de referência', 'maxlength="80" autocomplete="off" placeholder="Ex.: casa azul, apto 12"', true) +
+            '</div>' +
+            '</div>' +
+
+            '<div class="campo">' +
+            '<label for="carrinho-obs">Observações do pedido <small class="campo-opc">(opcional)</small></label>' +
             '<textarea id="carrinho-obs" placeholder="Ex.: sabores, horário de retirada..."></textarea></div>' +
+
+            '</div>' + /* fim .carrinho-form */
+            '</div>' + /* fim .carrinho-rolagem */
+
+            '<div class="carrinho-acoes">' +
+            '<div class="carrinho-resumo" id="carrinho-resumo" hidden>' +
+            '<div><span>Produtos</span><span id="resumo-produtos">R$ 0,00</span></div>' +
+            '<div><span>Taxa de entrega</span><span id="resumo-taxa">A combinar</span></div></div>' +
             '<div class="carrinho-total"><span>Total</span><strong id="carrinho-total">R$ 0,00</strong></div>' +
             '<button type="button" class="carrinho-finalizar" id="carrinho-finalizar">Enviar pedido pelo WhatsApp</button>' +
             '<button type="button" class="carrinho-limpar" id="carrinho-limpar">Esvaziar carrinho</button>' +
@@ -146,15 +356,43 @@
         document.body.appendChild(painel);
         document.body.appendChild(aviso);
 
+        /* preenche com o que o cliente já tinha digitado antes */
+        ['nome', 'rua', 'numero', 'bairro', 'comp'].forEach(function (k) { $('ped-' + k).value = pedido[k]; });
+        if (pedido.modo) $('ped-tipo-' + pedido.modo).checked = true;
+
         btn.addEventListener('click', abrir);
         fundo.addEventListener('click', fechar);
         painel.querySelector('.carrinho-fechar').addEventListener('click', fechar);
-        document.getElementById('carrinho-finalizar').addEventListener('click', finalizar);
-        document.getElementById('carrinho-limpar').addEventListener('click', limpar);
+        $('carrinho-finalizar').addEventListener('click', finalizar);
+        $('carrinho-limpar').addEventListener('click', limpar);
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fechar(); });
 
+        /* escolha de retirada / delivery */
+        painel.addEventListener('change', function (e) {
+            if (e.target.name !== 'ped-tipo') return;
+            pedido.modo = e.target.value;
+            salvarPedido();
+            limparErro('tipo');
+            /* o que era obrigatório muda com o tipo: limpa avisos antigos */
+            ['nome', 'rua', 'numero', 'bairro'].forEach(limparErro);
+            atualizar();
+            var dados = $('carrinho-dados');
+            dados.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        /* digitação: guarda os dados e some com o aviso de erro do campo */
+        painel.addEventListener('input', function (e) {
+            var t = e.target;
+            if (!t.id || t.id.indexOf('ped-') !== 0) return;
+            var chave = t.id.slice(4);
+            if (chave === 'modo' || typeof pedido[chave] !== 'string') return;
+            pedido[chave] = t.value;
+            salvarPedido();
+            limparErro(chave);
+        });
+
         /* botões + / - / remover (delegação) */
-        document.getElementById('carrinho-lista').addEventListener('click', function (e) {
+        $('carrinho-lista').addEventListener('click', function (e) {
             var b = e.target.closest('button[data-acao]');
             if (!b) return;
             var id = b.getAttribute('data-id');
@@ -175,22 +413,48 @@
 
     var temporizador;
     function avisar(texto) {
-        var a = document.getElementById('carrinho-aviso');
+        var a = $('carrinho-aviso');
         a.textContent = texto;
         a.classList.add('visivel');
         clearTimeout(temporizador);
         temporizador = setTimeout(function () { a.classList.remove('visivel'); }, 1800);
     }
 
+    /* mostra / esconde as partes do formulário conforme o tipo escolhido */
+    function atualizarFormulario() {
+        var temItens = itens.length > 0;
+        var modo = pedido.modo;
+
+        $('carrinho-form').hidden = !temItens;
+        $('carrinho-dados').hidden = !modo;
+        $('bloco-retirada').hidden = modo !== 'retirada';
+        $('bloco-entrega').hidden = modo !== 'entrega';
+
+        $('carrinho-obs').placeholder = modo === 'entrega'
+            ? 'Ex.: sabores, troco para R$ 50, horário preferido...'
+            : 'Ex.: sabores, horário de retirada...';
+
+        /* resumo com taxa: só no delivery */
+        $('carrinho-resumo').hidden = !(temItens && ehEntrega());
+        $('resumo-produtos').textContent = temConsultar() && !total() ? 'A consultar' : moeda(total());
+        $('resumo-taxa').textContent = textoTaxa();
+    }
+
     function atualizar() {
         salvar();
         var qtdTotal = itens.reduce(function (s, i) { return s + i.qtd; }, 0);
-        document.getElementById('carrinho-contador').textContent = qtdTotal;
-        document.getElementById('carrinho-total').textContent = textoTotal();
-        document.getElementById('carrinho-finalizar').disabled = !itens.length;
-        document.getElementById('carrinho-limpar').hidden = !itens.length;
+        $('carrinho-contador').textContent = qtdTotal;
 
-        var lista = document.getElementById('carrinho-lista');
+        var texto = textoTotal();
+        var totalEl = $('carrinho-total');
+        totalEl.textContent = texto;
+        totalEl.classList.toggle('longo', texto.length > 14);
+
+        $('carrinho-finalizar').disabled = !itens.length;
+        $('carrinho-limpar').hidden = !itens.length;
+        atualizarFormulario();
+
+        var lista = $('carrinho-lista');
         if (!itens.length) {
             lista.innerHTML =
                 '<li class="carrinho-vazio"><strong>Seu carrinho está vazio</strong>' +
