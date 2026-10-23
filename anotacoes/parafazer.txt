@@ -1,0 +1,12 @@
+sistema de pagamento, como vai ser?:
+    1-API mercado livre
+    2-Link de pagamento, ai o pedido libera
+    3-PIX manual 
+    Excluir pedidos no painel de admin
+    1-Fazer o sistema de segurança
+    2-Trocar todas as informacoes admin 
+    Tirar admins
+     
+Andrey:
+    Faça o resto do frontend
+    

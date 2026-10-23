@@ -296,7 +296,8 @@
       const tdNome = document.createElement('td');
       if (produto.imagem) { const img = document.createElement('img'); img.className = 'prod-img'; img.src = urlImagem(produto.imagem); img.alt = ''; img.loading = 'lazy'; tdNome.append(img); }
       const nome = document.createElement('span'); nome.className = 'prod-nome'; nome.textContent = produto.nome; tdNome.append(nome);
-      const categoria = document.createElement('td'); categoria.textContent = produto.categoria === 'milkshakes' ? 'Milkshake' : 'Picolé';
+      const categoria = document.createElement('td');
+      categoria.textContent = produto.categoria === 'milkshakes' ? 'Milkshake' : produto.categoria === 'potes' ? 'Pote' : 'Picolé';
       const preco = document.createElement('td'); const prices = (produto.tamanhos || []).map(t => Number(t.preco)).filter(Number.isFinite); preco.textContent = prices.length ? dinheiro(Math.min(...prices)) + (prices.length > 1 ? ' em diante' : '') : '—';
       const status = document.createElement('td'); const badge = document.createElement('span'); badge.className = 'pill' + (produto.ativo ? '' : ' off'); badge.textContent = produto.ativo ? 'No cardápio' : 'Oculto'; status.append(badge);
       const actions = document.createElement('td'); actions.style.whiteSpace = 'nowrap';

@@ -46,7 +46,7 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS products (
     id TEXT PRIMARY KEY,
     nome TEXT NOT NULL,
-    categoria TEXT NOT NULL CHECK(categoria IN ('picoles','milkshakes')),
+    categoria TEXT NOT NULL CHECK(categoria IN ('picoles','milkshakes','potes')),
     imagem TEXT NOT NULL DEFAULT '',
     tamanhos TEXT NOT NULL DEFAULT '[]',
     upgrades TEXT NOT NULL DEFAULT '[]',
@@ -84,6 +84,31 @@ db.exec(`
   );
 `);
 
+const productTableSql = db.prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'products'").get()?.sql || '';
+if (productTableSql && !/CHECK\s*\(\s*categoria\s+IN\s*\(\s*'picoles'\s*,\s*'milkshakes'\s*,\s*'potes'\s*\)\s*\)/i.test(productTableSql)) {
+  const existingRows = db.prepare('SELECT * FROM products').all();
+  db.exec(`
+    ALTER TABLE products RENAME TO products_legacy;
+    CREATE TABLE products (
+      id TEXT PRIMARY KEY,
+      nome TEXT NOT NULL,
+      categoria TEXT NOT NULL CHECK(categoria IN ('picoles','milkshakes','potes')),
+      imagem TEXT NOT NULL DEFAULT '',
+      tamanhos TEXT NOT NULL DEFAULT '[]',
+      upgrades TEXT NOT NULL DEFAULT '[]',
+      obs INTEGER NOT NULL DEFAULT 1,
+      ativo INTEGER NOT NULL DEFAULT 1,
+      criado_em TEXT NOT NULL,
+      atualizado_em TEXT NOT NULL
+    );
+    INSERT INTO products (id, nome, categoria, imagem, tamanhos, upgrades, obs, ativo, criado_em, atualizado_em)
+    SELECT id, nome, categoria, imagem, tamanhos, upgrades, obs, ativo, criado_em, atualizado_em
+    FROM products_legacy;
+    DROP TABLE products_legacy;
+  `);
+  if (existingRows.length) console.log(`Migração do catálogo concluída: ${existingRows.length} produtos preservados.`);
+}
+
 const nowIso = () => new Date().toISOString();
 const normalize = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 const slug = (s) => normalize(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `produto-${Date.now()}`;
@@ -109,25 +134,35 @@ if (totalAdmins === 0) {
   console.log(`Administrador inicial criado: ${emailInicial}`);
 }
 
-// Importa os 56 itens do cardápio somente na primeira inicialização. Depois, o banco é a fonte principal.
+// Importa os itens do cardápio somente na primeira inicialização. Depois, o banco é a fonte principal.
+const seedPath = path.join(ROOT, 'server', 'seed-products.json');
+const seedProducts = fs.existsSync(seedPath) ? JSON.parse(fs.readFileSync(seedPath, 'utf8')) : [];
+const insertSeedProducts = (products) => {
+  if (!Array.isArray(products) || !products.length) return;
+  const insert = db.prepare(`INSERT INTO products
+    (id,nome,categoria,imagem,tamanhos,upgrades,obs,ativo,criado_em,atualizado_em)
+    VALUES (@id,@nome,@categoria,@imagem,@tamanhos,@upgrades,@obs,@ativo,@criado_em,@atualizado_em)`);
+  const insertMany = db.transaction((items) => {
+    items.forEach((p) => insert.run({
+      id: p.id, nome: p.nome, categoria: p.categoria, imagem: p.imagem,
+      tamanhos: JSON.stringify(p.tamanhos || []), upgrades: JSON.stringify(p.upgrades || []),
+      obs: p.obs === false ? 0 : 1, ativo: p.ativo === false ? 0 : 1,
+      criado_em: nowIso(), atualizado_em: nowIso()
+    }));
+  });
+  insertMany(products);
+};
 const totalProducts = db.prepare('SELECT COUNT(*) AS total FROM products').get().total;
 if (totalProducts === 0) {
-  const seedPath = path.join(ROOT, 'server', 'seed-products.json');
-  if (fs.existsSync(seedPath)) {
-    const seed = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
-    const insert = db.prepare(`INSERT INTO products
-      (id,nome,categoria,imagem,tamanhos,upgrades,obs,ativo,criado_em,atualizado_em)
-      VALUES (@id,@nome,@categoria,@imagem,@tamanhos,@upgrades,@obs,@ativo,@criado_em,@atualizado_em)`);
-    const insertMany = db.transaction((products) => {
-      products.forEach((p) => insert.run({
-        id: p.id, nome: p.nome, categoria: p.categoria, imagem: p.imagem,
-        tamanhos: JSON.stringify(p.tamanhos || []), upgrades: JSON.stringify(p.upgrades || []),
-        obs: p.obs === false ? 0 : 1, ativo: p.ativo === false ? 0 : 1,
-        criado_em: nowIso(), atualizado_em: nowIso()
-      }));
-    });
-    insertMany(seed);
-    console.log(`Cardápio inicial carregado: ${seed.length} produtos.`);
+  insertSeedProducts(seedProducts);
+  console.log(`Cardápio inicial carregado: ${seedProducts.length} produtos.`);
+}
+const totalPotes = db.prepare("SELECT COUNT(*) AS total FROM products WHERE categoria = 'potes'").get().total;
+if (totalPotes === 0) {
+  const potesSeed = seedProducts.filter((p) => p.categoria === 'potes');
+  if (potesSeed.length) {
+    insertSeedProducts(potesSeed);
+    console.log(`Produtos de potes carregados: ${potesSeed.length} itens.`);
   }
 }
 
@@ -177,7 +212,7 @@ function validarProduto(body, existente = null) {
   const obs = body.obs === undefined ? (existente ? Boolean(existente.obs) : true) : Boolean(body.obs);
   const ativo = body.ativo === undefined ? (existente ? Boolean(existente.ativo) : true) : Boolean(body.ativo);
   if (!nome || nome.length > 100) return { erro: 'O nome deve ter entre 1 e 100 caracteres.' };
-  if (!['picoles', 'milkshakes'].includes(categoria)) return { erro: 'Categoria inválida.' };
+  if (!['picoles', 'milkshakes', 'potes'].includes(categoria)) return { erro: 'Categoria inválida.' };
   if (imagem.length > 500) return { erro: 'Caminho da imagem muito longo.' };
   if (!Array.isArray(tamanhos) || tamanhos.length < 1 || tamanhos.length > 12) return { erro: 'Cadastre de 1 a 12 tamanhos/preços.' };
   for (const t of tamanhos) {

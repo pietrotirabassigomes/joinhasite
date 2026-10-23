@@ -34,7 +34,7 @@
         var imagem = document.createElement('img');
         imagem.loading = 'lazy';
         imagem.decoding = 'async';
-        if (produto.categoria === 'milkshakes') imagem.className = 'milkshake-img';
+        if (produto.categoria === 'milkshakes' || produto.categoria === 'potes') imagem.className = 'milkshake-img';
         var conteudo = document.createElement('div');
         conteudo.className = 'card-conteudo';
         var titulo = document.createElement('h3');
@@ -64,16 +64,16 @@
         if (titulo) titulo.textContent = produto.nome;
         if (imagem) {
             imagem.src = urlImagem(produto.imagem || '');
-            imagem.alt = produto.categoria === 'milkshakes' ? 'Milkshake de ' + produto.nome : produto.nome;
+            imagem.alt = produto.categoria === 'milkshakes' ? 'Milkshake de ' + produto.nome : produto.categoria === 'potes' ? 'Pote de ' + produto.nome : produto.nome;
         }
-        if (imagem && produto.categoria === 'milkshakes') imagem.classList.add('milkshake-img');
+        if (imagem && (produto.categoria === 'milkshakes' || produto.categoria === 'potes')) imagem.classList.add('milkshake-img');
         var precos = (produto.tamanhos || []).map(function (t) { return Number(t.preco); }).filter(Number.isFinite);
         if (forte && precos.length) forte.textContent = moeda(Math.min.apply(null, precos));
-        if (rotulo) rotulo.textContent = produto.categoria === 'milkshakes' ? 'A partir de' : 'Por apenas';
+        if (rotulo) rotulo.textContent = produto.categoria === 'milkshakes' || produto.categoria === 'potes' ? 'A partir de' : 'Por apenas';
         var botao = card.querySelector('.botao-card');
         if (botao) {
             botao.dataset.img = imagem ? imagem.src : '';
-            botao.dataset.nome = produto.categoria === 'milkshakes' ? 'Milkshake de ' + produto.nome : produto.nome;
+            botao.dataset.nome = produto.categoria === 'milkshakes' ? 'Milkshake de ' + produto.nome : produto.categoria === 'potes' ? 'Pote de ' + produto.nome : produto.nome;
             botao.dataset.preco = precos.length ? String(Math.min.apply(null, precos)) : '0';
             botao.textContent = 'Adicionar ao carrinho';
             botao.disabled = false;
@@ -90,7 +90,8 @@
 
             var categorias = {
                 picoles: document.querySelector('.cards-picoles'),
-                milkshakes: document.querySelector('.cards-milkshakes')
+                milkshakes: document.querySelector('.cards-milkshakes'),
+                potes: document.querySelector('.cards-potes')
             };
             Object.keys(categorias).forEach(function (categoria) {
                 var container = categorias[categoria];

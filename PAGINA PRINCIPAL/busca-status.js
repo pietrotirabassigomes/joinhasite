@@ -114,7 +114,8 @@
 
         var secoes = [
             { chave: 'picoles',    titulo: document.getElementById('picoles'),    grade: principal.querySelector('.cards-picoles'),    rotulo: 'Picolés' },
-            { chave: 'milkshakes', titulo: document.getElementById('milkshakes'), grade: principal.querySelector('.cards-milkshakes'), rotulo: 'Milk Shakes' }
+            { chave: 'milkshakes', titulo: document.getElementById('milkshakes'), grade: principal.querySelector('.cards-milkshakes'), rotulo: 'Milk Shakes' },
+            { chave: 'potes',      titulo: document.getElementById('potes'),      grade: principal.querySelector('.cards-potes'),      rotulo: 'Potes' }
         ].filter(function (s) { return s.titulo && s.grade; });
         if (!secoes.length) return;
 

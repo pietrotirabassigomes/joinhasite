@@ -28,20 +28,20 @@
     <link rel="stylesheet" href="../PAGINA%20PRINCIPAL/busca-status.css">
 
     <style>
-        /* Estilo compartilhado: picolés e milkshakes usam o mesmo card */
-        :is(.cards-picoles, .cards-milkshakes) .card {
+        /* Estilo compartilhado: picolés, milkshakes e potes usam o mesmo card */
+        :is(.cards-picoles, .cards-milkshakes, .cards-potes, .cards-especiais) .card {
             display: flex;
             flex-direction: column;
             text-align: center;
         }
 
-        /* Fundo dos cards de milkshake: azul só na imagem, embaixo branco */
-        .cards-milkshakes .card {
+        /* Fundo dos cards de milkshake e pote: azul só na imagem, embaixo branco */
+        :is(.cards-milkshakes, .cards-potes, .cards-especiais) .card {
             background-color: #ffffff;
         }
 
-        /* Imagem dos milkshakes */
-        .cards-milkshakes .card > img.milkshake-img {
+        /* Imagem dos milkshakes e potes */
+        :is(.cards-milkshakes, .cards-potes, .cards-especiais) .card > img.milkshake-img {
             display: block;
             width: 100%;
             height: 220px;
@@ -54,11 +54,11 @@
             transition: transform 0.5s ease-in-out;
         }
 
-        .cards-milkshakes .card:hover > img.milkshake-img {
+        :is(.cards-milkshakes, .cards-potes, .cards-especiais) .card:hover > img.milkshake-img {
             transform: none;
         }
 
-        :is(.cards-picoles, .cards-milkshakes) .card-conteudo {
+        :is(.cards-picoles, .cards-milkshakes, .cards-potes, .cards-especiais) .card-conteudo {
             display: flex;
             flex: 1;
             flex-direction: column;
@@ -67,28 +67,28 @@
             text-align: center;
         }
 
-        :is(.cards-picoles, .cards-milkshakes) .card h3 {
+        :is(.cards-picoles, .cards-milkshakes, .cards-potes, .cards-especiais) .card h3 {
             width: 100%;
             text-align: center;
         }
 
-        :is(.cards-picoles, .cards-milkshakes) .milkshake-preco {
+        :is(.cards-picoles, .cards-milkshakes, .cards-potes, .cards-especiais) .milkshake-preco {
             width: 100%;
             margin: 5px 0 18px;
             text-align: center;
         }
 
-        :is(.cards-picoles, .cards-milkshakes) .milkshake-preco strong {
+        :is(.cards-picoles, .cards-milkshakes, .cards-potes, .cards-especiais) .milkshake-preco strong {
             font-size: 17px;
             white-space: normal;
         }
 
-        :is(.cards-picoles, .cards-milkshakes) .card .botao-card {
+        :is(.cards-picoles, .cards-milkshakes, .cards-potes, .cards-especiais) .card .botao-card {
             margin-top: auto;
         }
 
         @media (max-width: 600px) {
-            .cards-milkshakes .card > img.milkshake-img {
+            :is(.cards-milkshakes, .cards-potes, .cards-especiais) .card > img.milkshake-img {
                 height: 210px;
             }
         }
@@ -630,9 +630,346 @@
                 </div>
             </article>
         </section>
-        <div class="titulo em-breve" id="potes"><h2>Potes</h2><p>Em breve no cardápio!</p></div>
+        <div class="titulo" id="potes"><h2>Potes</h2></div>
+
+        <section class="cards cards-potes" aria-label="Sabores de pote">
+            <article class="card" data-produto-id="pote-abacaxi-suico">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/01_abacaxi_suico.png" alt="Pote de Abacaxi Suíço">
+                <div class="card-conteudo">
+                    <h3>Abacaxi Suíço</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-abacaxi-suico-com-chocolate">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/02_abacaxi_suico_chocolate.png" alt="Pote de Abacaxi Suíço com Chocolate">
+                <div class="card-conteudo">
+                    <h3>Abacaxi Suíço com Chocolate</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-coco-branco">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/03_coco_branco.png" alt="Pote de Coco Branco">
+                <div class="card-conteudo">
+                    <h3>Coco Branco</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-maracuja-trufado">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/04_maracuja_trufado.png" alt="Pote de Maracujá Trufado">
+                <div class="card-conteudo">
+                    <h3>Maracujá Trufado</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-maracuja-trufado-unicornio">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/05_maracuja_trufado_unicornio.png" alt="Pote de Maracujá Trufado Unicórnio">
+                <div class="card-conteudo">
+                    <h3>Maracujá Trufado Unicórnio</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-unicornio">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/06_unicornio.png" alt="Pote de Unicórnio">
+                <div class="card-conteudo">
+                    <h3>Unicórnio</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-ferrero-rocher-com-avela">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/07_ferrero_rocher_com_avela.png" alt="Pote de Ferrero Rocher com Avelã">
+                <div class="card-conteudo">
+                    <h3>Ferrero Rocher com Avelã</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-pistache">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/08_pistache.png" alt="Pote de Pistache">
+                <div class="card-conteudo">
+                    <h3>Pistache</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-creme">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/09_creme.png" alt="Pote de Creme">
+                <div class="card-conteudo">
+                    <h3>Creme</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-napolitano">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/10_napolitano.png" alt="Pote de Napolitano">
+                <div class="card-conteudo">
+                    <h3>Napolitano</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-napolitano-bombom-branco">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/11_napolitano_bombom_branco.png" alt="Pote de Napolitano Bombom Branco">
+                <div class="card-conteudo">
+                    <h3>Napolitano Bombom Branco</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-chocolate-trufado">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/12_chocolate_trufado.png" alt="Pote de Chocolate Trufado">
+                <div class="card-conteudo">
+                    <h3>Chocolate Trufado</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-chocolate-trufado-bombom">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/13_chocolate_trufado_bombom.png" alt="Pote de Chocolate Trufado com Bombom">
+                <div class="card-conteudo">
+                    <h3>Chocolate Trufado Bombom</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-olho-de-sogra">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/14_olho_de_sogra.png" alt="Pote de Olho de Sogra">
+                <div class="card-conteudo">
+                    <h3>Olho de Sogra</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-olho-de-sogra-trufado">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/15_olho_de_sogra_trufado.png" alt="Pote de Olho de Sogra Trufado">
+                <div class="card-conteudo">
+                    <h3>Olho de Sogra Trufado</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-trufado-provocante">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/16_trufado_provocante.png" alt="Pote de Trufado Provocante">
+                <div class="card-conteudo">
+                    <h3>Trufado Provocante</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-provocante-avela">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/17_provocante_avela.png" alt="Pote de Provocante com Avelã">
+                <div class="card-conteudo">
+                    <h3>Provocante Avelã</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-flocos">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/18_flocos.png" alt="Pote de Flocos">
+                <div class="card-conteudo">
+                    <h3>Flocos</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-acai-puro">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/19_pote_de_acai_puro.png" alt="Pote de Açaí Puro">
+                <div class="card-conteudo">
+                    <h3>Açaí Puro</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-floresta-suprema">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/20_floresta_suprema.png" alt="Pote de Floresta Suprema">
+                <div class="card-conteudo">
+                    <h3>Floresta Suprema</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-iogurte-com-morango">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/21_iogurte_com_morango.png" alt="Pote de Iogurte com Morango">
+                <div class="card-conteudo">
+                    <h3>Iogurte com Morango</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-iogurte-com-morango-frutas-vermelhas">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/22_iogurte_com_morango_frutas_vermelhas.png" alt="Pote de Iogurte com Morango e Frutas Vermelhas">
+                <div class="card-conteudo">
+                    <h3>Iogurte com Morango Frutas Vermelhas</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-chocomenta">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/23_chocomenta.png" alt="Pote de Chocomenta">
+                <div class="card-conteudo">
+                    <h3>Chocomenta</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="pote-super-chocolate">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_potes_recortes/24_super_chocolate.png" alt="Pote de Super Chocolate">
+                <div class="card-conteudo">
+                    <h3>Super Chocolate</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+        </section>
+
         <div class="titulo em-breve" id="bolos"><h2>Bolos</h2><p>Em breve no cardápio!</p></div>
-        <div class="titulo em-breve" id="caixas"><h2>Caixas de Picolé</h2><p>Em breve no cardápio!</p></div>
+        <div class="titulo" id="itens-especiais"><h2>Itens Especiais</h2></div>
+        <section class="cards cards-especiais" aria-label="Itens especiais">
+            <article class="card" data-produto-id="item-especial-banana-split">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/01_banana_split.png" alt="Banana Split">
+                <div class="card-conteudo">
+                    <h3>Banana Split</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-morango-split">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/02_morango_split.png" alt="Morango Split">
+                <div class="card-conteudo">
+                    <h3>Morango Split</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-abacaxi-split">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/03_abacaxi_split.png" alt="Abacaxi Split">
+                <div class="card-conteudo">
+                    <h3>Abacaxi Split</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-taca-kinder-bueno">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/04_taca_kinder_bueno.png" alt="Taça Kinder Bueno">
+                <div class="card-conteudo">
+                    <h3>Taça Kinder Bueno</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-taca-tropical">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/05_taca_tropical.png" alt="Taça Tropical">
+                <div class="card-conteudo">
+                    <h3>Taça Tropical</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-taca-sunday">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/06_taca_sunday.png" alt="Taça Sunday">
+                <div class="card-conteudo">
+                    <h3>Taça Sunday</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-taca-explosao-de-nutella">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/07_taca_explosao_de_nutella.png" alt="Taça Explosão de Nutella">
+                <div class="card-conteudo">
+                    <h3>Taça Explosão de Nutella</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-taca-chocoball">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/08_taca_chocoball.png" alt="Taça Chocoball">
+                <div class="card-conteudo">
+                    <h3>Taça Chocoball</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-petit-gateau-unidade">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/09_petit_gateau_unidade.png" alt="Petit Gâteau, unidade">
+                <div class="card-conteudo">
+                    <h3>Petit Gâteau (unidade)</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-espeto-morango-chocolate">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/10_espeto_de_morango_com_chocolate.png" alt="Espeto de Morango com Chocolate">
+                <div class="card-conteudo">
+                    <h3>Espeto de Morango com Chocolate</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-espeto-uva-chocolate">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/11_espeto_de_uva_com_chocolate.png" alt="Espeto de Uva com Chocolate">
+                <div class="card-conteudo">
+                    <h3>Espeto de Uva com Chocolate</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-bubble-waffle-1">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/12_bubble_waffer_1.png" alt="Bubble Waffle 1">
+                <div class="card-conteudo">
+                    <h3>Bubble Waffle 1</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="card" data-produto-id="item-especial-bubble-waffle-2">
+                <img class="milkshake-img" loading="lazy" decoding="async" src="joinha_itens_especiais_recortes/13_bubble_waffer_2.png" alt="Bubble Waffle 2">
+                <div class="card-conteudo">
+                    <h3>Bubble Waffle 2</h3>
+                    <p class="preco milkshake-preco"><span>Preço</span><strong>A consultar</strong></p>
+                    <button class="botao-card" type="button">Adicionar ao carrinho</button>
+                </div>
+            </article>
+        </section>
     </main>
 
     <footer id="Sobre">
@@ -663,8 +1000,8 @@
     <script src="../api-config.js"></script>
     <script src="../PAGINA%20PRINCIPAL/carrinho.js"></script>
     <script src="../PAGINA%20PRINCIPAL/menu.js"></script>
-    <script src="../PAGINA%20PRINCIPAL/opcoes.js"></script>
     <script src="../PAGINA%20PRINCIPAL/catalogo-api.js"></script>
+    <script src="../PAGINA%20PRINCIPAL/opcoes.js"></script>
     <script src="../PAGINA%20PRINCIPAL/busca-status.js"></script>
     <script src="../PAGINA%20PRINCIPAL/cookies.js"></script>
 </body>

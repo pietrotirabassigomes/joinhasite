@@ -6,7 +6,8 @@
 
 /* Cards clicáveis */
 .cards-picoles .card,
-.cards-milkshakes .card {
+.cards-milkshakes .card,
+.cards-potes .card {
     cursor: pointer;
 }
 
