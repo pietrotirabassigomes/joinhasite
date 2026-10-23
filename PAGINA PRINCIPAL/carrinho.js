@@ -369,6 +369,7 @@
             '</div>' + /* fim .carrinho-rolagem */
 
             '<div class="carrinho-acoes">' +
+            '<div class="carrinho-aviso-loja" id="carrinho-aviso-loja" hidden></div>' +
             '<div class="carrinho-resumo" id="carrinho-resumo" hidden>' +
             '<div><span>Produtos</span><span id="resumo-produtos">R$ 0,00</span></div>' +
             '<div><span>Taxa de entrega</span><span id="resumo-taxa">A combinar</span></div></div>' +
@@ -432,7 +433,20 @@
         });
     }
 
+    /* se a loja estiver fechada, avisa dentro do carrinho (não bloqueia o pedido) */
+    function avisoLoja() {
+        var el = $('carrinho-aviso-loja');
+        var fechada = document.documentElement.getAttribute('data-loja') === 'fechada';
+        el.hidden = !fechada;
+        if (fechada) {
+            var det = document.documentElement.getAttribute('data-loja-detalhe') || '';
+            el.innerHTML = '<strong>Estamos fechados agora</strong>' +
+                'Você pode enviar o pedido e respondemos assim que abrirmos. ' + escapar(det) + '.';
+        }
+    }
+
     function abrir() {
+        avisoLoja();
         document.body.classList.add('carrinho-aberto');
         document.querySelector('.carrinho-fechar').focus();
     }
@@ -556,12 +570,31 @@
             var b = e.target.closest('[data-nome][data-preco]');
             if (!b) return;
             e.preventDefault();
+
+            var nome = b.dataset.nome;
+            var preco = parseFloat(b.dataset.preco) || 0;
+            var consultar = b.dataset.consultar === '1';
+
+            /* Em cards do cardápio, relê título e preço agora: a janela de opções
+               (tamanho, upgrades, observações) troca esses textos antes de clicar. */
+            var card = b.closest('.card');
+            var h3 = card && card.querySelector('h3');
+            var pr = card && card.querySelector('.preco');
+            if (h3 && pr) {
+                var secao = card.closest('[data-prefixo]');
+                var prefixo = secao ? secao.getAttribute('data-prefixo') : '';
+                var valor = pr.querySelector('strong') || pr;
+                nome = prefixo + h3.textContent.trim();
+                preco = parseFloat(lerPreco(valor.textContent)) || 0;
+                consultar = !/\d/.test(valor.textContent);
+            }
+
             adicionar({
-                id: b.dataset.id || slug(b.dataset.nome),
-                nome: b.dataset.nome,
-                preco: parseFloat(b.dataset.preco) || 0,
+                id: b.dataset.id || slug(nome),
+                nome: nome,
+                preco: preco,
                 img: b.dataset.img || '',
-                consultar: b.dataset.consultar === '1'
+                consultar: consultar
             });
         });
 
