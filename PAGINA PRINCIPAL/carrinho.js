@@ -104,10 +104,11 @@
         else itens.push({ id: produto.id, nome: produto.nome, preco: produto.preco, img: produto.img, consultar: !!produto.consultar, qtd: 1 });
         atualizar();
         avisar(produto.nome + ' foi para o carrinho');
-        var btn = document.querySelector('.carrinho-btn');
-        btn.classList.remove('pulo');
-        void btn.offsetWidth;
-        btn.classList.add('pulo');
+        document.querySelectorAll('.carrinho-btn, .carrinho-flutuante').forEach(function (b) {
+            b.classList.remove('pulo');
+            void b.offsetWidth;
+            b.classList.add('pulo');
+        });
     }
 
     function mudarQtd(id, delta) {
@@ -285,6 +286,35 @@
             'Carrinho <span class="carrinho-contador" id="carrinho-contador">0</span>';
         nav.appendChild(btn);
 
+        /* Botão flutuante: aparece quando o botão do menu sai da tela
+           (ex.: lá embaixo, nos milkshakes), para pagar sem voltar ao topo */
+        var flutuante = document.createElement('button');
+        flutuante.type = 'button';
+        flutuante.className = 'carrinho-flutuante';
+        flutuante.id = 'carrinho-flutuante';
+        flutuante.setAttribute('aria-label', 'Abrir carrinho');
+        flutuante.innerHTML =
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>' +
+            '<path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6"/></svg>' +
+            '<span class="flutuante-texto">Carrinho</span>' +
+            '<span class="flutuante-total" id="flutuante-total" hidden></span>' +
+            '<span class="carrinho-contador" id="flutuante-contador">0</span>';
+        document.body.appendChild(flutuante);
+        flutuante.addEventListener('click', abrir);
+
+        function mostrarFlutuante(mostrar) {
+            flutuante.classList.toggle('visivel', mostrar);
+        }
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entradas) {
+                mostrarFlutuante(!entradas[0].isIntersecting);
+            }).observe(btn);
+        } else {
+            window.addEventListener('scroll', function () {
+                mostrarFlutuante(btn.getBoundingClientRect().bottom < 0);
+            }, { passive: true });
+        }
+
         var fundo = document.createElement('div');
         fundo.className = 'carrinho-fundo';
 
@@ -442,13 +472,22 @@
 
     function atualizar() {
         salvar();
-        var qtdTotal = itens.reduce(function (s, i) { return s + i.qtd; }, 0);
+        /* nos milkshakes, cada sabor conta 1 no contador, não importa a quantidade
+           (o preço e a quantidade pedida continuam certos dentro do carrinho) */
+        var qtdTotal = itens.reduce(function (s, i) {
+            return s + (/^milkshake/i.test(i.nome) ? 1 : i.qtd);
+        }, 0);
         $('carrinho-contador').textContent = qtdTotal;
+        $('flutuante-contador').textContent = qtdTotal;
 
         var texto = textoTotal();
         var totalEl = $('carrinho-total');
         totalEl.textContent = texto;
         totalEl.classList.toggle('longo', texto.length > 14);
+
+        var flutTotal = $('flutuante-total');
+        flutTotal.textContent = texto;
+        flutTotal.hidden = !itens.length || texto.length > 14;
 
         $('carrinho-finalizar').disabled = !itens.length;
         $('carrinho-limpar').hidden = !itens.length;

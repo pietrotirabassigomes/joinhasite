@@ -641,3 +641,97 @@ body.carrinho-aberto {
         animation: none;
     }
 }
+
+/* =========================================================
+   BOTÃO FLUTUANTE DO CARRINHO
+   Aparece quando o botão do menu sai da tela (ao rolar a página)
+   ========================================================= */
+.carrinho-flutuante {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 999;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    border: 0;
+    border-radius: 50px;
+    background: linear-gradient(125deg, #00bac3, #008e9a);
+    color: var(--branco, #fff);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    box-shadow: 0 10px 25px rgba(0, 80, 90, 0.35);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px) scale(0.9);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, background 0.3s ease;
+}
+
+.carrinho-flutuante.visivel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.carrinho-flutuante:hover {
+    background: var(--principal-escuro, #007b83);
+}
+
+.carrinho-flutuante svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.flutuante-total {
+    padding-left: 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+}
+
+.carrinho-flutuante .carrinho-contador {
+    background: var(--branco, #fff);
+    color: var(--principal-escuro, #007b83);
+}
+
+.carrinho-flutuante.pulo {
+    animation: carrinhoPulo 0.4s ease;
+}
+
+.carrinho-flutuante:focus-visible {
+    outline: 3px solid #8cfaff;
+    outline-offset: 2px;
+}
+
+/* some enquanto o painel do carrinho está aberto */
+body.carrinho-aberto .carrinho-flutuante {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    .carrinho-flutuante {
+        right: 14px;
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        padding: 12px 16px;
+    }
+
+    /* o aviso "foi para o carrinho" sobe para não ficar atrás do botão */
+    .carrinho-aviso {
+        bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carrinho-flutuante {
+        transition: none;
+    }
+}
