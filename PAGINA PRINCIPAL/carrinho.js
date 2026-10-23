@@ -16,9 +16,15 @@
            Ex.: 'Rua das Flores, 123 - Centro'. Deixe '' para não mostrar. <<< */
     var ENDERECO_LOJA = '';
 
-    /* >>> Taxa de entrega em reais. Ex.: 5 (soma no total), 0 (grátis)
-           ou null (aparece "A combinar" e a loja informa pelo WhatsApp). <<< */
-    var TAXA_ENTREGA = null;
+    /* O frete agora é consultado pela API conforme o bairro cadastrado no painel. */
+    var API_BASE = String(window.JOINHA_API_URL || '').replace(/\/$/, '');
+    var freteValor = null;
+    var freteAtendido = true;
+    var freteMensagem = 'Informe o bairro para consultar o frete.';
+    var timerCep = null;
+    var timerFrete = null;
+    var configuracaoPendente = null;
+    var finalizando = false;
 
     var CHAVE = 'joinha_carrinho';
     var CHAVE_PEDIDO = 'joinha_pedido';
@@ -33,11 +39,12 @@
     /* campos obrigatórios em cada tipo, na ordem em que aparecem */
     var OBRIGATORIOS = {
         retirada: ['nome'],
-        entrega: ['nome', 'rua', 'numero', 'bairro']
+        entrega: ['nome', 'cep', 'rua', 'numero', 'bairro']
     };
 
     var MENSAGENS = {
         nome: 'Informe seu nome.',
+        cep: 'Informe um CEP válido com 8 números.',
         rua: 'Informe a rua.',
         numero: 'Informe o número (ou S/N).',
         bairro: 'Informe o bairro.'
@@ -56,7 +63,7 @@
     /* dados do pedido (tipo + nome + endereço): ficam salvos para o cliente
        não precisar digitar tudo de novo na próxima compra */
     function carregarPedido() {
-        var padrao = { modo: '', nome: '', rua: '', numero: '', bairro: '', comp: '' };
+        var padrao = { modo: '', nome: '', cep: '', rua: '', numero: '', bairro: '', comp: '', cidade: '', uf: '' };
         try {
             var salvo = JSON.parse(localStorage.getItem(CHAVE_PEDIDO)) || {};
             Object.keys(padrao).forEach(function (k) {
@@ -101,7 +108,11 @@
     function adicionar(produto) {
         var item = itens.find(function (i) { return i.id === produto.id; });
         if (item) item.qtd += 1;
-        else itens.push({ id: produto.id, nome: produto.nome, preco: produto.preco, img: produto.img, consultar: !!produto.consultar, qtd: 1 });
+        else itens.push({
+            id: produto.id, nome: produto.nome, preco: produto.preco, img: produto.img, consultar: !!produto.consultar, qtd: 1,
+            produtoId: produto.produtoId || '', tamanho: produto.tamanho || '',
+            upgrades: Array.isArray(produto.upgrades) ? produto.upgrades : [], obsProduto: produto.obsProduto || ''
+        });
         atualizar();
         avisar(produto.nome + ' foi para o carrinho');
         document.querySelectorAll('.carrinho-btn, .carrinho-flutuante').forEach(function (b) {
@@ -142,14 +153,16 @@
         return pedido.modo === 'entrega';
     }
 
-    /* valor da taxa que entra na conta (0 se for retirada ou "a combinar") */
+    /* Frete consultado pela API conforme o bairro do cliente. */
     function taxaValor() {
-        return ehEntrega() && typeof TAXA_ENTREGA === 'number' ? TAXA_ENTREGA : 0;
+        return ehEntrega() && typeof freteValor === 'number' ? freteValor : 0;
     }
 
     function textoTaxa() {
-        if (typeof TAXA_ENTREGA !== 'number') return 'A combinar';
-        return TAXA_ENTREGA > 0 ? moeda(TAXA_ENTREGA) : 'Grátis';
+        if (!ehEntrega()) return '—';
+        if (freteAtendido === false) return 'Não atendemos';
+        if (typeof freteValor !== 'number') return 'A combinar';
+        return freteValor > 0 ? moeda(freteValor) : 'Grátis';
     }
 
     /* Texto do total: produtos + taxa, com aviso do que ainda será combinado */
@@ -157,13 +170,15 @@
         var t = total() + taxaValor();
         var extras = [];
         if (temConsultar()) extras.push('a consultar');
-        if (ehEntrega() && typeof TAXA_ENTREGA !== 'number') extras.push('entrega');
+        if (ehEntrega() && typeof freteValor !== 'number') extras.push('frete a combinar');
         if (!extras.length) return moeda(t);
         return t > 0 ? moeda(t) + ' + ' + extras.join(' + ') : 'A consultar';
     }
 
     function enderecoTexto() {
         var e = pedido.rua.trim() + ', nº ' + pedido.numero.trim() + ' - ' + pedido.bairro.trim();
+        if (pedido.cidade) e += ' - ' + pedido.cidade + (pedido.uf ? '/' + pedido.uf : '');
+        if (pedido.cep) e += ' - CEP ' + pedido.cep;
         if (pedido.comp.trim()) e += ' (' + pedido.comp.trim() + ')';
         return e;
     }
@@ -196,7 +211,7 @@
 
     /* Retorna o primeiro campo com problema (ou null se estiver tudo certo) */
     function validar() {
-        ['tipo', 'nome', 'rua', 'numero', 'bairro'].forEach(limparErro);
+        ['tipo', 'nome', 'cep', 'rua', 'numero', 'bairro'].forEach(limparErro);
 
         if (!pedido.modo) {
             mostrarErro('tipo', 'Escolha entre retirada e delivery.');
@@ -205,17 +220,28 @@
 
         var primeiro = null;
         OBRIGATORIOS[pedido.modo].forEach(function (chave) {
-            if (!pedido[chave].trim()) {
+            var vazio = !pedido[chave].trim();
+            var cepInvalido = chave === 'cep' && !/^\d{8}$/.test(pedido.cep.replace(/\D/g, ''));
+            if (vazio || cepInvalido) {
                 mostrarErro(chave, MENSAGENS[chave]);
                 if (!primeiro) primeiro = $('ped-' + chave);
             }
         });
+        if (!primeiro && ehEntrega() && freteAtendido === false) {
+            mostrarErro('bairro', freteMensagem || 'A loja não atende entregas neste bairro.');
+            primeiro = $('ped-bairro');
+        }
         return primeiro;
     }
 
-    function finalizar() {
-        if (!itens.length) return;
-
+    async function finalizar() {
+        if (!itens.length || finalizando) return;
+        finalizando = true;
+        var botaoFinalizar = $('carrinho-finalizar');
+        var textoOriginalBotao = botaoFinalizar.textContent;
+        botaoFinalizar.disabled = true;
+        botaoFinalizar.textContent = 'Registrando pedido…';
+        try {
         var invalido = validar();
         if (invalido) {
             var alvo = invalido.closest('.campo') || invalido.closest('fieldset') || invalido;
@@ -225,27 +251,160 @@
             return;
         }
 
+        if (ehEntrega()) {
+            await consultarFrete();
+            if (freteAtendido === false) {
+                mostrarErro('bairro', freteMensagem || 'A loja não atende entregas neste bairro.');
+                $('ped-bairro').focus();
+                avisar('Não atendemos entregas neste bairro');
+                return;
+            }
+        }
+
         var obs = $('carrinho-obs').value.trim();
         var linhas = ['*Pedido - Joinha Sorvetes*', ''];
-
         linhas.push('*Cliente:* ' + pedido.nome.trim());
         linhas.push('*Recebimento:* ' + TIPOS[pedido.modo]);
         if (ehEntrega()) linhas.push('*Endereço:* ' + enderecoTexto());
         linhas.push('');
-
         itens.forEach(function (i) {
             linhas.push(i.qtd + 'x ' + i.nome + ' - ' + (i.consultar ? 'preço a consultar' : moeda(i.preco * i.qtd)));
         });
-
         linhas.push('');
         if (ehEntrega()) {
             linhas.push('Subtotal: ' + (temConsultar() && !total() ? 'a consultar' : moeda(total())));
-            linhas.push('Taxa de entrega: ' + textoTaxa().toLowerCase().replace(/^./, function (c) { return c.toUpperCase(); }));
+            linhas.push('Taxa de entrega: ' + textoTaxa());
         }
         linhas.push('*Total: ' + textoTotal() + '*');
         if (obs) linhas.push('', 'Observações: ' + obs);
 
-        window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(linhas.join('\n')), '_blank');
+        var whatsappWindow = window.open('about:blank', '_blank');
+        var corpo = {
+            cliente: pedido.nome.trim(),
+            modo: pedido.modo,
+            cep: pedido.cep.replace(/\D/g, ''),
+            bairro: pedido.bairro.trim(),
+            endereco: ehEntrega() ? enderecoTexto() : '',
+            observacoes: obs,
+            itens: itens.map(function (i) {
+                return {
+                    productId: i.produtoId || '',
+                    nome: i.nome,
+                    tamanho: i.tamanho || '',
+                    upgrades: Array.isArray(i.upgrades) ? i.upgrades : [],
+                    observacoes: i.obsProduto || '',
+                    quantidade: i.qtd
+                };
+            })
+        };
+
+        try {
+            var resposta = await fetch(API_BASE + '/api/pedidos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(corpo)
+            });
+            var dadosResposta = {};
+            try { dadosResposta = await resposta.json(); } catch (e) {}
+            if (!resposta.ok) throw new Error(dadosResposta.erro || 'Não foi possível registrar o pedido no painel.');
+            // Monta a mensagem com os valores conferidos pelo servidor, inclusive se algum preço mudou.
+            var linhasConfirmadas = ['*Pedido - Joinha Sorvetes*', '*Número do pedido:* ' + dadosResposta.numero, ''];
+            linhasConfirmadas.push('*Cliente:* ' + pedido.nome.trim());
+            linhasConfirmadas.push('*Recebimento:* ' + TIPOS[pedido.modo]);
+            if (ehEntrega()) linhasConfirmadas.push('*Endereço:* ' + enderecoTexto());
+            linhasConfirmadas.push('');
+            (dadosResposta.itens || []).forEach(function (i) {
+                var nomeItem = i.nome + ' (' + i.tamanho + ')';
+                var extras = (i.upgrades || []).map(function (u) { return typeof u === 'string' ? u : u.nome; });
+                if (extras.length) nomeItem += ' + ' + extras.join(', ');
+                if (i.observacoes) nomeItem += ' - Obs: ' + i.observacoes;
+                linhasConfirmadas.push(i.quantidade + 'x ' + nomeItem + ' - ' + moeda(i.subtotal));
+            });
+            linhasConfirmadas.push('');
+            if (ehEntrega()) {
+                linhasConfirmadas.push('Subtotal: ' + moeda(dadosResposta.subtotal));
+                linhasConfirmadas.push('Taxa de entrega: ' + (typeof dadosResposta.frete === 'number' ? (dadosResposta.frete > 0 ? moeda(dadosResposta.frete) : 'Grátis') : 'A combinar'));
+            }
+            linhasConfirmadas.push('*Total: ' + moeda(dadosResposta.total) + (ehEntrega() && typeof dadosResposta.frete !== 'number' ? ' + frete a combinar' : '') + '*');
+            if (obs) linhasConfirmadas.push('', 'Observações: ' + obs);
+            var urlWhats = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(linhasConfirmadas.join('\n'));
+            if (whatsappWindow && !whatsappWindow.closed) whatsappWindow.location.href = urlWhats;
+            else if (!window.open(urlWhats, '_blank')) window.alert('Pedido ' + dadosResposta.numero + ' foi salvo no painel, mas o navegador bloqueou o WhatsApp. Abra o pedido no painel e entre em contato com o cliente.');
+            avisar('Pedido ' + dadosResposta.numero + ' registrado no painel!');
+        } catch (erro) {
+            var mensagem = erro && erro.message ? erro.message : 'A API não respondeu.';
+            if (whatsappWindow && !whatsappWindow.closed) {
+                var continuar = window.confirm('Não foi possível salvar o pedido no painel (' + mensagem + '). Deseja continuar e enviar pelo WhatsApp mesmo assim? Nesse caso, ele não aparecerá no histórico do painel.');
+                if (continuar) {
+                    var urlFallback = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(linhas.join('\n'));
+                    whatsappWindow.location.href = urlFallback;
+                    avisar('Abrindo WhatsApp; pedido não foi salvo no painel.');
+                } else {
+                    whatsappWindow.close();
+                }
+            } else {
+                window.alert('Não foi possível registrar o pedido no painel. ' + mensagem + '. Permita pop-ups para abrir o WhatsApp.');
+            }
+        }
+        } finally {
+            finalizando = false;
+            botaoFinalizar.textContent = textoOriginalBotao;
+            botaoFinalizar.disabled = !itens.length || (ehEntrega() && freteAtendido === false);
+        }
+    }
+
+    async function consultarCep() {
+        var cep = ($('ped-cep').value || '').replace(/\D/g, '');
+        var estado = $('ped-cep-status');
+        if (cep.length !== 8) return;
+        estado.textContent = 'Consultando CEP…';
+        estado.hidden = false;
+        try {
+            var resposta = await fetch(API_BASE + '/api/cep/' + cep, { headers: { Accept: 'application/json' } });
+            var dados = await resposta.json();
+            if (!resposta.ok) throw new Error(dados.erro || 'Não foi possível consultar o CEP.');
+            if (dados.logradouro) pedido.rua = dados.logradouro;
+            if (dados.bairro) pedido.bairro = dados.bairro;
+            pedido.cidade = dados.localidade || '';
+            pedido.uf = dados.uf || '';
+            $('ped-rua').value = pedido.rua;
+            $('ped-bairro').value = pedido.bairro;
+            salvarPedido();
+            estado.textContent = 'CEP encontrado: ' + [pedido.cidade, pedido.uf].filter(Boolean).join(' - ') + '. Confira o endereço.';
+            estado.hidden = false;
+            if (pedido.bairro) await consultarFrete();
+        } catch (erro) {
+            estado.textContent = erro.message || 'Não foi possível consultar. Preencha o endereço manualmente.';
+            estado.hidden = false;
+        }
+    }
+
+    async function consultarFrete() {
+        if (!ehEntrega() || !pedido.bairro.trim()) {
+            freteValor = null;
+            freteAtendido = true;
+            freteMensagem = 'Informe o bairro para consultar o frete.';
+            atualizar();
+            return null;
+        }
+        freteMensagem = 'Consultando frete…';
+        var status = $('ped-frete-status');
+        if (status) { status.textContent = freteMensagem; status.hidden = false; }
+        try {
+            var resposta = await fetch(API_BASE + '/api/frete?bairro=' + encodeURIComponent(pedido.bairro.trim()), { headers: { Accept: 'application/json' } });
+            var dados = await resposta.json();
+            if (!resposta.ok) throw new Error(dados.erro || 'Não foi possível consultar o frete.');
+            freteValor = typeof dados.taxa === 'number' ? dados.taxa : null;
+            freteAtendido = dados.atendido !== false;
+            freteMensagem = dados.mensagem || '';
+        } catch (erro) {
+            freteValor = null;
+            freteAtendido = true; // Sem API, permite o fluxo antigo pelo WhatsApp.
+            freteMensagem = 'Frete a combinar com a loja.';
+        }
+        if (status) { status.textContent = freteMensagem; status.hidden = false; }
+        atualizar();
+        return { atendido: freteAtendido, taxa: freteValor };
     }
 
     /* ---------- interface ---------- */
@@ -318,9 +477,7 @@
         var fundo = document.createElement('div');
         fundo.className = 'carrinho-fundo';
 
-        var subEntrega = typeof TAXA_ENTREGA === 'number'
-            ? (TAXA_ENTREGA > 0 ? 'Taxa de ' + moeda(TAXA_ENTREGA) : 'Entrega grátis')
-            : 'Levamos até você';
+        var subEntrega = 'Consulte o frete pelo CEP';
 
         var infoRetirada = ENDERECO_LOJA
             ? 'Retire em: <strong>' + escapar(ENDERECO_LOJA) + '</strong>'
@@ -352,11 +509,14 @@
             campo('nome', 'Seu nome', 'maxlength="60" autocomplete="name" placeholder="Como podemos te chamar?"') +
             '<p class="retirada-info" id="bloco-retirada" hidden>' + infoRetirada + '</p>' +
             '<div class="bloco-entrega" id="bloco-entrega" hidden>' +
+            campo('cep', 'CEP', 'inputmode="numeric" maxlength="9" autocomplete="postal-code" placeholder="Digite os 8 números"') +
+            '<small class="retirada-info" id="ped-cep-status" hidden></small>' +
             '<div class="campo-linha">' +
             campo('rua', 'Rua / Avenida', 'maxlength="80" autocomplete="address-line1" placeholder="Nome da rua"') +
             campo('numero', 'Número', 'maxlength="10" autocomplete="off" placeholder="120 ou S/N"') +
             '</div>' +
-            campo('bairro', 'Bairro', 'maxlength="50" autocomplete="off" placeholder="Seu bairro"') +
+            campo('bairro', 'Bairro', 'maxlength="50" autocomplete="address-level3" placeholder="Seu bairro"') +
+            '<small class="retirada-info" id="ped-frete-status" hidden></small>' +
             campo('comp', 'Complemento ou ponto de referência', 'maxlength="80" autocomplete="off" placeholder="Ex.: casa azul, apto 12"', true) +
             '</div>' +
             '</div>' +
@@ -388,7 +548,7 @@
         document.body.appendChild(aviso);
 
         /* preenche com o que o cliente já tinha digitado antes */
-        ['nome', 'rua', 'numero', 'bairro', 'comp'].forEach(function (k) { $('ped-' + k).value = pedido[k]; });
+        ['nome', 'cep', 'rua', 'numero', 'bairro', 'comp'].forEach(function (k) { $('ped-' + k).value = pedido[k] || ''; });
         if (pedido.modo) $('ped-tipo-' + pedido.modo).checked = true;
 
         btn.addEventListener('click', abrir);
@@ -405,8 +565,11 @@
             salvarPedido();
             limparErro('tipo');
             /* o que era obrigatório muda com o tipo: limpa avisos antigos */
-            ['nome', 'rua', 'numero', 'bairro'].forEach(limparErro);
+            ['nome', 'cep', 'rua', 'numero', 'bairro'].forEach(limparErro);
+            freteValor = null;
+            freteAtendido = true;
             atualizar();
+            if (pedido.modo === 'entrega' && pedido.bairro.trim()) consultarFrete();
             var dados = $('carrinho-dados');
             dados.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
@@ -420,6 +583,16 @@
             pedido[chave] = t.value;
             salvarPedido();
             limparErro(chave);
+            if (chave === 'cep') {
+                window.clearTimeout(timerCep);
+                timerCep = window.setTimeout(function () { if (pedido.cep.replace(/\D/g, '').length === 8) consultarCep(); }, 350);
+            }
+            if (chave === 'bairro') {
+                window.clearTimeout(timerFrete);
+                freteValor = null;
+                freteAtendido = true;
+                timerFrete = window.setTimeout(consultarFrete, 400);
+            }
         });
 
         /* botões + / - / remover (delegação) */
@@ -503,7 +676,7 @@
         flutTotal.textContent = texto;
         flutTotal.hidden = !itens.length || texto.length > 14;
 
-        $('carrinho-finalizar').disabled = !itens.length;
+        $('carrinho-finalizar').disabled = !itens.length || (ehEntrega() && freteAtendido === false);
         $('carrinho-limpar').hidden = !itens.length;
         atualizarFormulario();
 
@@ -589,12 +762,18 @@
                 consultar = !/\d/.test(valor.textContent);
             }
 
+            var configuracao = configuracaoPendente;
+            configuracaoPendente = null;
             adicionar({
                 id: b.dataset.id || slug(nome),
                 nome: nome,
                 preco: preco,
                 img: b.dataset.img || '',
-                consultar: consultar
+                consultar: consultar,
+                produtoId: (configuracao && configuracao.produtoId) || (card && card.dataset.produtoId) || '',
+                tamanho: configuracao && configuracao.tamanho,
+                upgrades: configuracao && configuracao.upgrades,
+                obsProduto: configuracao && configuracao.observacoes
             });
         });
 
@@ -606,6 +785,10 @@
         });
     }
 
+    document.addEventListener('joinha:produto-configurado', function (e) {
+        configuracaoPendente = e.detail || null;
+    });
+
     /* sincroniza entre abas/páginas abertas */
     window.addEventListener('storage', function (e) {
         if (e.key === CHAVE) { itens = carregar(); atualizar(); }
@@ -615,6 +798,7 @@
         montarInterface();
         prepararProdutos();
         atualizar();
+        if (pedido.modo === 'entrega' && pedido.bairro.trim()) consultarFrete();
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);

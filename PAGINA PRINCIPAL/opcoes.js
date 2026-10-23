@@ -56,6 +56,11 @@
         return card.closest('.cards-milkshakes') ? 'milkshakes' : 'picoles';
     }
 
+    function slugProduto(texto) {
+        return String(texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+
     /* ---------------- "A PARTIR DE" NOS MILKSHAKES ---------------- */
     var menor = Math.min.apply(null, CONFIG.milkshakes.tamanhos.map(function (t) { return t.preco; }));
     document.querySelectorAll(CONFIG.milkshakes.seletor + ' .preco').forEach(function (p) {
@@ -174,9 +179,18 @@
         var tipo = tipoDoCard(card);
         var secao = card.closest('.cards');
         var nome = card.querySelector('h3').textContent.trim();
-        var prefixo = secao.getAttribute('data-prefixo') || '';
-
-        atual = { card: card, tipo: tipo, cfg: CONFIG[tipo], nome: nome, nomeCompleto: prefixo + nome };
+        var prefixo = secao ? (secao.getAttribute('data-prefixo') || '') : '';
+        var produtoApi = (window.JoinhaCatalogo || []).find(function (p) {
+            return p.id === (card.dataset.produtoId || slugProduto(nome));
+        });
+        var cfgBase = CONFIG[tipo];
+        var cfg = {
+            seletor: cfgBase.seletor,
+            tamanhos: produtoApi && Array.isArray(produtoApi.tamanhos) && produtoApi.tamanhos.length ? produtoApi.tamanhos : cfgBase.tamanhos,
+            upgrades: produtoApi ? ((produtoApi.upgrades || []).length ? { titulo: 'Adicionais', max: 2, itens: produtoApi.upgrades } : null) : cfgBase.upgrades,
+            obs: produtoApi ? produtoApi.obs !== false : cfgBase.obs
+        };
+        atual = { card: card, tipo: tipo, cfg: cfg, nome: nome, nomeCompleto: prefixo + nome, produtoId: produtoApi ? produtoApi.id : (card.dataset.produtoId || slugProduto(nome)) };
         render(atual);
         atualizar();
 
@@ -214,6 +228,7 @@
             (obs ? ' - Obs: ' + obs : '');
 
         var detalhe = {
+            produtoId: atual.produtoId,
             produto: atual.nomeCompleto,
             categoria: atual.tipo,
             tamanho: s.tamanho.nome,

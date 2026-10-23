@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#00aeb8">
+  <title>Painel administrativo | Joinha Sorvetes</title>
+  <link rel="icon" href="../img/joinha.png">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="topo">
+    <a class="marca" href="../index.html"><img src="../img/joinha.png" alt=""><span>Joinha <small>Painel administrativo</small></span></a>
+    <div class="topo-acoes"><a href="../index.html">Ver site</a><button id="sair" class="botao leve" hidden>Sair</button></div>
+  </header>
+  <main class="principal">
+    <section id="login-area" class="login-caixa">
+      <div class="eyebrow">ÁREA RESTRITA</div>
+      <h1>Bem-vindo de volta!</h1>
+      <p>Entre para acompanhar pedidos e gerenciar o cardápio da Joinha Sorvetes.</p>
+      <form id="login-form">
+        <label for="email">E-mail do administrador</label>
+        <input id="email" type="email" autocomplete="username" required placeholder="admin@joinha.local">
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" autocomplete="current-password" required placeholder="Sua senha">
+        <button class="botao principal-botao" type="submit">Entrar no painel</button>
+        <p id="login-erro" class="mensagem erro" role="alert" hidden></p>
+      </form>
+      <p class="dica-local">No primeiro acesso local, confira as credenciais configuradas no arquivo <code>.env</code>.</p>
+    </section>
+
+    <section id="painel" hidden>
+      <div class="boas-vindas"><div><div class="eyebrow">PAINEL DA LOJA</div><h1>Visão geral</h1><p id="ola-admin">Gerencie pedidos, sabores e entregas.</p></div><button id="atualizar-tudo" class="botao leve">Atualizar dados</button></div>
+      <nav class="abas" aria-label="Seções do painel">
+        <button class="aba ativa" data-aba="inicio">Visão geral</button>
+        <button class="aba" data-aba="pedidos">Pedidos</button>
+        <button class="aba" data-aba="produtos">Cardápio</button>
+        <button class="aba" data-aba="entrega">Entrega e frete</button>
+        <button class="aba" data-aba="admins">Administradores</button>
+      </nav>
+      <p id="aviso-global" class="mensagem" role="status" hidden></p>
+
+      <section class="secao ativa" data-secao="inicio">
+        <div class="metricas">
+          <article class="metrica"><span>Pedidos hoje</span><strong id="pedidos-hoje">0</strong><small>Todos os status</small></article>
+          <article class="metrica"><span>Vendas hoje</span><strong id="vendas-hoje">R$ 0,00</strong><small>Pedidos registrados hoje</small></article>
+          <article class="metrica"><span>Pedidos em aberto</span><strong id="pedidos-pendentes">0</strong><small>Novos, preparando ou prontos</small></article>
+          <article class="metrica"><span>Vendas entregues</span><strong id="vendas-entregues">R$ 0,00</strong><small><span id="pedidos-entregues">0</span> pedidos entregues</small></article>
+        </div>
+        <div class="painel-info"><div><h2>Próximos passos</h2><p>Registre os pedidos recebidos, atualize o status conforme a equipe prepara cada compra e mantenha preços e sabores atualizados no cardápio.</p></div><button class="botao principal-botao" data-ir="pedidos">Ver pedidos</button></div>
+      </section>
+
+      <section class="secao" data-secao="pedidos">
+        <div class="secao-topo"><div><h2>Pedidos recebidos</h2><p>Os pedidos feitos pelo site aparecem aqui automaticamente.</p></div><label class="filtro-label">Status <select id="filtro-status"><option value="todos">Todos</option><option value="novo">Novo</option><option value="preparando">Preparando</option><option value="pronto">Pronto</option><option value="entregue">Entregue</option></select></label></div>
+        <div id="lista-pedidos" class="lista-pedidos"><p class="vazio">Carregando pedidos…</p></div>
+      </section>
+
+      <section class="secao" data-secao="produtos">
+        <div class="secao-topo"><div><h2>Gerenciar cardápio</h2><p>Altere preços e tamanhos, esconda produtos esgotados ou cadastre novos sabores.</p></div><button id="novo-produto" class="botao principal-botao">+ Novo produto</button></div>
+        <form id="produto-form" class="editor" hidden>
+          <div class="editor-topo"><div><span class="eyebrow">EDITOR DO CARDÁPIO</span><h3 id="produto-form-titulo">Novo produto</h3></div><button type="button" id="cancelar-produto" class="botao leve">Cancelar</button></div>
+          <input type="hidden" id="produto-id-original">
+          <div class="form-grid">
+            <div><label for="produto-nome">Nome do produto</label><input id="produto-nome" maxlength="100" required></div>
+            <div><label for="produto-categoria">Categoria</label><select id="produto-categoria"><option value="picoles">Picolé</option><option value="milkshakes">Milkshake</option></select></div>
+            <div class="campo-largo"><label for="produto-imagem">Caminho da imagem</label><input id="produto-imagem" maxlength="500" placeholder="/CARDAPIO/milkshakes_joinha/imagem.png"><small>Use um caminho do site que comece com /, ou deixe vazio se não tiver imagem.</small></div>
+            <div><label for="produto-tamanhos">Tamanhos e preços</label><textarea id="produto-tamanhos" rows="4" required placeholder="300ml=15&#10;400ml=16"></textarea><small>Uma opção por linha, no formato <code>nome=preço</code>.</small></div>
+            <div><label for="produto-upgrades">Adicionais (opcional)</label><textarea id="produto-upgrades" rows="4" placeholder="Chantilly=1&#10;Granulado Colorido=0"></textarea><small>Uma opção por linha, no formato <code>nome=preço</code>.</small></div>
+            <label class="check-linha"><input id="produto-obs" type="checkbox" checked> Permitir observações</label>
+            <label class="check-linha"><input id="produto-ativo" type="checkbox" checked> Mostrar no cardápio</label>
+          </div>
+          <div class="editor-acoes"><button class="botao principal-botao" type="submit">Salvar produto</button><span id="produto-erro" class="mensagem erro" hidden></span></div>
+        </form>
+        <div class="tabela-wrap"><table><thead><tr><th>Produto</th><th>Categoria</th><th>Preço inicial</th><th>Disponibilidade</th><th></th></tr></thead><tbody id="tabela-produtos"><tr><td colspan="5">Carregando cardápio…</td></tr></tbody></table></div>
+      </section>
+
+      <section class="secao" data-secao="admins">
+        <div class="secao-topo"><div><h2>Administradores</h2><p>Cadastre outras pessoas que precisam acessar o painel da Joinha.</p></div></div>
+        <form id="admin-form" class="editor">
+          <div class="editor-topo"><div><span class="eyebrow">NOVO ACESSO</span><h3>Adicionar administrador</h3></div></div>
+          <div class="form-grid">
+            <div><label for="novo-admin-email">E-mail</label><input id="novo-admin-email" type="email" maxlength="254" autocomplete="off" required placeholder="pessoa@exemplo.com"></div>
+            <div><label for="novo-admin-senha">Senha inicial</label><input id="novo-admin-senha" type="password" minlength="12" maxlength="128" autocomplete="new-password" required placeholder="Mínimo de 12 caracteres"><small>Use uma senha forte e compartilhe com segurança.</small></div>
+          </div>
+          <div class="editor-acoes"><button class="botao principal-botao" type="submit">Adicionar administrador</button><span id="admin-erro" class="mensagem erro" role="alert" hidden></span></div>
+        </form>
+        <div class="tabela-wrap"><table><thead><tr><th>E-mail do administrador</th><th>Data de cadastro</th></tr></thead><tbody id="tabela-admins"><tr><td colspan="2">Carregando administradores…</td></tr></tbody></table></div>
+        <p class="aviso-neutro" style="margin-top:14px">Todos os administradores cadastrados podem gerenciar pedidos, preços, entregas e adicionar outros administradores. Cadastre apenas pessoas de confiança.</p>
+      </section>
+
+      <section class="secao" data-secao="entrega">
+        <div class="secao-topo"><div><h2>Entrega e frete</h2><p>Defina a taxa por bairro e marque regiões que a loja ainda não atende.</p></div></div>
+        <form id="bairro-form" class="linha-form">
+          <div><label for="bairro-nome">Bairro</label><input id="bairro-nome" required maxlength="80" placeholder="Ex.: Centro"></div>
+          <div><label for="bairro-taxa">Frete (R$)</label><input id="bairro-taxa" required type="number" min="0" max="1000" step="0.50" value="5.00" placeholder="5,00"></div>
+          <label class="check-linha"><input id="bairro-ativo" type="checkbox" checked> Atendemos este bairro</label>
+          <button class="botao principal-botao" type="submit">Salvar bairro</button>
+        </form>
+        <p class="aviso-neutro">Bairros que ainda não estiverem cadastrados aparecem como “frete a combinar”. Os bairros cadastrados como não atendidos serão bloqueados no checkout.</p>
+        <div id="lista-bairros" class="lista-bairros"><p class="vazio">Carregando bairros…</p></div>
+      </section>
+    </section>
+  </main>
+  <footer>Joinha Sorvetes · Painel administrativo</footer>
+  <script src="../api-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

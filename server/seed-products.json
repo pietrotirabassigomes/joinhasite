@@ -1,0 +1,1430 @@
+[
+  {
+    "id": "picole-de-chocolate",
+    "nome": "Picolé de Chocolate",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-chocolate.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-morango",
+    "nome": "Picolé de Morango",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-morango.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-leite-condensado",
+    "nome": "Picolé de Leite Condensado",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-leite-condensado.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-coco-branco",
+    "nome": "Picolé de Coco Branco",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-coco-branco.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-uva",
+    "nome": "Picolé de Uva",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-uva.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-leitinho",
+    "nome": "Picolé de Leitinho",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-leitinho.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-chocolate-branco",
+    "nome": "Picolé de Chocolate Branco",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-chocolate-branco.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-limao",
+    "nome": "Picolé de Limão",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-limao.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-maracuja",
+    "nome": "Picolé de Maracujá",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-maracuja.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-amendoim",
+    "nome": "Picolé de Amendoim",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-amendoim.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-coco-queimado",
+    "nome": "Picolé de Coco Queimado",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-coco-queimado.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-nata",
+    "nome": "Picolé de Nata",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-nata.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-limao-suico",
+    "nome": "Picolé de Limão Suíço",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-limao-suico.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-milho",
+    "nome": "Picolé de Milho",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-milho.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-laranja",
+    "nome": "Picolé de Laranja",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-laranja.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-tangerina",
+    "nome": "Picolé de Tangerina",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-tangerina.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-melancia",
+    "nome": "Picolé de Melancia",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-melancia.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-groselha",
+    "nome": "Picolé de Groselha",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-groselha.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-abacate",
+    "nome": "Picolé de Abacate",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-abacate.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "picole-de-pitaia",
+    "nome": "Picolé de Pitaia",
+    "categoria": "picoles",
+    "imagem": "/CARDAPIO/picoles img/picole-pitaia.png",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "desc": "1 picolé",
+        "preco": 2.5
+      },
+      {
+        "nome": "Caixa com 20",
+        "desc": "20 picolés",
+        "preco": 50
+      }
+    ],
+    "upgrades": [],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "abacaxi-suico",
+    "nome": "Abacaxi Suíço",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/01_milkshake_abacaxi_suico.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "ameixa",
+    "nome": "Ameixa",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/02_milkshake_ameixa.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "bombom",
+    "nome": "Bombom",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/03_milkshake_bombom.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "chocolate-branco",
+    "nome": "Chocolate Branco",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/04_milkshake_chocolate_branco.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "coco-branco",
+    "nome": "Coco Branco",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/05_milkshake_coco_branco.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "creme",
+    "nome": "Creme",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/06_milkshake_creme.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "flocos",
+    "nome": "Flocos",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/07_milkshake_flocos.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "frutado-bosque",
+    "nome": "Frutado Bosque",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/08_milkshake_frutado_bosque.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "leite-condensado",
+    "nome": "Leite Condensado",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/09_milkshake_leite_condensado.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "maracuja-trufado",
+    "nome": "Maracujá Trufado",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/10_milkshake_maracuja_trufado.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "morango",
+    "nome": "Morango",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/11_milkshake_morango.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "nublado",
+    "nome": "Nublado",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/12_milkshake_nublado.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "olho-de-sogra",
+    "nome": "Olho de Sogra",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/13_milkshake_olho_de_sogra.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "pistache",
+    "nome": "Pistache",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/14_milkshake_pistache.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "rafaello",
+    "nome": "Rafaello",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/15_milkshake_rafaello.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "uva",
+    "nome": "Uva",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/16_milkshake_uva.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "super-chocolato",
+    "nome": "Super Chocolato",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/17_milkshake_super_chocolato.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "sensacao",
+    "nome": "Sensação",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/18_milkshake_sensacao.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "abobora-com-coco",
+    "nome": "Abóbora com Coco",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/19_milkshake_abobora_com_coco.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "banoffe",
+    "nome": "Banoffe",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/20_milkshake_banoffe.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "cereja",
+    "nome": "Cereja",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/21_milkshake_cereja.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "chocomenta",
+    "nome": "Chocomenta",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/22_milkshake_chocomenta.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "coco-queimado",
+    "nome": "Coco Queimado",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/23_milkshake_coco_queimado.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "ferrero-rocher",
+    "nome": "Ferrero Rocher",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/24_milkshake_ferrero_rocher.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "floresta-suprema",
+    "nome": "Floresta Suprema",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/25_milkshake_floresta_suprema.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "kinder",
+    "nome": "Kinder",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/26_milkshake_kinder.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "limao-suico",
+    "nome": "Limão Suíço",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/27_milkshake_limao_suico.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "milho",
+    "nome": "Milho",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/28_milkshake_milho.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "ninho-trufado",
+    "nome": "Ninho Trufado",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/29_milkshake_ninho_trufado.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "nutella",
+    "nome": "Nutella",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/30_milkshake_nutella.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "provocante",
+    "nome": "Provocante",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/31_milkshake_provocante.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "acai",
+    "nome": "Açaí",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/32_milkshake_acai.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "unicornio",
+    "nome": "Unicórnio",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/33_milkshake_unicornio.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "suflair",
+    "nome": "Suflair",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/34_milkshake_suflair.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "choquito",
+    "nome": "Choquito",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/35_milkshake_choquito.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "ovomaltine",
+    "nome": "Ovomaltine",
+    "categoria": "milkshakes",
+    "imagem": "/CARDAPIO/milkshakes_joinha/36_milkshake_ovomaltine.png",
+    "tamanhos": [
+      {
+        "nome": "400ml",
+        "preco": 16
+      },
+      {
+        "nome": "300ml",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  }
+]
