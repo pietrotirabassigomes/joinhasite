@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check \"PAGINA PRINCIPAL/carrinho.js\" && node --check \"PAGINA PRINCIPAL/catalogo-api.js\" && node --check \"PAGINA PRINCIPAL/menu.js\" && node --check \"PAGINA PRINCIPAL/opcoes.js\" && node --check \"PAGINA PRINCIPAL/cookies.js\" && node --check \"PAGINA PRINCIPAL/busca-status.js\" && node --check admin/admin.js && node --check api-config.js"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -15,7 +16,7 @@
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^13.0.3",
     "cors": "^2.8.5",
-    "dotenv": "^18.0.8",
+    "dotenv": "^18.0.9",
     "express": "^4.22.3",
     "express-rate-limit": "^8.7.1",
     "helmet": "^8.0.0",

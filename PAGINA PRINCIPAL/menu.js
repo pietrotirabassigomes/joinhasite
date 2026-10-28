@@ -17,9 +17,9 @@
     var categorias = [
         { nome: 'Picolés',           desc: 'Sabores de frutas e cremes',       hash: '#picoles',    img: 'picoles%20img/picole-morango.png' },
         { nome: 'Milk Shakes',       desc: 'Cremosos e geladinhos',            hash: '#milkshakes', img: '../img/milkshake.png' },
-        { nome: 'Potes',             desc: 'Sorvete de massa de 2 litros',     hash: '#potes',      img: '../img/Pote.png' },
-        { nome: 'Bolos',             desc: 'Para festas e momentos especiais', hash: '#bolos',      img: '../img/bolo.png' },
-        { nome: 'Caixas de Picolé',  desc: 'Caixa com 20 unidades',            hash: '#caixas',     img: '../img/ciaxa.png' }
+        { nome: 'Potes',             desc: 'Sorvete de massa de 2 litros',     hash: '#potes',      img: '../img/Pote.webp' },
+        { nome: 'Bolos',             desc: 'Para festas e momentos especiais', hash: '#bolos',      img: '../img/bolo.webp' },
+        { nome: 'Caixas de Picolé',  desc: 'Caixa com 20 unidades',            hash: '#caixas',     img: '../img/ciaxa.webp' }
     ];
 
     var fundo = document.createElement('div');

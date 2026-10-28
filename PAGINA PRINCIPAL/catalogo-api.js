@@ -91,7 +91,8 @@
             var categorias = {
                 picoles: document.querySelector('.cards-picoles'),
                 milkshakes: document.querySelector('.cards-milkshakes'),
-                potes: document.querySelector('.cards-potes')
+                potes: document.querySelector('.cards-potes'),
+                especiais: document.querySelector('.cards-especiais')
             };
             Object.keys(categorias).forEach(function (categoria) {
                 var container = categorias[categoria];

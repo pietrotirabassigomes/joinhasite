@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: joinha-sorvetes
+    runtime: node
+    plan: starter
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: joinha-sorvetes-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_FILE
+        value: /var/data/joinha.sqlite
+      - key: pietro@tirabassi.com.br
+        sync: false
+      - key: pietroadmin
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SITE_URL
+        sync: false

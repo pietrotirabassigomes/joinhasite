@@ -1428,10 +1428,10 @@
     "ativo": true
   },
   {
-    "id": "abacaxi-suico",
+    "id": "pote-abacaxi-suico",
     "nome": "Abacaxi Suíço",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/01_abacaxi_suico.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/01_abacaxi_suico.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1456,10 +1456,10 @@
     "ativo": true
   },
   {
-    "id": "abacaxi-suico-com-chocolate",
+    "id": "pote-abacaxi-suico-com-chocolate",
     "nome": "Abacaxi Suíço com Chocolate",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/02_abacaxi_suico_chocolate.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/02_abacaxi_suico_chocolate.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1484,10 +1484,10 @@
     "ativo": true
   },
   {
-    "id": "coco-branco",
+    "id": "pote-coco-branco",
     "nome": "Coco Branco",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/03_coco_branco.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/03_coco_branco.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1512,10 +1512,10 @@
     "ativo": true
   },
   {
-    "id": "maracuja-trufado",
+    "id": "pote-maracuja-trufado",
     "nome": "Maracujá Trufado",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/04_maracuja_trufado.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/04_maracuja_trufado.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1540,10 +1540,10 @@
     "ativo": true
   },
   {
-    "id": "maracuja-trufado-unicornio",
+    "id": "pote-maracuja-trufado-unicornio",
     "nome": "Maracujá Trufado Unicórnio",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/05_maracuja_trufado_unicornio.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/05_maracuja_trufado_unicornio.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1568,10 +1568,10 @@
     "ativo": true
   },
   {
-    "id": "unicornio",
+    "id": "pote-unicornio",
     "nome": "Unicórnio",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/06_unicornio.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/06_unicornio.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1596,10 +1596,10 @@
     "ativo": true
   },
   {
-    "id": "ferrero-rocher-com-avela",
+    "id": "pote-ferrero-rocher-com-avela",
     "nome": "Ferrero Rocher com Avelã",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/07_ferrero_rocher_com_avela.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/07_ferrero_rocher_com_avela.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1624,10 +1624,10 @@
     "ativo": true
   },
   {
-    "id": "pistache",
+    "id": "pote-pistache",
     "nome": "Pistache",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/08_pistache.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/08_pistache.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1652,10 +1652,10 @@
     "ativo": true
   },
   {
-    "id": "creme",
+    "id": "pote-creme",
     "nome": "Creme",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/09_creme.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/09_creme.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1680,10 +1680,10 @@
     "ativo": true
   },
   {
-    "id": "napolitano",
+    "id": "pote-napolitano",
     "nome": "Napolitano",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/10_napolitano.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/10_napolitano.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1708,10 +1708,10 @@
     "ativo": true
   },
   {
-    "id": "napolitano-bombom-branco",
+    "id": "pote-napolitano-bombom-branco",
     "nome": "Napolitano Bombom Branco",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/11_napolitano_bombom_branco.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/11_napolitano_bombom_branco.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1736,10 +1736,10 @@
     "ativo": true
   },
   {
-    "id": "chocolate-trufado",
+    "id": "pote-chocolate-trufado",
     "nome": "Chocolate Trufado",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/12_chocolate_trufado.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/12_chocolate_trufado.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1764,10 +1764,10 @@
     "ativo": true
   },
   {
-    "id": "chocolate-trufado-com-bombom",
+    "id": "pote-chocolate-trufado-bombom",
     "nome": "Chocolate Trufado com Bombom",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/13_chocolate_trufado_bombom.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/13_chocolate_trufado_bombom.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1792,10 +1792,10 @@
     "ativo": true
   },
   {
-    "id": "olho-de-sogra",
+    "id": "pote-olho-de-sogra",
     "nome": "Olho de Sogra",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/14_olho_de_sogra.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/14_olho_de_sogra.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1820,10 +1820,10 @@
     "ativo": true
   },
   {
-    "id": "olho-de-sogra-trufado",
+    "id": "pote-olho-de-sogra-trufado",
     "nome": "Olho de Sogra Trufado",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/15_olho_de_sogra_trufado.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/15_olho_de_sogra_trufado.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1848,10 +1848,10 @@
     "ativo": true
   },
   {
-    "id": "trufado-provocante",
+    "id": "pote-trufado-provocante",
     "nome": "Trufado Provocante",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/16_trufado_provocante.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/16_trufado_provocante.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1876,10 +1876,10 @@
     "ativo": true
   },
   {
-    "id": "provocante-com-avela",
+    "id": "pote-provocante-avela",
     "nome": "Provocante com Avelã",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/17_provocante_avela.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/17_provocante_avela.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1904,10 +1904,10 @@
     "ativo": true
   },
   {
-    "id": "flocos",
+    "id": "pote-flocos",
     "nome": "Flocos",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/18_flocos.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/18_flocos.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1932,10 +1932,10 @@
     "ativo": true
   },
   {
-    "id": "acai-puro",
+    "id": "pote-acai-puro",
     "nome": "Açaí Puro",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/19_pote_de_acai_puro.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/19_pote_de_acai_puro.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1960,10 +1960,10 @@
     "ativo": true
   },
   {
-    "id": "floresta-suprema",
+    "id": "pote-floresta-suprema",
     "nome": "Floresta Suprema",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/20_floresta_suprema.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/20_floresta_suprema.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -1988,10 +1988,10 @@
     "ativo": true
   },
   {
-    "id": "iogurte-com-morango",
+    "id": "pote-iogurte-com-morango",
     "nome": "Iogurte com Morango",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/21_iogurte_com_morango.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/21_iogurte_com_morango.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -2016,10 +2016,10 @@
     "ativo": true
   },
   {
-    "id": "iogurte-com-morango-frutas-vermelhas",
+    "id": "pote-iogurte-com-morango-frutas-vermelhas",
     "nome": "Iogurte com Morango e Frutas Vermelhas",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/22_iogurte_com_morango_frutas_vermelhas.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/22_iogurte_com_morango_frutas_vermelhas.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -2044,10 +2044,10 @@
     "ativo": true
   },
   {
-    "id": "chocomenta",
+    "id": "pote-chocomenta",
     "nome": "Chocomenta",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/23_chocomenta.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/23_chocomenta.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -2072,10 +2072,10 @@
     "ativo": true
   },
   {
-    "id": "super-chocolate",
+    "id": "pote-super-chocolate",
     "nome": "Super Chocolate",
     "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/24_super_chocolate.png",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/24_super_chocolate.webp",
     "tamanhos": [
       {
         "nome": "Pote 1L",
@@ -2094,6 +2094,318 @@
       {
         "nome": "Chantilly",
         "preco": 3
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-banana-split",
+    "nome": "Banana Split",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/01_banana_split.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-morango-split",
+    "nome": "Morango Split",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/02_morango_split.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-abacaxi-split",
+    "nome": "Abacaxi Split",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/03_abacaxi_split.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-taca-kinder-bueno",
+    "nome": "Taça Kinder Bueno",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/04_taca_kinder_bueno.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-taca-tropical",
+    "nome": "Taça Tropical",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/05_taca_tropical.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-taca-sunday",
+    "nome": "Taça Sunday",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/06_taca_sunday.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-taca-explosao-de-nutella",
+    "nome": "Taça Explosão de Nutella",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/07_taca_explosao_de_nutella.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-taca-chocoball",
+    "nome": "Taça Chocoball",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/08_taca_chocoball.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-petit-gateau-unidade",
+    "nome": "Petit Gâteau (unidade)",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/09_petit_gateau_unidade.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-espeto-morango-chocolate",
+    "nome": "Espeto de Morango com Chocolate",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/10_espeto_de_morango_com_chocolate.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-espeto-uva-chocolate",
+    "nome": "Espeto de Uva com Chocolate",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/11_espeto_de_uva_com_chocolate.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-bubble-waffle-1",
+    "nome": "Bubble Waffle 1",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/12_bubble_waffer_1.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "item-especial-bubble-waffle-2",
+    "nome": "Bubble Waffle 2",
+    "categoria": "especiais",
+    "imagem": "/CARDAPIO/joinha_itens_especiais_recortes/13_bubble_waffer_2.webp",
+    "tamanhos": [
+      {
+        "nome": "Unidade",
+        "preco": 15
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Granulado Colorido",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 1
       }
     ],
     "obs": true,

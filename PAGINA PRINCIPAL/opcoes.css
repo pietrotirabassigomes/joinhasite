@@ -7,7 +7,10 @@
 /* Cards clicáveis */
 .cards-picoles .card,
 .cards-milkshakes .card,
-.cards-potes .card {
+.cards-potes .card,
+.cards-especiais .card,
+.cards-bolos .card,
+.cards-caixas .card {
     cursor: pointer;
 }
 

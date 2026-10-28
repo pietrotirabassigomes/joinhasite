@@ -1,8 +1,8 @@
 /* =========================================================
    JOINHA SORVETES - JANELA DE OPÇÕES DO PRODUTO
-   Ao clicar em picolé, milkshake ou pote (no card ou no botão
-   "Adicionar ao carrinho") abre uma janela para escolher tamanho,
-   adicionais e observações. A integração com o catálogo considera categoria e sabor.
+   Ao clicar num picolé ou milkshake (no card ou no botão
+   "Adicionar ao carrinho") abre uma janela para escolher o
+   tamanho (obrigatório), upgrades e observações.
 
    Para mudar tamanhos, preços ou upgrades, edite o CONFIG abaixo.
    ========================================================= */
@@ -13,6 +13,7 @@
     var CONFIG = {
         milkshakes: {
             seletor: '.cards-milkshakes .card',
+            precoNoCard: true,   /* troca "A consultar" por "A partir de R$ ..." no card */
             tamanhos: [
                 { nome: '400ml', preco: 16 },
                 { nome: '300ml', preco: 15 }
@@ -29,6 +30,7 @@
         },
         picoles: {
             seletor: '.cards-picoles .card',
+            precoNoCard: false,
             /* ATENÇÃO: ajuste estes tamanhos e preços para os reais */
             tamanhos: [
                 { nome: 'Unidade', desc: '1 picolé', preco: 2.5 },
@@ -39,12 +41,14 @@
         },
         potes: {
             seletor: '.cards-potes .card',
+            precoNoCard: false,  /* mude para true quando os preços forem os reais */
+            /* Reserva, usada só se a API estiver fora do ar. Os preços reais ficam no painel. */
             tamanhos: [
-                { nome: 'Pote 1L', desc: '1 litro', preco: 28 },
-                { nome: 'Pote 2L', desc: '2 litros', preco: 45 }
+                { nome: 'Pote 1L', preco: 35 },
+                { nome: 'Pote 2L', preco: 50 }
             ],
             upgrades: {
-                titulo: 'Adicionais do pote',
+                titulo: 'Adicionais',
                 max: 2,
                 itens: [
                     { nome: 'Cobertura', preco: 0 },
@@ -52,25 +56,55 @@
                 ]
             },
             obs: true
+        },
+        especiais: {
+            seletor: '.cards-especiais .card',
+            precoNoCard: false,  /* mude para true quando os preços abaixo forem os reais */
+            /* Reserva, usada só se a API estiver fora do ar. Os preços reais ficam no painel. */
+            tamanhos: [
+                { nome: 'Unidade', preco: 15 }
+            ],
+            upgrades: {
+                titulo: 'Vai um Upgrade Ai?',
+                max: 2,
+                itens: [
+                    { nome: 'Granulado Colorido', preco: 0 },
+                    { nome: 'Chantilly', preco: 1 }
+                ]
+            },
+            obs: true
+        },
+        /* Prontos para quando criar estas seções no cardapio.html
+           (<section class="cards cards-bolos"> e <section class="cards cards-caixas">) */
+        bolos: {
+            seletor: '.cards-bolos .card',
+            precoNoCard: false,
+            /* ATENÇÃO: preços de exemplo, ajuste para os reais */
+            tamanhos: [
+                { nome: 'Fatia', preco: 10 },
+                { nome: 'Bolo inteiro', preco: 80 }
+            ],
+            upgrades: null,
+            obs: true
+        },
+        caixas: {
+            seletor: '.cards-caixas .card',
+            precoNoCard: false,
+            /* ATENÇÃO: preço de exemplo, ajuste para o real */
+            tamanhos: [
+                { nome: 'Caixa com 20', desc: '20 picolés', preco: 50 }
+            ],
+            upgrades: null,
+            obs: true
         }
     };
 
-    var SELETOR_CARDS = CONFIG.milkshakes.seletor + ', ' + CONFIG.picoles.seletor + ', ' + CONFIG.potes.seletor;
+    var API_BASE = String(window.JOINHA_API_URL || '').replace(/\/$/, '');
+    var SELETOR_CARDS = Object.keys(CONFIG).map(function (k) { return CONFIG[k].seletor; }).join(', ');
 
     /* ---------------- UTILITÁRIOS ---------------- */
-    function numeroPreco(valor) {
-        if (typeof valor === 'number') return isFinite(valor) ? valor : NaN;
-        if (valor === null || valor === undefined || valor === '') return NaN;
-        var texto = String(valor).trim().replace(/[^0-9,.-]/g, '');
-        if (texto.indexOf(',') !== -1) texto = texto.replace(/\./g, '').replace(',', '.');
-        var numero = Number(texto);
-        return isFinite(numero) ? numero : NaN;
-    }
-
     function moeda(v) {
-        var n = numeroPreco(v);
-        if (!isFinite(n)) n = 0;
-        return 'R$ ' + n.toFixed(2).replace('.', ',');
+        return 'R$ ' + v.toFixed(2).replace('.', ',');
     }
 
     function esc(t) {
@@ -80,8 +114,10 @@
     }
 
     function tipoDoCard(card) {
-        if (card.closest('.cards-potes')) return 'potes';
-        if (card.closest('.cards-milkshakes')) return 'milkshakes';
+        var chaves = Object.keys(CONFIG);
+        for (var i = 0; i < chaves.length; i++) {
+            if (card.matches(CONFIG[chaves[i]].seletor)) return chaves[i];
+        }
         return 'picoles';
     }
 
@@ -90,151 +126,18 @@
             .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     }
 
-    function categoriaNormalizada(valor) {
-        if (valor && typeof valor === 'object') valor = valor.nome || valor.name || valor.titulo || valor.title || '';
-        var c = slugProduto(valor);
-        if (c.indexOf('pote') !== -1 || c.indexOf('sorvete-de-massa') !== -1) return 'potes';
-        if (c.indexOf('milkshake') !== -1 || c.indexOf('milk-shake') !== -1 || c.indexOf('milk-shakes') !== -1) return 'milkshakes';
-        if (c.indexOf('picole') !== -1 || c.indexOf('picoles') !== -1) return 'picoles';
-        return '';
-    }
-
-    function categoriaApi(produto) {
-        var campos = [produto.categoria, produto.category, produto.tipo, produto.type,
-            produto.categoriaNome, produto.category_name, produto.tipo_produto];
-        for (var i = 0; i < campos.length; i++) {
-            var categoria = categoriaNormalizada(campos[i]);
-            if (categoria) return categoria;
-        }
-        /* Alguns catálogos guardam a categoria no próprio slug/ID do produto. */
-        var porId = categoriaNormalizada(idApi(produto));
-        if (porId) return porId;
-        var nome = slugProduto(nomeApi(produto));
-        if (/^pote-(de-)?/.test(nome) || nome.indexOf('sorvete-de-massa') === 0) return 'potes';
-        if (/^milk-?shake-(de-)?/.test(nome)) return 'milkshakes';
-        if (/^picole-(de-)?/.test(nome)) return 'picoles';
-        return '';
-    }
-
-    function idApi(produto) {
-        var id = produto.id;
-        if (id === undefined || id === null || id === '') id = produto.produtoId;
-        if (id === undefined || id === null || id === '') id = produto.product_id;
-        if (id === undefined || id === null || id === '') id = produto.slug;
-        return id === undefined || id === null ? '' : String(id);
-    }
-
-    function nomeApi(produto) {
-        return produto.nome || produto.name || produto.titulo || produto.title || produto.produto || produto.nomeProduto || '';
-    }
-
-    function nomeProdutoNormalizado(valor, tipo) {
-        var nome = slugProduto(valor);
-        var prefixos = {
-            potes: ['pote-de-', 'pote-', 'sorvete-de-massa-de-', 'sorvete-de-massa-'],
-            milkshakes: ['milkshake-de-', 'milk-shake-de-', 'milkshakes-de-', 'milk-shakes-de-'],
-            picoles: ['picole-de-', 'picole-']
-        }[tipo] || [];
-        prefixos.forEach(function (prefixo) {
-            if (nome.indexOf(prefixo) === 0) nome = nome.slice(prefixo.length);
+    /* ---------------- PREÇO NO CARD ("A partir de") ----------------
+       Só nas categorias com precoNoCard: true no CONFIG. */
+    Object.keys(CONFIG).forEach(function (k) {
+        var c = CONFIG[k];
+        if (!c.precoNoCard) return;
+        var menor = Math.min.apply(null, c.tamanhos.map(function (t) { return t.preco; }));
+        var rotulo = c.tamanhos.length > 1 ? 'A partir de' : 'Por apenas';
+        document.querySelectorAll(c.seletor + ' .preco').forEach(function (p) {
+            var sp = p.querySelector('span'), st = p.querySelector('strong');
+            if (sp) sp.textContent = rotulo;
+            if (st) st.textContent = moeda(menor);
         });
-        return nome;
-    }
-
-    function catalogoApi() {
-        if (Array.isArray(window.JoinhaCatalogo)) return window.JoinhaCatalogo;
-        if (window.JoinhaCatalogo && Array.isArray(window.JoinhaCatalogo.produtos)) return window.JoinhaCatalogo.produtos;
-        return [];
-    }
-
-    function encontrarProdutoApi(card, tipo, nome) {
-        var lista = catalogoApi();
-        if (!lista.length) return null;
-
-        var idCard = String(card.dataset.produtoId || '').trim();
-        if (idCard) {
-            var exato = lista.find(function (p) {
-                var cat = categoriaApi(p);
-                return idApi(p) === idCard && (!cat || cat === tipo);
-            });
-            if (exato) return exato;
-        }
-
-        var nomeSlug = nomeProdutoNormalizado(nome, tipo);
-        var mesmoNome = lista.filter(function (p) { return nomeProdutoNormalizado(nomeApi(p), tipo) === nomeSlug; });
-        var daCategoria = mesmoNome.filter(function (p) { return categoriaApi(p) === tipo; });
-        if (daCategoria.length) return daCategoria[0];
-        if (mesmoNome.length === 1) return mesmoNome[0];
-
-        var mesmoId = lista.filter(function (p) {
-            return slugProduto(idApi(p)) === (idCard ? slugProduto(idCard) : nomeSlug);
-        });
-        var mesmoIdCategoria = mesmoId.filter(function (p) {
-            var cat = categoriaApi(p);
-            return !cat || cat === tipo;
-        });
-        if (mesmoIdCategoria.length) return mesmoIdCategoria[0];
-        return null;
-    }
-
-    function tamanhosApi(produtoApi) {
-        if (!produtoApi || !Array.isArray(produtoApi.tamanhos) || !produtoApi.tamanhos.length) return null;
-        var tamanhos = produtoApi.tamanhos.map(function (t, i) {
-            var nome = t.nome || t.name || t.tamanho || t.label || ('Opção ' + (i + 1));
-            var precoBruto = t.preco;
-            if (precoBruto === undefined) precoBruto = t.price;
-            if (precoBruto === undefined) precoBruto = t.valor;
-            var preco = numeroPreco(precoBruto);
-            if (!isFinite(preco) || preco < 0) return null;
-            return { nome: String(nome), desc: t.desc || t.descricao || t.description || '', preco: preco };
-        }).filter(Boolean);
-        return tamanhos.length ? tamanhos : null;
-    }
-
-    function upgradesApi(produtoApi, upgradesBase) {
-        if (!produtoApi || !Object.prototype.hasOwnProperty.call(produtoApi, 'upgrades')) return upgradesBase;
-        if (produtoApi.upgrades === null) return null;
-        if (!Array.isArray(produtoApi.upgrades)) return upgradesBase;
-        if (!produtoApi.upgrades.length) return null;
-        var itens = produtoApi.upgrades.map(function (u) {
-            var preco = numeroPreco(u.preco !== undefined ? u.preco : (u.price !== undefined ? u.price : u.valor));
-            if (!isFinite(preco) || preco < 0) preco = 0;
-            return { nome: String(u.nome || u.name || u.titulo || u.title || 'Adicional'), preco: preco };
-        });
-        return { titulo: produtoApi.tituloUpgrades || produtoApi.upgradesTitulo || 'Adicionais', max: Number(produtoApi.maxUpgrades) > 0 ? Number(produtoApi.maxUpgrades) : 2, itens: itens };
-    }
-
-    /* Remove repetidos dentro de cada categoria. Sabores iguais em categorias
-       diferentes (ex.: milkshake e pote) continuam sendo produtos distintos. */
-    function removerCardsRepetidos() {
-        document.querySelectorAll('.cards-picoles, .cards-milkshakes, .cards-potes').forEach(function (secao) {
-            var vistos = Object.create(null);
-            Array.prototype.slice.call(secao.querySelectorAll('.card')).forEach(function (card) {
-                var titulo = card.querySelector('h3');
-                if (!titulo) return;
-                var chave = slugProduto(titulo.textContent.trim());
-                if (!chave) return;
-                if (vistos[chave]) {
-                    card.remove();
-                } else {
-                    vistos[chave] = true;
-                }
-            });
-        });
-    }
-
-    removerCardsRepetidos();
-    if (window.MutationObserver && document.body) {
-        var observadorCards = new MutationObserver(function () { removerCardsRepetidos(); });
-        observadorCards.observe(document.body, { childList: true, subtree: true });
-    }
-
-    /* ---------------- "A PARTIR DE" NOS MILKSHAKES ---------------- */
-    var menor = Math.min.apply(null, CONFIG.milkshakes.tamanhos.map(function (t) { return t.preco; }));
-    document.querySelectorAll(CONFIG.milkshakes.seletor + ' .preco').forEach(function (p) {
-        var s = p.querySelector('span'), st = p.querySelector('strong');
-        if (s) s.textContent = 'A partir de';
-        if (st) st.textContent = moeda(menor);
     });
 
     /* ---------------- MONTAGEM DA JANELA ---------------- */
@@ -343,33 +246,68 @@
     }
 
     /* ---------------- ABRIR / FECHAR ---------------- */
-    function abrir(card) {
+    /* Procura o produto do card no catálogo da API.
+       Só considera produtos da MESMA categoria do card: nomes como "Creme" ou "Flocos"
+       existem em milkshakes e em potes, e sem esse filtro um pote podia virar milkshake. */
+    function acharNoCatalogo(lista, tipo, id, nome) {
+        var slugNome = slugProduto(nome);
+        var daCategoria = (lista || []).filter(function (p) { return !p.categoria || p.categoria === tipo; });
+        return daCategoria.find(function (p) { return p.id === id; }) ||
+            daCategoria.find(function (p) { return slugProduto(p.nome) === slugNome; }) ||
+            daCategoria.find(function (p) { return slugProduto(p.nome).replace(/^picole-de-/, '') === slugNome; }) || null;
+    }
+
+    async function buscarProdutoAtual(card, nome, tipo) {
+        var id = card.dataset.produtoId || slugProduto(nome);
+        try {
+            var resposta = await fetch(API_BASE + '/api/produtos', {
+                cache: 'no-store',
+                headers: { Accept: 'application/json' }
+            });
+            if (resposta.ok) {
+                var produtos = await resposta.json();
+                if (Array.isArray(produtos)) {
+                    window.JoinhaCatalogo = produtos;
+                    return { consultado: true, produto: acharNoCatalogo(produtos, tipo, id, nome) };
+                }
+            }
+        } catch (erro) {
+            // Se a API estiver indisponível, o cardápio local continua podendo abrir.
+        }
+        return { consultado: false, produto: acharNoCatalogo(window.JoinhaCatalogo, tipo, id, nome) };
+    }
+
+    async function abrir(card) {
         var tipo = tipoDoCard(card);
         var secao = card.closest('.cards');
         var nome = card.querySelector('h3').textContent.trim();
         var prefixo = secao ? (secao.getAttribute('data-prefixo') || '') : '';
-        var produtoApi = encontrarProdutoApi(card, tipo, nome);
+        var resultadoProduto = await buscarProdutoAtual(card, nome, tipo);
+        var produtoApi = resultadoProduto.produto;
         var cfgBase = CONFIG[tipo];
-        var tamanhosProduto = tamanhosApi(produtoApi);
-        var cfg = {
-            seletor: cfgBase.seletor,
-            tamanhos: tamanhosProduto || cfgBase.tamanhos,
-            upgrades: upgradesApi(produtoApi, cfgBase.upgrades),
-            obs: produtoApi && produtoApi.obs !== undefined ? produtoApi.obs !== false : cfgBase.obs
-        };
-        var precoCard = card.querySelector('.preco');
-        if (precoCard && cfg.tamanhos.length && tipo !== 'picoles') {
-            var menorPreco = Math.min.apply(null, cfg.tamanhos.map(function (t) { return numeroPreco(t.preco); }).filter(function (v) { return isFinite(v); }));
-            var spanPreco = precoCard.querySelector('span');
-            var fortePreco = precoCard.querySelector('strong');
-            if (isFinite(menorPreco)) {
-                if (spanPreco) spanPreco.textContent = 'A partir de';
-                if (fortePreco) fortePreco.textContent = moeda(menorPreco);
+        if (resultadoProduto.consultado && !produtoApi) {
+            /* Produto ausente: só bloqueia se a API já tem produtos dessa categoria
+               (aí ele foi removido do cardápio). Se a categoria ainda não existe na API,
+               usa o CONFIG local para o cardápio continuar funcionando. */
+            var categoriaNaApi = (window.JoinhaCatalogo || []).some(function (p) { return p.categoria === tipo; });
+            if (categoriaNaApi) {
+                window.alert('Este produto não está mais disponível no cardápio. Atualize a página e escolha outro produto.');
+                return;
             }
         }
-        var apiId = produtoApi ? idApi(produtoApi) : '';
-        atual = { card: card, tipo: tipo, cfg: cfg, nome: nome, nomeCompleto: prefixo + nome, produtoId: apiId || card.dataset.produtoId || slugProduto(nome) };
+        if (produtoApi) card.dataset.produtoId = produtoApi.id;
+        var cfg = {
+            seletor: cfgBase.seletor,
+            tamanhos: produtoApi && Array.isArray(produtoApi.tamanhos) && produtoApi.tamanhos.length ? produtoApi.tamanhos : cfgBase.tamanhos,
+            upgrades: produtoApi ? ((produtoApi.upgrades || []).length ? { titulo: 'Adicionais', max: 2, itens: produtoApi.upgrades } : null) : cfgBase.upgrades,
+            obs: produtoApi ? produtoApi.obs !== false : cfgBase.obs
+        };
+        atual = { card: card, tipo: tipo, cfg: cfg, nome: nome, nomeCompleto: prefixo + nome, produtoId: produtoApi ? produtoApi.id : (card.dataset.produtoId || slugProduto(nome)) };
         render(atual);
+        if (cfg.tamanhos.length === 1) {
+            var unico = janela.querySelector('input[name="op-tamanho"]');
+            if (unico) unico.checked = true;
+        }
         atualizar();
 
         anterior = document.activeElement;
@@ -415,24 +353,15 @@
             preco: s.total
         };
 
-        /* Use apenas um caminho de envio para não inserir o mesmo item duas vezes.
-           Integração estruturada tem prioridade; o clique legado fica como fallback. */
-        var carrinho = window.JoinhaCarrinho;
-        if (carrinho && typeof carrinho.adicionarProdutoConfigurado === 'function') {
-            carrinho.adicionarProdutoConfigurado(detalhe);
-            fechar();
-            return;
-        }
+        /* Avisa quem quiser escutar (ex.: o carrinho) */
+        document.dispatchEvent(new CustomEvent('joinha:produto-configurado', { detail: detalhe }));
 
-        /* Compatibilidade com o carrinho atual, que lê os dados do card clicado. */
+        /* Compatível com o carrinho atual: preenche o card com o item
+           escolhido, dispara o clique original e devolve o card ao normal. */
         var card = atual.card;
         var h3 = card.querySelector('h3');
         var forte = card.querySelector('.preco strong');
         var botao = card.querySelector('.botao-card');
-        if (!botao || !h3) {
-            console.error('[Joinha] Não foi possível adicionar o produto: card ou botão ausente.', detalhe);
-            return;
-        }
         var h3Orig = h3.textContent;
         var forteOrig = forte ? forte.textContent : '';
 
@@ -440,11 +369,10 @@
         if (forte) forte.textContent = moeda(s.total);
 
         liberar = true;
-        try { botao.click(); } finally {
-            liberar = false;
-            h3.textContent = h3Orig;
-            if (forte) forte.textContent = forteOrig;
-        }
+        try { botao.click(); } finally { liberar = false; }
+
+        h3.textContent = h3Orig;
+        if (forte) forte.textContent = forteOrig;
 
         fechar();
     }

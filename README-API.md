@@ -1,49 +1,52 @@
-# Joinha Sorvetes — API, painel de pedidos e administração
+# Joinha Sorvetes — site, pedidos e painel
 
-Esta cópia adiciona um backend Node.js/Express com banco SQLite, login de administrador, painel de pedidos, gerenciamento de produtos e cálculo de frete por bairro. O cardápio inicial inclui os **20 picolés e 36 milkshakes** que já estavam no HTML.
+O projeto mantém a estrutura atual do site, cardápio e painel administrativo. O backend usa Node.js/Express e SQLite para cadastrar produtos e registrar pedidos. **Hospede como aplicação Node.js**, não como site estático puro, para que checkout, login e painel funcionem.
 
-## Como executar no computador
+## Antes de publicar
 
-1. Instale o **Node.js 22 ou mais recente**.
-2. Abra a pasta do projeto no VS Code. É a pasta que contém `package.json` e `server.js`.
-3. Crie o arquivo de configuração. No terminal do VS Code, use um destes comandos:
-   - PowerShell: `Copy-Item .env.example .env`
-   - Prompt de Comando: `copy .env.example .env`
-4. Abra `.env` e troque `ADMIN_PASSWORD` e `JWT_SECRET` por valores só seus. Use uma chave JWT longa e aleatória; não envie o `.env` ao GitHub.
-5. No terminal, execute:
+1. Abra `api-config.js` e preencha `JOINHA_WHATSAPP` com o telefone comercial no formato `55 + DDD + número`, só dígitos. O checkout fica bloqueado até esse campo conter um telefone válido, evitando pedidos enviados a um link fictício.
+2. No mesmo arquivo, informe os links oficiais em `JOINHA_INSTAGRAM_URL` e `JOINHA_FACEBOOK_URL` (com `https://`) e os campos disponíveis: endereço, razão social, CNPJ, telefone, e-mail e horário de atendimento. Campos vazios ficam ocultos.
+3. Confirme preços, tamanhos, adicionais e disponibilidade na aba **Cardápio** do painel. Os preços presentes no seed podem ser exemplos; não aceite pedidos reais sem revisar.
+4. Atualize os dados legais e de contato da política de privacidade conforme a empresa real.
+5. Configure uma senha administrativa forte (mínimo 12 caracteres), um e-mail próprio e uma chave JWT com pelo menos 32 caracteres. Não coloque esses segredos em `api-config.js`, no Git ou neste README.
+6. Não envie `.env`, `node_modules`, `.git` ou o arquivo SQLite para o repositório. O banco será criado no primeiro boot e deve ficar em disco persistente.
 
-   ```bash
-   npm install
-   npm start
-   ```
+## Publicar no Render (frontend + API juntos)
 
-6. Abra `http://localhost:3000` para ver o site e `http://localhost:3000/admin/` para entrar no painel.
+O arquivo `render.yaml` configura o projeto como serviço Node.js, define `/api/health` como verificação de saúde e monta um disco persistente em `/var/data` para não perder pedidos a cada novo deploy. A hospedagem com disco persistente requer um plano que ofereça esse recurso.
 
-Com o `.env.example` sem alterações, o login local inicial é `admin@joinha.local` e a senha `JoinhaAdmin2026!`. **Troque a senha antes de publicar ou permitir acesso de outras pessoas.** Se iniciar sem criar `.env`, o servidor usa credenciais de desenvolvimento e avisa isso no terminal.
+1. Envie a pasta do projeto ao seu repositório GitHub, sem `.env`, `node_modules`, `.git` e sem dados SQLite no repositório de publicação.
+2. No Render, crie um **Blueprint** a partir do repositório e revise o `render.yaml`.
+3. Antes de finalizar o primeiro deploy, cadastre as variáveis `ADMIN_EMAIL` e `ADMIN_PASSWORD` em **Environment**. Use valores únicos; a senha deve ter pelo menos 12 caracteres. `JWT_SECRET` é gerado pela configuração do serviço.
+4. Depois que o Render mostrar a URL pública, abra o site e teste `/api/health`, o cardápio e `/admin/`. O painel fica em `https://SEU-SERVICO.onrender.com/admin/`.
+5. Se tiver domínio próprio, configure-o no Render e defina `SITE_URL` com a URL final HTTPS, sem barra no fim. O backend gera `robots.txt` e `sitemap.xml` usando esse domínio ou o host do deploy.
+6. Entre no painel e revise os preços e as áreas/taxas de entrega antes de divulgar o site. Faça um pedido de teste e confirme se ele aparece no painel e se abre o WhatsApp comercial.
 
-## O que entrou
+## Publicar usando Docker
 
-- **Pedidos:** o checkout tenta registrar o pedido no banco antes de abrir o WhatsApp. O painel mostra itens, endereço, subtotal, frete, total, horário e status (`novo`, `preparando`, `pronto`, `entregue`). O total é recalculado pelo servidor a partir dos preços salvos.
-- **Cardápio:** a aba “Cardápio” permite alterar nomes, imagens, tamanhos e preços, adicionais, observações e disponibilidade. Também permite cadastrar produtos. O site consulta `GET /api/produtos` e atualiza os cards quando a API estiver ligada.
-- **Login:** token JWT de administrador com validade de 8 horas, senha comparada com hash bcrypt e limitação de tentativas de login.
-- **Entrega:** o campo CEP consulta o ViaCEP e pode preencher rua/bairro. Em “Entrega e frete”, configure a taxa por bairro ou desmarque “Atendemos” para bloquear esse bairro. Bairros não cadastrados ficam como “frete a combinar”.
-- **Relatório:** mostra pedidos e vendas de hoje, pedidos pendentes e vendas de pedidos entregues.
+O `Dockerfile` usa Node.js 22 e instala as dependências de produção. Para preservar os pedidos, monte um volume persistente em `/var/data` e configure `DB_FILE=/var/data/joinha.sqlite`, além de `NODE_ENV=production`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` e `JWT_SECRET`. Exponha a porta definida pela variável `PORT` (o padrão local é 3000).
 
-O banco fica em `server/joinha.sqlite` e é criado automaticamente ao iniciar o servidor. O cardápio inicial é importado somente quando o banco ainda não possui produtos. Para zerar uma instalação local de teste, pare o servidor e apague o arquivo SQLite; isso apaga também o histórico de pedidos e as regras de entrega.
+## Rodar localmente
 
-## Antes de usar com clientes reais
+Requisitos: Node.js 22 ou superior.
 
-- Em `PAGINA PRINCIPAL/carrinho.js`, substitua `NUMERO_WHATSAPP` pelo telefone real da loja, só com números e código do país/DDD.
-- O site precisa acessar a API para que os pedidos entrem no painel. Abrir o HTML diretamente com `file://` ou hospedar somente em GitHub Pages não executa Node.js. Para isso, hospede o backend em um serviço que execute Node.js e tenha **armazenamento persistente** para o SQLite.
-- Se o frontend e backend estiverem em domínios diferentes, configure `FRONTEND_ORIGIN` no backend e informe a URL pública do backend em `api-config.js`, por exemplo `window.JOINHA_API_URL = 'https://api.seudominio.com';`.
-- Use HTTPS, uma senha forte, uma `JWT_SECRET` exclusiva e backups do arquivo SQLite. Não use as credenciais de desenvolvimento em produção.
-- O checkout mantém uma opção de emergência: se a API não responder, pergunta se deseja continuar para o WhatsApp. Esse pedido **não ficará salvo no painel**.
+```bash
+cp .env.example .env
+```
+Edite `.env` e defina sua senha administrativa e `JWT_SECRET`. Depois execute:
 
-## Rotas principais
+```bash
+npm ci
+npm run check
+npm start
+```
 
-- `GET /api/produtos` — produtos disponíveis para o cardápio.
-- `POST /api/pedidos` — registra pedido e calcula os valores no servidor.
-- `GET /api/cep/:cep` — consulta CEP via ViaCEP.
-- `GET /api/frete?bairro=Centro` — consulta frete e atendimento.
-- `POST /api/admin/login` — login do administrador.
-- `/api/admin/produtos`, `/api/admin/pedidos`, `/api/admin/areas` — rotas protegidas do painel.
+Abra `http://localhost:3000`, o cardápio em `/CARDAPIO/cardapio.html` e o painel em `/admin/`. Na primeira execução o servidor cria o banco e importa o catálogo inicial de `server/seed-products.json`. O arquivo `.env.example` é só um modelo e não deve ser usado como configuração final de produção.
+
+## Observações importantes
+
+- `api-config.js` é público: coloque nele somente URLs e dados comerciais destinados a visitantes. Nunca coloque senha, token secreto ou credenciais de banco nesse arquivo.
+- Se publicar frontend e API no mesmo host, mantenha `JOINHA_API_URL` vazio. Se estiverem em hosts separados, informe a URL pública da API em `JOINHA_API_URL` e configure `FRONTEND_ORIGIN` no servidor com a origem exata do frontend.
+- O SQLite precisa de armazenamento persistente. Hospedagem que apaga o disco ao reiniciar pode perder histórico de pedidos. Faça backups regulares do arquivo do banco.
+- `.htaccess` contém regras para servidores Apache, mas **não substitui o backend Node.js**. GitHub Pages/Netlify estático, sozinho, não executa a API ou o painel com banco.
+- Os links de Instagram/Facebook, WhatsApp, dados da loja e domínio não podiam ser completados automaticamente porque não vieram no pacote; configure-os antes de receber clientes reais.

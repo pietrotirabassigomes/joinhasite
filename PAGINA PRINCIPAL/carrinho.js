@@ -9,12 +9,12 @@
 (function () {
     'use strict';
 
-    /* >>> TROQUE pelo WhatsApp da loja: DDI + DDD + número, só dígitos <<< */
-    var WHATSAPP = 'NUMERO_WHATSAPP';
+    /* Número centralizado em api-config.js (DDI + DDD + número, só dígitos). */
+    var WHATSAPP = String(window.JOINHA_WHATSAPP || '').replace(/\D/g, '');
 
     /* >>> Endereço da loja, mostrado para quem escolhe RETIRADA.
            Ex.: 'Rua das Flores, 123 - Centro'. Deixe '' para não mostrar. <<< */
-    var ENDERECO_LOJA = '';
+    var ENDERECO_LOJA = String(window.JOINHA_ADDRESS || '').trim();
 
     /* O frete agora é consultado pela API conforme o bairro cadastrado no painel. */
     var API_BASE = String(window.JOINHA_API_URL || '').replace(/\/$/, '');
@@ -107,12 +107,23 @@
     /* ---------- ações ---------- */
     function adicionar(produto) {
         var item = itens.find(function (i) { return i.id === produto.id; });
-        if (item) item.qtd += 1;
-        else itens.push({
+        if (item) {
+            item.qtd += 1;
+            // Se o item já existia no localStorage, atualiza também as opções escolhidas agora.
+            item.nome = produto.nome;
+            item.preco = produto.preco;
+            item.img = produto.img || item.img || '';
+            item.consultar = !!produto.consultar;
+            if (produto.produtoId) item.produtoId = produto.produtoId;
+            if (produto.tamanho) item.tamanho = produto.tamanho;
+            if (Array.isArray(produto.upgrades)) item.upgrades = produto.upgrades;
+            if (produto.obsProduto !== undefined) item.obsProduto = produto.obsProduto || '';
+        } else itens.push({
             id: produto.id, nome: produto.nome, preco: produto.preco, img: produto.img, consultar: !!produto.consultar, qtd: 1,
             produtoId: produto.produtoId || '', tamanho: produto.tamanho || '',
             upgrades: Array.isArray(produto.upgrades) ? produto.upgrades : [], obsProduto: produto.obsProduto || ''
         });
+        salvar();
         atualizar();
         avisar(produto.nome + ' foi para o carrinho');
         document.querySelectorAll('.carrinho-btn, .carrinho-flutuante').forEach(function (b) {
@@ -234,8 +245,63 @@
         return primeiro;
     }
 
+    function normalizarOpcao(texto) {
+        return String(texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase().replace(/[\s._-]+/g, '').trim();
+    }
+
+    async function sincronizarTamanhosCarrinho() {
+        try {
+            var resposta = await fetch(API_BASE + '/api/produtos', {
+                cache: 'no-store',
+                headers: { Accept: 'application/json' }
+            });
+            if (!resposta.ok) return;
+            var produtos = await resposta.json();
+            if (!Array.isArray(produtos)) return;
+
+            var alterou = false;
+            var invalidos = [];
+            itens.forEach(function (item) {
+                var produto = produtos.find(function (p) { return p.id === item.produtoId; });
+                if (!produto) return; // A API do pedido informa se o produto deixou de existir.
+                var tamanhos = Array.isArray(produto.tamanhos) ? produto.tamanhos : [];
+                var escolhido = tamanhos.find(function (t) {
+                    return normalizarOpcao(t.nome) === normalizarOpcao(item.tamanho);
+                });
+                // Carrinhos antigos podem guardar a opção no nome visível, ex.: "Flocos (300ml)".
+                if (!escolhido) {
+                    var achado = String(item.nome || '').match(/\(([^()]+)\)/);
+                    if (achado) escolhido = tamanhos.find(function (t) {
+                        return normalizarOpcao(t.nome) === normalizarOpcao(achado[1]);
+                    });
+                }
+                if (escolhido) {
+                    if (item.tamanho !== escolhido.nome) {
+                        item.tamanho = escolhido.nome;
+                        alterou = true;
+                    }
+                } else {
+                    invalidos.push(produto.nome);
+                }
+            });
+            if (alterou) salvar();
+            if (invalidos.length) {
+                throw new Error('O tamanho cadastrado de ' + Array.from(new Set(invalidos)).join(', ') +
+                    ' mudou. Remova esse produto do carrinho e adicione novamente para escolher um tamanho disponível.');
+            }
+        } catch (erro) {
+            // Não bloqueia o checkout quando a API está offline; o POST mostrará o erro de conexão.
+            if (erro && /mudou\. Remova esse produto/.test(erro.message || '')) throw erro;
+        }
+    }
+
     async function finalizar() {
         if (!itens.length || finalizando) return;
+        if (!/^\d{10,15}$/.test(WHATSAPP)) {
+            window.alert('O WhatsApp da loja ainda não está configurado. Preencha JOINHA_WHATSAPP em api-config.js antes de receber pedidos.');
+            return;
+        }
         finalizando = true;
         var botaoFinalizar = $('carrinho-finalizar');
         var textoOriginalBotao = botaoFinalizar.textContent;
@@ -259,6 +325,13 @@
                 avisar('Não atendemos entregas neste bairro');
                 return;
             }
+        }
+
+        try {
+            await sincronizarTamanhosCarrinho();
+        } catch (erroSincronia) {
+            window.alert(erroSincronia.message || 'Atualize as opções do carrinho antes de finalizar.');
+            return;
         }
 
         var obs = $('carrinho-obs').value.trim();
