@@ -267,6 +267,12 @@ nav a:hover::after {
     transition: transform 0.65s var(--movimento-suave);
 }
 
+.img-card-especial {
+    height: 260px;
+    object-fit: cover;
+    object-position: center;
+}
+
 .card:hover > img {
     transform: scale(1.03);
 }

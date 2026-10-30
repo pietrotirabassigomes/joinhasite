@@ -232,6 +232,31 @@ body.op-aberto .op-janela {
     pointer-events: none;
 }
 
+.op-opcao input[type="number"] {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    width: 72px;
+    min-width: 72px;
+    height: 40px;
+    padding: 8px 10px;
+    border: 1px solid #cfe0e2;
+    border-radius: 10px;
+    background: var(--branco, #fff);
+    color: #12292c;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    appearance: textfield;
+}
+
+.op-opcao input[type="number"]::-webkit-outer-spin-button,
+.op-opcao input[type="number"]::-webkit-inner-spin-button {
+    margin: 0;
+    appearance: none;
+}
+
 .op-info {
     flex: 1;
 }

@@ -12,7 +12,7 @@
 <body>
   <header class="topo">
     <a class="marca" href="../index.html"><img src="../img/joinha.png" alt=""><span>Joinha <small>Painel administrativo</small></span></a>
-    <div class="topo-acoes"><a href="../index.html">Ver site</a><button id="sair" class="botao leve" hidden>Sair</button></div>
+    <div class="topo-acoes"><a href="../index.html">Ver site</a><button id="loja-toggle" class="botao leve" type="button" hidden title="Abrir ou fechar a loja para novos pedidos">Loja</button><button id="sair" class="botao leve" hidden>Sair</button></div>
   </header>
   <main class="principal">
     <section id="login-area" class="login-caixa">
@@ -38,6 +38,7 @@
         <button class="aba" data-aba="produtos">Cardápio</button>
         <button class="aba" data-aba="entrega">Entrega e frete</button>
         <button class="aba" data-aba="admins">Administradores</button>
+        <button class="aba" data-aba="historico">Histórico</button>
       </nav>
       <p id="aviso-global" class="mensagem" role="status" hidden></p>
 
@@ -48,11 +49,22 @@
           <article class="metrica"><span>Pedidos em aberto</span><strong id="pedidos-pendentes">0</strong><small>Novos, preparando ou prontos</small></article>
           <article class="metrica"><span>Vendas entregues</span><strong id="vendas-entregues">R$ 0,00</strong><small><span id="pedidos-entregues">0</span> pedidos entregues</small></article>
         </div>
+        <div class="analise">
+          <div class="secao-topo"><div><h2>Desempenho</h2><p>Vendas, sabores mais pedidos e horários de pico.</p></div>
+            <label class="filtro-label">Período <select id="periodo"><option value="hoje">Hoje</option><option value="ontem">Ontem</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="custom">Intervalo…</option></select></label></div>
+          <div id="periodo-custom" class="filtros-barra" hidden><label class="filtro-label">De <input type="date" id="periodo-de"></label><label class="filtro-label">Até <input type="date" id="periodo-ate"></label></div>
+          <div class="analise-grid">
+            <article class="metrica"><span>Faturamento</span><strong id="an-fat">R$ 0,00</strong><small><span id="an-qtd">0</span> pedidos · ticket médio <span id="an-ticket">—</span></small></article>
+            <article class="metrica"><span>Top 3 mais pedidos</span><ol id="an-top" class="rank"></ol></article>
+            <article class="metrica"><span>Horários de pico</span><div id="an-picos" class="picos"></div></article>
+          </div>
+        </div>
         <div class="painel-info"><div><h2>Próximos passos</h2><p>Registre os pedidos recebidos, atualize o status conforme a equipe prepara cada compra e mantenha preços e sabores atualizados no cardápio.</p></div><button class="botao principal-botao" data-ir="pedidos">Ver pedidos</button></div>
       </section>
 
       <section class="secao" data-secao="pedidos">
         <div class="secao-topo"><div><h2>Pedidos recebidos</h2><p>Os pedidos feitos pelo site aparecem aqui automaticamente.</p></div><label class="filtro-label">Status <select id="filtro-status"><option value="todos">Todos</option><option value="novo">Novo</option><option value="preparando">Preparando</option><option value="pronto">Pronto</option><option value="entregue">Entregue</option></select></label></div>
+        <div class="filtros-barra"><input id="busca-pedidos" type="search" placeholder="Buscar por nº, cliente, telefone ou bairro…" aria-label="Buscar pedidos"><label class="check-linha"><input id="agrupar-bairro" type="checkbox"> Agrupar por bairro (entregas)</label></div>
         <div id="lista-pedidos" class="lista-pedidos"><p class="vazio">Carregando pedidos…</p></div>
       </section>
 
@@ -67,11 +79,14 @@
             <div class="campo-largo"><label for="produto-imagem">Caminho da imagem</label><input id="produto-imagem" maxlength="500" placeholder="/CARDAPIO/milkshakes_joinha/imagem.png"><small>Use um caminho do site que comece com /, ou deixe vazio se não tiver imagem.</small></div>
             <div><label for="produto-tamanhos">Tamanhos e preços</label><textarea id="produto-tamanhos" rows="4" required placeholder="300ml=15&#10;400ml=16"></textarea><small>Uma opção por linha, no formato <code>nome=preço</code>.</small></div>
             <div><label for="produto-upgrades">Adicionais (opcional)</label><textarea id="produto-upgrades" rows="4" placeholder="Chantilly=1&#10;Granulado Colorido=0"></textarea><small>Uma opção por linha, no formato <code>nome=preço</code>.</small></div>
+            <div><label for="produto-estoque">Estoque <small>(opcional)</small></label><input id="produto-estoque" type="number" min="0" max="100000" step="1" placeholder="Ex.: 5"><small>Deixe vazio para não controlar. Alerta quando restar menos de 2.</small></div>
+            <label class="check-linha"><input id="produto-esgotado" type="checkbox"> Esgotado temporariamente</label>
             <label class="check-linha"><input id="produto-obs" type="checkbox" checked> Permitir observações</label>
             <label class="check-linha"><input id="produto-ativo" type="checkbox" checked> Mostrar no cardápio</label>
           </div>
           <div class="editor-acoes"><button class="botao principal-botao" type="submit">Salvar produto</button><span id="produto-erro" class="mensagem erro" hidden></span></div>
         </form>
+        <div class="filtros-barra"><input id="busca-produtos" type="search" placeholder="Pesquisar sabor ou produto…" aria-label="Pesquisar produtos"><select id="filtro-categoria" aria-label="Categoria"><option value="">Todas as categorias</option><option value="picoles">Picolés</option><option value="milkshakes">Milkshakes</option><option value="potes">Potes</option><option value="especiais">Especiais</option></select><select id="filtro-disp" aria-label="Disponibilidade"><option value="">Todos</option><option value="1">No cardápio</option><option value="0">Ocultos</option><option value="esg">Esgotados / estoque baixo</option></select><span id="contagem-produtos" class="contagem"></span></div>
         <div class="tabela-wrap"><table><thead><tr><th>Produto</th><th>Categoria</th><th>Preço inicial</th><th>Disponibilidade</th><th></th></tr></thead><tbody id="tabela-produtos"><tr><td colspan="5">Carregando cardápio…</td></tr></tbody></table></div>
       </section>
 
@@ -87,6 +102,11 @@
         </form>
         <div class="tabela-wrap"><table><thead><tr><th>E-mail do administrador</th><th>Data de cadastro</th></tr></thead><tbody id="tabela-admins"><tr><td colspan="2">Carregando administradores…</td></tr></tbody></table></div>
         <p class="aviso-neutro" style="margin-top:14px">Todos os administradores cadastrados podem gerenciar pedidos, preços, entregas e adicionar outros administradores. Cadastre apenas pessoas de confiança.</p>
+      </section>
+
+      <section class="secao" data-secao="historico">
+        <div class="secao-topo"><div><h2>Histórico de alterações</h2><p>Últimas 200 ações: preços, status de pedidos, loja, fretes e acessos.</p></div></div>
+        <div class="tabela-wrap"><table><thead><tr><th>Quando</th><th>Administrador</th><th>Ação</th><th>Detalhe</th></tr></thead><tbody id="tabela-historico"><tr><td colspan="4">Carregando…</td></tr></tbody></table></div>
       </section>
 
       <section class="secao" data-secao="entrega">

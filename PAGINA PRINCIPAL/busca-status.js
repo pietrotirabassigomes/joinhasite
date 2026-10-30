@@ -113,9 +113,10 @@
         if (!principal || !h1) return;
 
         var secoes = [
-            { chave: 'picoles',    titulo: document.getElementById('picoles'),    grade: principal.querySelector('.cards-picoles'),    rotulo: 'Picolés' },
-            { chave: 'milkshakes', titulo: document.getElementById('milkshakes'), grade: principal.querySelector('.cards-milkshakes'), rotulo: 'Milk Shakes' },
-            { chave: 'potes',      titulo: document.getElementById('potes'),      grade: principal.querySelector('.cards-potes'),      rotulo: 'Potes' }
+            { chave: 'picoles',    titulo: document.getElementById('picoles'),          grade: principal.querySelector('.cards-picoles'),       rotulo: 'Picolés' },
+            { chave: 'milkshakes', titulo: document.getElementById('milkshakes'),      grade: principal.querySelector('.cards-milkshakes'),    rotulo: 'Milk Shakes' },
+            { chave: 'potes',      titulo: document.getElementById('potes'),            grade: principal.querySelector('.cards-potes'),         rotulo: 'Potes' },
+            { chave: 'especiais',  titulo: document.getElementById('itens-especiais'), grade: principal.querySelector('.cards-especiais'),    rotulo: 'Itens Especiais' }
         ].filter(function (s) { return s.titulo && s.grade; });
         if (!secoes.length) return;
 

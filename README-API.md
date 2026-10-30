@@ -41,7 +41,7 @@ npm run check
 npm start
 ```
 
-Abra `http://localhost:3000`, o cardápio em `/CARDAPIO/cardapio.html` e o painel em `/admin/`. Na primeira execução o servidor cria o banco e importa o catálogo inicial de `server/seed-products.json`. O arquivo `.env.example` é só um modelo e não deve ser usado como configuração final de produção.
+Abra `http://localhost:3000`, o cardápio em `/CARDAPIO/cardapio.html` e o painel em `/admin/`. Na primeira execução o servidor cria o banco e importa o catálogo inicial de `server/seed-products.json`. Migrações pendentes do catálogo, como `server/atualizar-potes.sql`, são aplicadas uma única vez ao iniciar o servidor. O arquivo `.env.example` é só um modelo e não deve ser usado como configuração final de produção.
 
 ## Observações importantes
 

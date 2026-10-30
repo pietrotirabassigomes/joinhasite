@@ -89,9 +89,7 @@ db.exec(`
      );
 
      CREATE TABLE IF NOT EXISTS products (
-
        id TEXT PRIMARY KEY,
-
        nome TEXT NOT NULL,
 
        categoria TEXT NOT NULL CHECK(categoria IN ('picoles','milkshakes','potes','especiais')),
@@ -109,9 +107,11 @@ db.exec(`
        criado_em TEXT NOT NULL,
 
        atualizado_em TEXT NOT NULL
-
      );
-
+     CREATE TABLE IF NOT EXISTS schema_migrations (
+       name TEXT PRIMARY KEY,
+       applied_at TEXT NOT NULL
+     );
      CREATE TABLE IF NOT EXISTS orders (
 
        id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -219,6 +219,18 @@ const existingRows = db.prepare('SELECT * FROM products').all();
 }
 
 
+
+// Novos recursos: esgotado/estoque nos produtos, configuração da loja e log de auditoria.
+const colunasProdutos = db.prepare('PRAGMA table_info(products)').all().map((c) => c.name);
+if (!colunasProdutos.includes('esgotado')) db.exec('ALTER TABLE products ADD COLUMN esgotado INTEGER NOT NULL DEFAULT 0');
+if (!colunasProdutos.includes('estoque')) db.exec('ALTER TABLE products ADD COLUMN estoque INTEGER');
+db.exec(`
+  CREATE TABLE IF NOT EXISTS settings (chave TEXT PRIMARY KEY, valor TEXT NOT NULL);
+  CREATE TABLE IF NOT EXISTS audit_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, admin_email TEXT NOT NULL, acao TEXT NOT NULL,
+    detalhe TEXT NOT NULL DEFAULT '', criado_em TEXT NOT NULL
+  );
+`);
 
 const nowIso = () => new Date().toISOString();
 
@@ -378,6 +390,16 @@ if (faltando.length) {
   console.log(`Produtos novos carregados (potes/itens especiais): ${faltando.length} itens.`);
 }
 
+db.prepare('UPDATE products SET ativo = 0, atualizado_em = ? WHERE id IN (?, ?) AND ativo <> 0')
+  .run(nowIso(), 'pote-napolitano-bombom-branco', 'pote-chocolate-trufado-bombom');
+
+const potesMigrationName = 'potes-precos-2l-v1';
+if (!db.prepare('SELECT 1 FROM schema_migrations WHERE name = ?').get(potesMigrationName)) {
+  const migrationPath = path.join(ROOT, 'server', 'atualizar-potes.sql');
+  db.exec(fs.readFileSync(migrationPath, 'utf8'));
+  console.log('Migração dos preços e sabores dos potes aplicada.');
+}
+
 
 app.disable('x-powered-by');
 // A plataforma de hospedagem fica na frente do Express; mantém o IP do cliente para rate limiting.
@@ -417,7 +439,7 @@ function produtoPublico(row) {
 
        tamanhos: safeJson(row.tamanhos, []), upgrades: safeJson(row.upgrades, []),
 
-       obs: Boolean(row.obs), ativo: Boolean(row.ativo)
+       obs: Boolean(row.obs), ativo: Boolean(row.ativo), esgotado: Boolean(row.esgotado), estoque: row.estoque === null || row.estoque === undefined ? null : Number(row.estoque)
 
      };
 
@@ -470,6 +492,9 @@ const upgrades = body.upgrades ?? (existente ? safeJson(existente.upgrades, []) 
 const obs = body.obs === undefined ? (existente ? Boolean(existente.obs) : true) : Boolean(body.obs);
 
 const ativo = body.ativo === undefined ? (existente ? Boolean(existente.ativo) : true) : Boolean(body.ativo);
+const esgotado = body.esgotado === undefined ? (existente ? Boolean(existente.esgotado) : false) : Boolean(body.esgotado);
+const estoque = body.estoque === undefined ? (existente && existente.estoque != null ? Number(existente.estoque) : null) : (body.estoque === null || body.estoque === '' ? null : Number(body.estoque));
+if (estoque !== null && (!Number.isInteger(estoque) || estoque < 0 || estoque > 100000)) return { erro: 'O estoque deve ser um número inteiro entre 0 e 100000 (ou vazio).' };
 
      if (!nome || nome.length > 100) return { erro: 'O nome deve ter entre 1 e 100 caracteres.' };
 
@@ -501,11 +526,38 @@ const ativo = body.ativo === undefined ? (existente ? Boolean(existente.ativo) :
 
      }
 
-     return { nome, categoria, imagem, tamanhos: tamanhos.map(t => ({ ...t, nome: t.nome.trim(), preco: money(t.preco) })), upgrades: upgrades.map(u => ({ nome: u.nome.trim(), preco: money(u.preco) })), obs, ativo };
+     return { nome, categoria, imagem, tamanhos: tamanhos.map(t => ({ ...t, nome: t.nome.trim(), preco: money(t.preco) })), upgrades: upgrades.map(u => ({ nome: u.nome.trim(), preco: money(u.preco) })), obs, ativo, esgotado, estoque };
 
 }
 
 
+
+function audit(req, acao, detalhe) {
+  try {
+    db.prepare('INSERT INTO audit_log (admin_email, acao, detalhe, criado_em) VALUES (?,?,?,?)')
+      .run(req.admin?.email || '—', acao, String(detalhe || '').slice(0, 500), nowIso());
+  } catch (e) { console.error('audit:', e.message); }
+}
+function lojaStatus() {
+  const row = db.prepare("SELECT valor FROM settings WHERE chave = 'loja'").get();
+  const v = safeJson(row?.valor, {});
+  return { aberta: v.aberta !== false, mensagem: String(v.mensagem || '') };
+}
+// Público: o site consulta para exibir "Fechado no momento".
+app.get('/api/loja', (req, res) => res.json(lojaStatus()));
+app.get('/api/admin/loja', autenticar, (req, res) => res.json(lojaStatus()));
+app.put('/api/admin/loja', autenticar, (req, res) => {
+  if (typeof req.body?.aberta !== 'boolean') return res.status(400).json({ erro: 'Informe se a loja está aberta ou fechada.' });
+  const mensagem = String(req.body.mensagem || '').trim().slice(0, 200);
+  db.prepare("INSERT INTO settings (chave, valor) VALUES ('loja', ?) ON CONFLICT(chave) DO UPDATE SET valor = excluded.valor")
+    .run(JSON.stringify({ aberta: req.body.aberta, mensagem }));
+  audit(req, req.body.aberta ? 'loja.abrir' : 'loja.fechar', mensagem);
+  res.json(lojaStatus());
+});
+app.get('/api/admin/auditoria', autenticar, (req, res) => {
+  const rows = db.prepare('SELECT * FROM audit_log ORDER BY id DESC LIMIT 200').all();
+  res.json(rows.map((r) => ({ id: r.id, admin: r.admin_email, acao: r.acao, detalhe: r.detalhe, criadoEm: r.criado_em })));
+});
 
 app.get('/api/health', (req, res) => res.json({ ok: true, nome: 'Joinha Sorvetes API' }));
 
@@ -570,6 +622,8 @@ const area = areas.find(a => normalize(a.bairro) === normalize(bairro));
 
 
 app.post('/api/pedidos', orderLimiter, (req, res) => {
+const lojaAtual = lojaStatus();
+if (!lojaAtual.aberta) return res.status(503).json({ erro: lojaAtual.mensagem || 'A loja está fechada no momento. Volte em breve!', lojaFechada: true });
 
 const body = req.body || {};
 
@@ -625,6 +679,7 @@ const product = produtosPorId.get(productId);
 
        if (!product) return res.status(422).json({ erro: `O produto "${String(item.nome || 'selecionado').slice(0, 80)}" não está disponível. Atualize o cardápio e tente novamente.` });
 
+if (product.esgotado) return res.status(422).json({ erro: `${product.nome} está esgotado no momento. Remova do carrinho para continuar.` });
 const tamanhos = safeJson(product.tamanhos, []);
 
 const tamanhoNome = String(item.tamanho || '');
@@ -791,6 +846,7 @@ const result = db.prepare('INSERT INTO admins (email, password_hash, ativo, cria
 
        .run(email, bcrypt.hashSync(senha, 12), nowIso());
 
+audit(req, 'admin.criar', email);
 res.status(201).json({ id: Number(result.lastInsertRowid), email, criadoEm: nowIso() });
 
 });
@@ -825,6 +881,8 @@ const now = nowIso();
 
          JSON.stringify(validated.tamanhos), JSON.stringify(validated.upgrades), validated.obs ? 1 : 0, validated.ativo ? 1 : 0, now, now);
 
+db.prepare('UPDATE products SET esgotado=?,estoque=? WHERE id=?').run(validated.esgotado ? 1 : 0, validated.estoque, id);
+audit(req, 'produto.criar', validated.nome);
 res.status(201).json(produtoPublico(db.prepare('SELECT * FROM products WHERE id = ?').get(id)));
 
 });
@@ -845,6 +903,14 @@ const validated = validarProduto(req.body || {}, existing);
 
          validated.obs ? 1 : 0, validated.ativo ? 1 : 0, nowIso(), req.params.id);
 
+db.prepare('UPDATE products SET esgotado=?,estoque=? WHERE id=?').run(validated.esgotado ? 1 : 0, validated.estoque, req.params.id);
+const mud = [];
+if (existing.nome !== validated.nome) mud.push(`nome (antes: ${existing.nome})`);
+if (existing.tamanhos !== JSON.stringify(validated.tamanhos)) mud.push('tamanhos/preços');
+if (Boolean(existing.ativo) !== validated.ativo) mud.push(validated.ativo ? 'exibido no cardápio' : 'ocultado');
+if (Boolean(existing.esgotado) !== validated.esgotado) mud.push(validated.esgotado ? 'marcado como esgotado' : 'voltou ao estoque');
+if ((existing.estoque ?? null) !== validated.estoque) mud.push(`estoque ${existing.estoque ?? '—'} → ${validated.estoque ?? '—'}`);
+if (mud.length) audit(req, 'produto.editar', `${validated.nome}: ${mud.join('; ')}`);
 res.json(produtoPublico(db.prepare('SELECT * FROM products WHERE id = ?').get(req.params.id)));
 
 });
@@ -854,6 +920,7 @@ app.delete('/api/admin/produtos/:id', autenticar, (req, res) => {
 const result = db.prepare('UPDATE products SET ativo=0, atualizado_em=? WHERE id=?').run(nowIso(), req.params.id);
 
      if (!result.changes) return res.status(404).json({ erro: 'Produto não encontrado.' });
+     audit(req, 'produto.ocultar', req.params.id);
 
 res.json({ ok: true });
 
@@ -900,6 +967,7 @@ const status = String(req.body?.status || '');
 const result = db.prepare('UPDATE orders SET status=?,atualizado_em=? WHERE id=?').run(status, nowIso(), Number(req.params.id));
 
      if (!result.changes) return res.status(404).json({ erro: 'Pedido não encontrado.' });
+audit(req, 'pedido.status', `${db.prepare('SELECT numero FROM orders WHERE id=?').get(Number(req.params.id))?.numero || '#' + req.params.id} → ${status}`);
 
 res.json(pedidoAdmin(db.prepare('SELECT * FROM orders WHERE id=?').get(Number(req.params.id))));
 
@@ -951,12 +1019,14 @@ const existente = db.prepare('SELECT * FROM delivery_areas').all().find(a => nor
 
        db.prepare('UPDATE delivery_areas SET bairro=?,taxa=?,ativo=?,atualizado_em=? WHERE id=?').run(bairro, money(taxa), ativo ? 1 : 0, nowIso(), existente.id);
 
+       audit(req, 'frete.editar', `${bairro}: R$ ${money(taxa)} · ${ativo ? 'atende' : 'não atende'}`);
        return res.json(areaPublica(db.prepare('SELECT * FROM delivery_areas WHERE id=?').get(existente.id)));
 
      }
 
      db.prepare('INSERT INTO delivery_areas (id,bairro,taxa,ativo,atualizado_em) VALUES (?,?,?,?,?)').run(id, bairro, money(taxa), ativo ? 1 : 0, nowIso());
 
+audit(req, 'frete.criar', `${bairro}: R$ ${money(taxa)} · ${ativo ? 'atende' : 'não atende'}`);
 res.status(201).json(areaPublica(db.prepare('SELECT * FROM delivery_areas WHERE id=?').get(id)));
 
 });
@@ -977,6 +1047,7 @@ const ativo = req.body?.ativo === undefined ? Boolean(existing.ativo) : Boolean(
 
      db.prepare('UPDATE delivery_areas SET bairro=?,taxa=?,ativo=?,atualizado_em=? WHERE id=?').run(bairro, money(taxa), ativo ? 1 : 0, nowIso(), req.params.id);
 
+     audit(req, 'frete.editar', `${bairro}: R$ ${money(taxa)} · ${ativo ? 'atende' : 'não atende'}`);
      res.json(areaPublica(db.prepare('SELECT * FROM delivery_areas WHERE id=?').get(req.params.id)));
 
 });
@@ -986,6 +1057,7 @@ app.delete('/api/admin/areas/:id', autenticar, (req, res) => {
 const result = db.prepare('DELETE FROM delivery_areas WHERE id=?').run(req.params.id);
 
      if (!result.changes) return res.status(404).json({ erro: 'Bairro não encontrado.' });
+     audit(req, 'frete.excluir', req.params.id);
 
      res.json({ ok: true });
 

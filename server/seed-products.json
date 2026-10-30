@@ -1434,40 +1434,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/01_abacaxi_suico.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
-      }
-    ],
-    "upgrades": [
-      {
-        "nome": "Cobertura",
-        "preco": 0
-      },
-      {
-        "nome": "Chantilly",
-        "preco": 3
-      }
-    ],
-    "obs": true,
-    "ativo": true
-  },
-  {
-    "id": "pote-abacaxi-suico-com-chocolate",
-    "nome": "Abacaxi Suíço com Chocolate",
-    "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/02_abacaxi_suico_chocolate.webp",
-    "tamanhos": [
-      {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
-        "nome": "Pote 2L",
-        "preco": 50
+        "preco": 33
       }
     ],
     "upgrades": [
@@ -1490,12 +1458,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/03_coco_branco.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 30
       }
     ],
     "upgrades": [
@@ -1518,40 +1482,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/04_maracuja_trufado.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
-      }
-    ],
-    "upgrades": [
-      {
-        "nome": "Cobertura",
-        "preco": 0
-      },
-      {
-        "nome": "Chantilly",
-        "preco": 3
-      }
-    ],
-    "obs": true,
-    "ativo": true
-  },
-  {
-    "id": "pote-maracuja-trufado-unicornio",
-    "nome": "Maracujá Trufado Unicórnio",
-    "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/05_maracuja_trufado_unicornio.webp",
-    "tamanhos": [
-      {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
-        "nome": "Pote 2L",
-        "preco": 50
+        "preco": 33
       }
     ],
     "upgrades": [
@@ -1574,12 +1506,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/06_unicornio.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 38
       }
     ],
     "upgrades": [
@@ -1602,12 +1530,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/07_ferrero_rocher_com_avela.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 38
       }
     ],
     "upgrades": [
@@ -1630,12 +1554,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/08_pistache.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 38
       }
     ],
     "upgrades": [
@@ -1658,12 +1578,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/09_creme.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 30
       }
     ],
     "upgrades": [
@@ -1686,40 +1602,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/10_napolitano.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
-      }
-    ],
-    "upgrades": [
-      {
-        "nome": "Cobertura",
-        "preco": 0
-      },
-      {
-        "nome": "Chantilly",
-        "preco": 3
-      }
-    ],
-    "obs": true,
-    "ativo": true
-  },
-  {
-    "id": "pote-napolitano-bombom-branco",
-    "nome": "Napolitano Bombom Branco",
-    "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/11_napolitano_bombom_branco.webp",
-    "tamanhos": [
-      {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
-        "nome": "Pote 2L",
-        "preco": 50
+        "preco": 30
       }
     ],
     "upgrades": [
@@ -1742,40 +1626,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/12_chocolate_trufado.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
-      }
-    ],
-    "upgrades": [
-      {
-        "nome": "Cobertura",
-        "preco": 0
-      },
-      {
-        "nome": "Chantilly",
-        "preco": 3
-      }
-    ],
-    "obs": true,
-    "ativo": true
-  },
-  {
-    "id": "pote-chocolate-trufado-bombom",
-    "nome": "Chocolate Trufado com Bombom",
-    "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/13_chocolate_trufado_bombom.webp",
-    "tamanhos": [
-      {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
-        "nome": "Pote 2L",
-        "preco": 50
+        "preco": 33
       }
     ],
     "upgrades": [
@@ -1798,40 +1650,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/14_olho_de_sogra.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
-      }
-    ],
-    "upgrades": [
-      {
-        "nome": "Cobertura",
-        "preco": 0
-      },
-      {
-        "nome": "Chantilly",
-        "preco": 3
-      }
-    ],
-    "obs": true,
-    "ativo": true
-  },
-  {
-    "id": "pote-olho-de-sogra-trufado",
-    "nome": "Olho de Sogra Trufado",
-    "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/15_olho_de_sogra_trufado.webp",
-    "tamanhos": [
-      {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
-        "nome": "Pote 2L",
-        "preco": 50
+        "preco": 33
       }
     ],
     "upgrades": [
@@ -1854,12 +1674,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/16_trufado_provocante.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 38
       }
     ],
     "upgrades": [
@@ -1882,12 +1698,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/17_provocante_avela.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 38
       }
     ],
     "upgrades": [
@@ -1910,12 +1722,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/18_flocos.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 30
       }
     ],
     "upgrades": [
@@ -1938,12 +1746,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/19_pote_de_acai_puro.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 38
       }
     ],
     "upgrades": [
@@ -1966,12 +1770,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/20_floresta_suprema.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 38
       }
     ],
     "upgrades": [
@@ -1993,38 +1793,6 @@
     "categoria": "potes",
     "imagem": "/CARDAPIO/joinha_potes_recortes/21_iogurte_com_morango.webp",
     "tamanhos": [
-      {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
-        "nome": "Pote 2L",
-        "preco": 50
-      }
-    ],
-    "upgrades": [
-      {
-        "nome": "Cobertura",
-        "preco": 0
-      },
-      {
-        "nome": "Chantilly",
-        "preco": 3
-      }
-    ],
-    "obs": true,
-    "ativo": true
-  },
-  {
-    "id": "pote-iogurte-com-morango-frutas-vermelhas",
-    "nome": "Iogurte com Morango e Frutas Vermelhas",
-    "categoria": "potes",
-    "imagem": "/CARDAPIO/joinha_potes_recortes/22_iogurte_com_morango_frutas_vermelhas.webp",
-    "tamanhos": [
-      {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
       {
         "nome": "Pote 2L",
         "preco": 50
@@ -2050,12 +1818,8 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/23_chocomenta.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
-      },
-      {
         "nome": "Pote 2L",
-        "preco": 50
+        "preco": 38
       }
     ],
     "upgrades": [
@@ -2078,12 +1842,176 @@
     "imagem": "/CARDAPIO/joinha_potes_recortes/24_super_chocolate.webp",
     "tamanhos": [
       {
-        "nome": "Pote 1L",
-        "preco": 35
+        "nome": "Pote 2L",
+        "preco": 38
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Cobertura",
+        "preco": 0
       },
+      {
+        "nome": "Chantilly",
+        "preco": 3
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "pote-abacaxi-suico-com-chocolate",
+    "nome": "Abacaxi Suíço com Chocolate",
+    "categoria": "potes",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/02_abacaxi_suico_chocolate.webp",
+    "tamanhos": [
       {
         "nome": "Pote 2L",
         "preco": 50
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Cobertura",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 3
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "pote-maracuja-trufado-unicornio",
+    "nome": "Maracujá Trufado Unicórnio",
+    "categoria": "potes",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/05_maracuja_trufado_unicornio.webp",
+    "tamanhos": [
+      {
+        "nome": "Pote 2L",
+        "preco": 50
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Cobertura",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 3
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "pote-olho-de-sogra-trufado",
+    "nome": "Olho de Sogra Trufado",
+    "categoria": "potes",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/15_olho_de_sogra_trufado.webp",
+    "tamanhos": [
+      {
+        "nome": "Pote 2L",
+        "preco": 50
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Cobertura",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 3
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "pote-iogurte-com-morango-frutas-vermelhas",
+    "nome": "Iogurte com Morango e Frutas Vermelhas",
+    "categoria": "potes",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/22_iogurte_com_morango_frutas_vermelhas.webp",
+    "tamanhos": [
+      {
+        "nome": "Pote 2L",
+        "preco": 33
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Cobertura",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 3
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "pote-bombom-branco",
+    "nome": "Bombom Branco",
+    "categoria": "potes",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/11_napolitano_bombom_branco.webp",
+    "tamanhos": [
+      {
+        "nome": "Pote 2L",
+        "preco": 33
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Cobertura",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 3
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "pote-bombom",
+    "nome": "Bombom",
+    "categoria": "potes",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/13_chocolate_trufado_bombom.webp",
+    "tamanhos": [
+      {
+        "nome": "Pote 2L",
+        "preco": 33
+      }
+    ],
+    "upgrades": [
+      {
+        "nome": "Cobertura",
+        "preco": 0
+      },
+      {
+        "nome": "Chantilly",
+        "preco": 3
+      }
+    ],
+    "obs": true,
+    "ativo": true
+  },
+  {
+    "id": "pote-chocolate",
+    "nome": "Chocolate",
+    "categoria": "potes",
+    "imagem": "/CARDAPIO/joinha_potes_recortes/12_chocolate_trufado.webp",
+    "tamanhos": [
+      {
+        "nome": "Pote 2L",
+        "preco": 30
       }
     ],
     "upgrades": [

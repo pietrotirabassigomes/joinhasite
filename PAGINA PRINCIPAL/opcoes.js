@@ -31,10 +31,9 @@
         picoles: {
             seletor: '.cards-picoles .card',
             precoNoCard: false,
-            /* ATENÇÃO: ajuste estes tamanhos e preços para os reais */
+            /* ATENÇÃO: ajuste este preço para o real */
             tamanhos: [
-                { nome: 'Unidade', desc: '1 picolé', preco: 2.5 },
-                { nome: 'Caixa com 20', desc: '20 picolés', preco: 50 }
+                { nome: 'Unidade', desc: '1 picolé', preco: 2.5 }
             ],
             upgrades: null,
             obs: true
@@ -44,17 +43,29 @@
             precoNoCard: false,  /* mude para true quando os preços forem os reais */
             /* Reserva, usada só se a API estiver fora do ar. Os preços reais ficam no painel. */
             tamanhos: [
-                { nome: 'Pote 1L', preco: 35 },
                 { nome: 'Pote 2L', preco: 50 }
             ],
-            upgrades: {
-                titulo: 'Adicionais',
-                max: 2,
-                itens: [
-                    { nome: 'Cobertura', preco: 0 },
-                    { nome: 'Chantilly', preco: 3 }
-                ]
+            precosFallback: {
+                'pote-abacaxi-suico': 33,
+                'pote-coco-branco': 30,
+                'pote-maracuja-trufado': 33,
+                'pote-unicornio': 38,
+                'pote-ferrero-rocher-com-avela': 38,
+                'pote-pistache': 38,
+                'pote-creme': 30,
+                'pote-napolitano': 30,
+                'pote-chocolate-trufado': 33,
+                'pote-olho-de-sogra': 33,
+                'pote-trufado-provocante': 38,
+                'pote-provocante-avela': 38,
+                'pote-flocos': 30,
+                'pote-acai-puro': 38,
+                'pote-floresta-suprema': 38,
+                'pote-iogurte-com-morango': 50,
+                'pote-chocomenta': 38,
+                'pote-super-chocolate': 38
             },
+            upgrades: null,
             obs: true
         },
         especiais: {
@@ -74,8 +85,8 @@
             },
             obs: true
         },
-        /* Prontos para quando criar estas seções no cardapio.html
-           (<section class="cards cards-bolos"> e <section class="cards cards-caixas">) */
+        /* Pronto para quando criar esta seção no cardapio.html
+           (<section class="cards cards-bolos">) */
         bolos: {
             seletor: '.cards-bolos .card',
             precoNoCard: false,
@@ -83,16 +94,6 @@
             tamanhos: [
                 { nome: 'Fatia', preco: 10 },
                 { nome: 'Bolo inteiro', preco: 80 }
-            ],
-            upgrades: null,
-            obs: true
-        },
-        caixas: {
-            seletor: '.cards-caixas .card',
-            precoNoCard: false,
-            /* ATENÇÃO: preço de exemplo, ajuste para o real */
-            tamanhos: [
-                { nome: 'Caixa com 20', desc: '20 picolés', preco: 50 }
             ],
             upgrades: null,
             obs: true
@@ -187,6 +188,15 @@
                 }).join(''));
         }
 
+        var sabores = '';
+        if (cfg.sabores) {
+            sabores = grupoHTML('sabores', esc(cfg.sabores.titulo), 'Escolha exatamente ' + cfg.sabores.max + ' sabores', true,
+                cfg.sabores.itens.map(function (sabor, i) {
+                    return '<label class="op-opcao op-opcao--check"><span class="op-info"><strong>' + esc(sabor) + '</strong></span>' +
+                        '<input type="number" name="op-sabor" data-sabor-index="' + i + '" min="0" max="20" step="1" value="0" aria-label="Quantidade de ' + esc(sabor) + '"></label>';
+                }).join(''));
+        }
+
         var obs = cfg.obs
             ? '<div class="op-grupo-topo" style="cursor:default"><div><strong>Observações</strong></div></div>' +
               '<div class="op-obs"><textarea id="op-obs" maxlength="140" placeholder="Ex.: Sem canudo, pouco gelo, etc."></textarea></div>'
@@ -200,6 +210,7 @@
             '<img src="' + (img ? img.getAttribute('src') : '') + '" alt=""></div>' +
             '<h2 id="op-titulo">' + esc(info.nomeCompleto) + '</h2></div>' +
             grupoHTML('tamanho', 'Selecione o tamanho', 'Escolha 1 item', true, tamanhos) +
+            (sabores || '') +
             upgrades + obs +
             '</div>' +
             '<div class="op-rodape"><div class="op-total"><small>Total</small><strong id="op-total">R$ 0,00</strong></div>' +
@@ -213,27 +224,38 @@
         var tamanho = t ? cfg.tamanhos[+t.value] : null;
         var ups = [];
         janela.querySelectorAll('input[name="op-upgrade"]:checked').forEach(function (c) {
-            ups.push(cfg.upgrades.itens[+c.value]);
+            ups.push(cfg.upgrades ? cfg.upgrades.itens[+c.value] : null);
         });
-        var total = (tamanho ? tamanho.preco : 0) + ups.reduce(function (s, u) { return s + u.preco; }, 0);
-        return { tamanho: tamanho, upgrades: ups, total: total };
+        var sabores = [];
+        if (cfg.sabores) {
+            cfg.sabores.itens.forEach(function (sabor, i) {
+                var input = janela.querySelector('input[name="op-sabor"][data-sabor-index="' + i + '"]');
+                var qtd = input ? (parseInt(input.value, 10) || 0) : 0;
+                for (var j = 0; j < qtd; j++) {
+                    sabores.push(sabor);
+                }
+            });
+        }
+        var total = (tamanho ? tamanho.preco : 0) + ups.reduce(function (s, u) { return s + (u ? u.preco : 0); }, 0);
+        return { tamanho: tamanho, upgrades: ups.filter(Boolean), sabores: sabores, total: total };
     }
 
     function atualizar() {
         var s = selecao();
         var botao = janela.querySelector('.op-adicionar');
         var selo = janela.querySelector('[data-grupo="tamanho"] .op-obrig');
+        var saboresOk = !atual.cfg.sabores || s.sabores.length === atual.cfg.sabores.max;
 
         janela.querySelector('#op-total').textContent = moeda(s.total);
 
-        if (s.tamanho) {
+        if (s.tamanho && saboresOk) {
             botao.classList.remove('pendente');
             botao.textContent = 'Adicionar ao carrinho';
             if (selo) { selo.textContent = 'Ok'; selo.classList.add('ok'); }
             janela.querySelector('[data-grupo="tamanho"]').classList.remove('erro');
         } else {
             botao.classList.add('pendente');
-            botao.textContent = 'Escolha o tamanho';
+            botao.textContent = s.tamanho ? 'Escolha os 20 sabores' : 'Escolha o tamanho';
         }
 
         /* limite de upgrades */
@@ -242,6 +264,21 @@
             janela.querySelectorAll('input[name="op-upgrade"]').forEach(function (c) {
                 c.disabled = !c.checked && marcados >= atual.cfg.upgrades.max;
             });
+        }
+
+        if (atual.cfg.sabores) {
+            var marcadosSabores = s.sabores.length;
+            var grupoSabores = janela.querySelector('[data-grupo="sabores"]');
+            var obrigatorioSabores = grupoSabores ? grupoSabores.querySelector('.op-obrig') : null;
+            if (obrigatorioSabores) {
+                obrigatorioSabores.textContent = marcadosSabores === atual.cfg.sabores.max ? 'Ok' : (marcadosSabores + '/' + atual.cfg.sabores.max);
+                obrigatorioSabores.classList.toggle('ok', marcadosSabores === atual.cfg.sabores.max);
+            }
+            if (grupoSabores && marcadosSabores !== atual.cfg.sabores.max) {
+                grupoSabores.classList.add('erro');
+            } else if (grupoSabores) {
+                grupoSabores.classList.remove('erro');
+            }
         }
     }
 
@@ -277,11 +314,25 @@
         return { consultado: false, produto: acharNoCatalogo(window.JoinhaCatalogo, tipo, id, nome) };
     }
 
+    function listarSaboresCaixa() {
+        return Array.from(document.querySelectorAll('.cards-picoles .card'))
+            .filter(function (item) {
+                return item.dataset.produtoId !== 'caixa-de-picole';
+            })
+            .map(function (item) {
+                var titulo = item.querySelector('h3');
+                return titulo ? titulo.textContent.trim() : '';
+            })
+            .filter(Boolean);
+    }
+
     async function abrir(card) {
         var tipo = tipoDoCard(card);
         var secao = card.closest('.cards');
         var nome = card.querySelector('h3').textContent.trim();
         var prefixo = secao ? (secao.getAttribute('data-prefixo') || '') : '';
+        var produtoId = card.dataset.produtoId || slugProduto(nome);
+        var eCaixaPicoles = produtoId === 'caixa-de-picole' || /caixa de picole/i.test(nome);
         var resultadoProduto = await buscarProdutoAtual(card, nome, tipo);
         var produtoApi = resultadoProduto.produto;
         var cfgBase = CONFIG[tipo];
@@ -296,13 +347,30 @@
             }
         }
         if (produtoApi) card.dataset.produtoId = produtoApi.id;
+        var tamanhosBase = produtoApi && Array.isArray(produtoApi.tamanhos) && produtoApi.tamanhos.length
+            ? produtoApi.tamanhos
+            : cfgBase.tamanhos;
+        if (tipo === 'potes' && !produtoApi) {
+            var precoFallback = cfgBase.precosFallback[card.dataset.produtoId];
+            if (Number.isFinite(precoFallback)) tamanhosBase = [{ nome: 'Pote 2L', preco: precoFallback }];
+        }
         var cfg = {
             seletor: cfgBase.seletor,
-            tamanhos: produtoApi && Array.isArray(produtoApi.tamanhos) && produtoApi.tamanhos.length ? produtoApi.tamanhos : cfgBase.tamanhos,
-            upgrades: produtoApi ? ((produtoApi.upgrades || []).length ? { titulo: 'Adicionais', max: 2, itens: produtoApi.upgrades } : null) : cfgBase.upgrades,
+            tamanhos: tamanhosBase.filter(function (t) { return !(tipo === 'picoles' && /caixa/i.test(t.nome)); }),
+            /* Potes não têm adicionais, mesmo que a API envie algum */
+            upgrades: tipo === 'potes' ? null : (produtoApi ? ((produtoApi.upgrades || []).length ? { titulo: 'Adicionais', max: 2, itens: produtoApi.upgrades } : null) : cfgBase.upgrades),
             obs: produtoApi ? produtoApi.obs !== false : cfgBase.obs
         };
-        atual = { card: card, tipo: tipo, cfg: cfg, nome: nome, nomeCompleto: prefixo + nome, produtoId: produtoApi ? produtoApi.id : (card.dataset.produtoId || slugProduto(nome)) };
+        if (eCaixaPicoles) {
+            cfg.tamanhos = [{ nome: 'Caixa com 20 picolés', preco: 40 }];
+            cfg.upgrades = null;
+            cfg.sabores = {
+                titulo: 'Escolha os sabores',
+                max: 20,
+                itens: listarSaboresCaixa()
+            };
+        }
+        atual = { card: card, tipo: tipo, cfg: cfg, nome: nome, nomeCompleto: prefixo + nome, produtoId: produtoId };
         render(atual);
         if (cfg.tamanhos.length === 1) {
             var unico = janela.querySelector('input[name="op-tamanho"]');
@@ -334,12 +402,24 @@
             return;
         }
 
+        if (atual.cfg.sabores && s.sabores.length !== atual.cfg.sabores.max) {
+            var saboresGrupo = janela.querySelector('[data-grupo="sabores"]');
+            if (saboresGrupo) {
+                saboresGrupo.classList.remove('fechado', 'erro');
+                void saboresGrupo.offsetWidth;
+                saboresGrupo.classList.add('erro');
+                saboresGrupo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
         var obsEl = janela.querySelector('#op-obs');
         var obs = obsEl ? obsEl.value.trim() : '';
         var extras = s.upgrades.map(function (u) { return u.nome; });
 
         /* nome que aparece no carrinho */
         var nomeItem = atual.nome + ' (' + s.tamanho.nome + ')' +
+            (s.sabores.length ? ' - ' + s.sabores.join(', ') : '') +
             (extras.length ? ' + ' + extras.join(', ') : '') +
             (obs ? ' - Obs: ' + obs : '');
 
@@ -348,6 +428,7 @@
             produto: atual.nomeCompleto,
             categoria: atual.tipo,
             tamanho: s.tamanho.nome,
+            sabores: s.sabores,
             upgrades: extras,
             observacoes: obs,
             preco: s.total
@@ -404,6 +485,21 @@
     });
 
     janela.addEventListener('change', atualizar);
+    janela.addEventListener('input', function (e) {
+        if (!e.target.matches('input[name="op-sabor"]')) return;
+        if (!atual || !atual.cfg || !atual.cfg.sabores) return;
+
+        var totalAtual = 0;
+        janela.querySelectorAll('input[name="op-sabor"]').forEach(function (input) {
+            if (input !== e.target) totalAtual += (parseInt(input.value, 10) || 0);
+        });
+
+        var valor = (parseInt(e.target.value, 10) || 0);
+        var restante = atual.cfg.sabores.max - totalAtual;
+        if (valor > restante) e.target.value = Math.max(0, restante);
+        if (valor < 0) e.target.value = 0;
+        atualizar();
+    });
 
     document.addEventListener('keydown', function (e) {
         if (!document.body.classList.contains('op-aberto')) return;
