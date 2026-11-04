@@ -2,7 +2,8 @@
 
 
 
-require('dotenv').config();
+// Carrega o .env com o recurso nativo do Node (sem dependência extra).
+if (require('fs').existsSync('.env')) process.loadEnvFile('.env');
 
 const path = require('path');
 
@@ -10,7 +11,11 @@ const fs = require('fs');
 
 const express = require('express');
 
-const Database = require('better-sqlite3');
+// SQLite nativo do Node 22 (sem módulo externo, sem compilação, sem Python).
+const { emitWarning } = process;
+process.emitWarning = (w, ...a) => (String(w).includes('SQLite') ? undefined : emitWarning.call(process, w, ...a));
+const { DatabaseSync } = require('node:sqlite');
+process.emitWarning = emitWarning;
 
 const bcrypt = require('bcryptjs');
 
@@ -64,11 +69,18 @@ if (!IS_PRODUCTION && (!process.env.ADMIN_PASSWORD || !process.env.JWT_SECRET)) 
 
 fs.mkdirSync(path.dirname(DB_FILE), { recursive: true });
 
-const db = new Database(DB_FILE);
+const db = new DatabaseSync(DB_FILE);
 
-db.pragma('journal_mode = WAL');
+// Transação no mesmo formato usado antes: db.transaction(fn)(...args)
+db.transaction = (fn) => (...args) => {
+  db.exec('BEGIN');
+  try { const r = fn(...args); db.exec('COMMIT'); return r; }
+  catch (e) { db.exec('ROLLBACK'); throw e; }
+};
 
-db.pragma('foreign_keys = ON');
+db.exec('PRAGMA journal_mode = WAL');
+
+db.exec('PRAGMA foreign_keys = ON');
 
 
 

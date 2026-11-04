@@ -28,7 +28,7 @@ O `Dockerfile` usa Node.js 22 e instala as dependências de produção. Para pre
 
 ## Rodar localmente
 
-Requisitos: Node.js 22 ou superior.
+Requisitos: Node.js 22.13 ou superior (nada mais — sem Python, sem compilador).
 
 ```bash
 cp .env.example .env

@@ -22,6 +22,34 @@
     <link rel="stylesheet" href="PAGINA%20PRINCIPAL/carrinho.css">
     <link rel="stylesheet" href="PAGINA%20PRINCIPAL/menu.css">
     <link rel="stylesheet" href="PAGINA%20PRINCIPAL/cookies.css">
+
+    <style>
+    #aviso-loja-fechada {
+        display: none;
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 900px;
+        border: 2px solid #dc3545;
+        border-radius: 12px;
+        background: #fff0f0;
+        color: #842029;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #aviso-loja-fechada small {
+        display: block;
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+    body.loja-fechada .botao-card {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+</style>
 </head>
 
 <body>
@@ -59,6 +87,12 @@
     </section>
 
     <main>
+        <div id="aviso-loja-fechada" role="alert">
+    🔴 Estamos fechados no momento.
+    <small id="mensagem-loja">
+        Volte em breve!
+    </small>
+</div>
 
         <section class="destaques">
             <div class="titulo">
@@ -138,7 +172,7 @@
 
                 <div class="historia-texto">
                     <span class="subtitulo historia-subtitulo">
-                        TRADIÇÃO E CARINHOs
+                        TRADIÇÃO E CARINHOs 
                     </span>
 
                     <h2>Nossa História</h2>
@@ -243,6 +277,47 @@
     <script src="PAGINA%20PRINCIPAL/carrinho.js"></script>
     <script src="PAGINA%20PRINCIPAL/menu.js"></script>
     <script src="PAGINA%20PRINCIPAL/cookies.js"></script>
+
+    <script>
+(() => {
+    const API_BASE = String(window.JOINHA_API_URL || '')
+        .replace(/\/$/, '');
+
+    const aviso = document.getElementById('aviso-loja-fechada');
+    const mensagem = document.getElementById('mensagem-loja');
+
+    async function verificarLoja() {
+        try {
+            const resposta = await fetch(API_BASE + '/api/loja', {
+                cache: 'no-store'
+            });
+
+            if (!resposta.ok) return;
+
+            const loja = await resposta.json();
+            const fechada = loja.aberta === false;
+
+            document.body.classList.toggle('loja-fechada', fechada);
+            aviso.style.display = fechada ? 'block' : 'none';
+
+            mensagem.textContent =
+                loja.mensagem || 'Volte em breve!';
+
+            document.querySelectorAll('.botao-card').forEach(botao => {
+                botao.disabled = fechada;
+                botao.title = fechada
+                    ? 'A loja está fechada no momento'
+                    : '';
+            });
+        } catch (erro) {
+            console.error('Não foi possível consultar o status da loja:', erro);
+        }
+    }
+
+    verificarLoja();
+    setInterval(verificarLoja, 5000);
+})();
+</script>
 
 </body>
 
